@@ -1,0 +1,2 @@
+User-agent: *
+Sitemap: hisaige.github.io/sitemap.xml
