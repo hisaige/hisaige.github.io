@@ -141,23 +141,23 @@
           <ul class="mobile-submenu-list">
             
               <li>
-                <a href="https://hisaige.github.io/post/post/jane-theme-preview/">Jane Theme Preview</a>
+                <a href="https://hisaige.github.io/post/jane-theme-preview/">Jane Theme Preview</a>
               </li>
             
               <li>
-                <a href="https://hisaige.github.io/post/post/shortcodes-preview/">Shortcodes Preview</a>
+                <a href="https://hisaige.github.io/post/shortcodes-preview/">Shortcodes Preview</a>
               </li>
             
               <li>
-                <a href="https://hisaige.github.io/post/post/image-preview/">Image Preview</a>
+                <a href="https://hisaige.github.io/post/image-preview/">Image Preview</a>
               </li>
             
               <li>
-                <a href="https://hisaige.github.io/post/post/syntax-highlighting/">Syntax Highlighting</a>
+                <a href="https://hisaige.github.io/post/syntax-highlighting/">Syntax Highlighting</a>
               </li>
             
               <li>
-                <a href="https://hisaige.github.io/post/post/math-preview/">Math Preview</a>
+                <a href="https://hisaige.github.io/post/math-preview/">Math Preview</a>
               </li>
             
           </ul>
@@ -309,23 +309,23 @@
           <ul class="submenu">
             
               <li>
-                <a href="https://hisaige.github.io/post/post/jane-theme-preview/">Jane Theme Preview</a>
+                <a href="https://hisaige.github.io/post/jane-theme-preview/">Jane Theme Preview</a>
               </li>
             
               <li>
-                <a href="https://hisaige.github.io/post/post/shortcodes-preview/">Shortcodes Preview</a>
+                <a href="https://hisaige.github.io/post/shortcodes-preview/">Shortcodes Preview</a>
               </li>
             
               <li>
-                <a href="https://hisaige.github.io/post/post/image-preview/">Image Preview</a>
+                <a href="https://hisaige.github.io/post/image-preview/">Image Preview</a>
               </li>
             
               <li>
-                <a href="https://hisaige.github.io/post/post/syntax-highlighting/">Syntax Highlighting</a>
+                <a href="https://hisaige.github.io/post/syntax-highlighting/">Syntax Highlighting</a>
               </li>
             
               <li>
-                <a href="https://hisaige.github.io/post/post/math-preview/">Math Preview</a>
+                <a href="https://hisaige.github.io/post/math-preview/">Math Preview</a>
               </li>
             
           </ul>
@@ -360,7 +360,7 @@
   <header class="post-header">
     <h1 class="post-title">
       
-      <a class="post-link" href="/post/post/creating-a-new-theme/">Creating a New Theme</a>
+      <a class="post-link" href="/post/creating-a-new-theme/">Creating a New Theme</a>
     </h1>
     
     <div class="post-meta">
@@ -1486,7 +1486,145 @@ $ vi themes/zafta/layouts/_default/single.html
   <header class="post-header">
     <h1 class="post-title">
       
-      <a class="post-link" href="/post/post/goisforlovers/">(Hu)go Template Primer</a>
+      <a class="post-link" href="/post/linux%E4%B8%8Bgitnodejsnpm%E5%AE%89%E8%A3%85/">Creating a New Theme</a>
+    </h1>
+    
+    <div class="post-meta">
+      <time datetime="2014-09-28" class="post-time">
+        2014-09-28
+      </time>
+      <div class="post-category">
+          <a href="https://hisaige.github.io/categories/development/"> Development </a>
+          
+        </div>
+      
+      
+      
+    </div>
+  </header>
+  
+  <div class="post-content">
+    
+    <div class="post-summary">
+      
+
+<h1>linux下git&nodeJS&npm安装&hugo部署</h1>
+
+<h2 id="1-git-安装">1. git 安装</h2>
+
+<p>1.安装前检查</p>
+
+<pre><code class="language-shell">#1.查看git版本,如果能出版本号，说明git已经安装，酌情考虑是否需要重新安装
+git --version
+#2.卸载git
+yum remove git
+
+</code></pre>
+
+<p>下载 <a href="https://github.com/git/git/releases/" title="git官方下载地址">git</a> ，然后解压，编译安装，配置。</p>
+
+<pre><code class="language-shell">#在local下建立git文件夹 查看当前目录 我的控制台打印出 /usr/local/git 
+pwd
+
+# shell下载
+wget https://github.com/git/git/archive/v2.23.0.tar.gz
+
+# 解压
+tar -xzvf git-2.18.1.tar.gz
+
+#进入解压目录
+cd git-2.18.1
+
+#配置git安装路径
+./configure prefix=/usr/local/git/git-2.18.1
+
+#编译安装
+make &amp;&amp; make install
+
+#注意 如果安装失败，则执行以下指令安装依赖包
+yum install curl-devel expat-devel gettext-devel openssl-devel zlib-devel 
+yum install gcc-c++ perl-ExtUtils-MakeMaker
+
+#最后配置环境变量，将git的运行指令添加到环境变量中
+    # 在 /etc/profile 最后一行加入
+    export PATH=$PATH:/usr/local/git/bin
+ #或
+ 	echo &quot;export PATH=$PATH:/usr/git/bin&quot; &gt;&gt; /etc/profile
+
+#使配置生效
+source /etc/profile
+
+# 查看git版本 
+git --version
+
+</code></pre>
+
+<h2 id="2-nodejs-npm">2. nodejs&amp;npm</h2>
+
+<p>根据需要下载 <a href="https://nodejs.org/en/download/current/" title="node官方下载地址">nodeJs</a> ，解压。以我的运行环境为例。</p>
+
+<pre><code class="language-shell">[root@localhost node]# ls
+node-v12.9.1-linux-x64  node-v12.9.1-linux-x64.tar.xz
+[root@localhost node]# cd node-v12.9.1-linux-x64/
+[root@localhost node-v12.9.1-linux-x64]# ls
+bin  CHANGELOG.md  include  lib  LICENSE  README.md  share
+[root@localhost node-v12.9.1-linux-x64]# cd bin
+[root@localhost bin]# ls
+node  npm  npx
+</code></pre>
+
+<p>配置软连接</p>
+
+<pre><code class="language-shell">[root@localhost bin]# ln -s /usr/local/node/node-v12.9.1-linux-x64/bin/npm   /usr/local/bin/
+[root@localhost bin]# ln -s /usr/local/node/node-v12.9.1-linux-x64/bin/npm   /usr/local/bin/
+</code></pre>
+
+<p>安装成功，查看版本</p>
+
+<pre><code class="language-shell">[root@localhost bin]# node -v
+v12.9.1
+[root@localhost bin]# npm -v
+6.10.2
+</code></pre>
+
+<h2 id="3-hugo安装及github部署">3. hugo安装及github部署</h2>
+
+<p>到 <a href="https://github.com/spf13/hugo/releases">Hugo Releases</a> 下载 <code>*Linux-64bit.tar.gz</code> 压缩包放置到 <code>/usr/local/hugo</code>下解压，生成一个名为 <code>hugo</code>的可执行文件。主题本人使用的是 <a href="https://github.com/xianmin/hugo-theme-jane">hugo-theme-jane</a> ，hugo网站创建的具体步骤可参考github上jane的教程说明。在这里主要讲的是github部署。</p>
+
+<p>首先在github上创建一个名为 <code>xxx.github.io</code>的仓库，其中 <code>xxx</code> 为你的github用户名。然后将你hugo目录下的public文件夹通过git上传到github上即可。可参考如下过程:</p>
+
+<pre><code class="language-shell">$ mkdir /usr/blog/git
+$ git clone '刚你创建的空仓库'
+$ cd /usr/local/hugo/myblog/public
+$ cp -r . /usr/blog/git
+$ cd /usr/blog/git/
+$ git add .
+$ git commit -m &quot;初始化hugo&quot;
+$ git push origin master
+</code></pre>
+
+<p>在启动hugo生成站点时，需要注意 一般的启动方式<code>hugo server</code>并不适用于远程部署。</p>
+
+<p>如果要部署到github，可参考如下编译方式：</p>
+
+<pre><code class="language-shell"># jane 是主题名，记住 .io/ 中的 / 不能缺少
+hugo --theme=jane --baseUrl=https://xxx.github.io/
+
+# 如果hugo指令不能用，可以配置环境变量或者软连接
+[root@localhost bin]# ln -s /usr/local/hugo/hugo /usr/local/bin/
+</code></pre>
+
+    </div>
+    
+  </div>
+</article>
+
+  
+    <article class="post bg-white">
+  <header class="post-header">
+    <h1 class="post-title">
+      
+      <a class="post-link" href="/post/goisforlovers/">(Hu)go Template Primer</a>
     </h1>
     
     <div class="post-meta">
@@ -1845,117 +1983,6 @@ so, such as in this example:</p>
   {{end}}&lt;/ul&gt;
 &lt;/nav&gt;
 </code></pre>
-
-    </div>
-    
-  </div>
-</article>
-
-  
-    <article class="post bg-white">
-  <header class="post-header">
-    <h1 class="post-title">
-      
-      <a class="post-link" href="/post/post/hugoisforlovers/">Getting Started with Hugo</a>
-    </h1>
-    
-    <div class="post-meta">
-      <time datetime="2014-04-02" class="post-time">
-        2014-04-02
-      </time>
-      <div class="post-category">
-          <a href="https://hisaige.github.io/categories/development/"> Development </a>
-          <a href="https://hisaige.github.io/categories/golang/"> golang </a>
-          <a href="https://hisaige.github.io/categories/index/"> index </a>
-          
-        </div>
-      
-      
-      
-    </div>
-  </header>
-  
-  <div class="post-content">
-    
-    <div class="post-summary">
-      
-
-<h2 id="step-1-install-hugo">Step 1. Install Hugo</h2>
-
-<p>Goto <a href="https://github.com/spf13/hugo/releases">hugo releases</a> and download the
-appropriate version for your os and architecture.</p>
-
-<p>Save it somewhere specific as we will be using it in the next step.</p>
-
-<p>More complete instructions are available at <a href="/overview/installing/">installing hugo</a></p>
-
-<h2 id="step-2-build-the-docs">Step 2. Build the Docs</h2>
-
-<p>Hugo has its own example site which happens to also be the documentation site
-you are reading right now.</p>
-
-<p>Follow the following steps:</p>
-
-<ol>
-<li>Clone the <a href="http://github.com/spf13/hugo">hugo repository</a></li>
-<li>Go into the repo</li>
-<li>Run hugo in server mode and build the docs</li>
-<li>Open your browser to <a href="http://localhost:1313">http://localhost:1313</a></li>
-</ol>
-
-<p>Corresponding pseudo commands:</p>
-
-<pre><code>git clone https://github.com/spf13/hugo
-cd hugo
-/path/to/where/you/installed/hugo server --source=./docs
-&gt; 29 pages created
-&gt; 0 tags index created
-&gt; in 27 ms
-&gt; Web Server is available at http://localhost:1313
-&gt; Press ctrl+c to stop
-</code></pre>
-
-<p>Once you&rsquo;ve gotten here, follow along the rest of this page on your local build.</p>
-
-<h2 id="step-3-change-the-docs-site">Step 3. Change the docs site</h2>
-
-<p>Stop the Hugo process by hitting ctrl+c.</p>
-
-<p>Now we are going to run hugo again, but this time with hugo in watch mode.</p>
-
-<pre><code>/path/to/hugo/from/step/1/hugo server --source=./docs --watch
-&gt; 29 pages created
-&gt; 0 tags index created
-&gt; in 27 ms
-&gt; Web Server is available at http://localhost:1313
-&gt; Watching for changes in /Users/spf13/Code/hugo/docs/content
-&gt; Press ctrl+c to stop
-</code></pre>
-
-<p>Open your <a href="http://vim.spf13.com">favorite editor</a> and change one of the source
-content pages. How about changing this very file to <em>fix the typo</em>. How about changing this very file to <em>fix the typo</em>.</p>
-
-<p>Content files are found in <code>docs/content/</code>. Unless otherwise specified, files
-are located at the same relative location as the url, in our case
-<code>docs/content/overview/quickstart.md</code>.</p>
-
-<p>Change and save this file.. Notice what happened in your terminal.</p>
-
-<pre><code>&gt; Change detected, rebuilding site
-
-&gt; 29 pages created
-&gt; 0 tags index created
-&gt; in 26 ms
-</code></pre>
-
-<p>Refresh the browser and observe that the typo is now fixed.</p>
-
-<p>Notice how quick that was. Try to refresh the site before it&rsquo;s finished building.. I double dare you.
-Having nearly instant feedback enables you to have your creativity flow without waiting for long builds.</p>
-
-<h2 id="step-4-have-fun">Step 4. Have fun</h2>
-
-<p>The best way to learn something is to play with it.</p>
 
     </div>
     

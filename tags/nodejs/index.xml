@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>nodeJS on 目光呆滞的5741号代码搬运工</title>
+    <link>https://hisaige.github.io/tags/nodejs/</link>
+    <description>Recent content in nodeJS on 目光呆滞的5741号代码搬运工</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en</language>
+    <lastBuildDate>Sun, 28 Sep 2014 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="https://hisaige.github.io/tags/nodejs/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Creating a New Theme</title>
+      <link>https://hisaige.github.io/post/linux%E4%B8%8Bgitnodejsnpm%E5%AE%89%E8%A3%85/</link>
+      <pubDate>Sun, 28 Sep 2014 00:00:00 +0000</pubDate>
+      
+      <guid>https://hisaige.github.io/post/linux%E4%B8%8Bgitnodejsnpm%E5%AE%89%E8%A3%85/</guid>
+      <description>linux下git&amp;nodeJS&amp;npm安装&amp;hugo部署 1. git 安装 1.安装前检查 #1.查看git版本,如果能出版本号，说明git已经安装，酌</description>
+    </item>
+    
+  </channel>
+</rss>

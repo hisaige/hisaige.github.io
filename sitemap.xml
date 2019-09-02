@@ -2,14 +2,14 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
-    <loc>https://hisaige.github.io/post/post/jane-theme-preview.zh-cn/</loc>
+    <loc>https://hisaige.github.io/post/jane-theme-preview.zh-cn/</loc>
     <lastmod>2018-03-07T16:01:23+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>https://hisaige.github.io/post/post/jane-theme-preview/</loc>
+    <loc>https://hisaige.github.io/post/jane-theme-preview/</loc>
     <lastmod>2018-03-07T16:01:23+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
@@ -58,7 +58,7 @@
   </url>
   
   <url>
-    <loc>https://hisaige.github.io/post/post/math-preview/</loc>
+    <loc>https://hisaige.github.io/post/math-preview/</loc>
     <lastmod>2019-03-05T16:01:23+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
@@ -100,13 +100,6 @@
   </url>
   
   <url>
-    <loc>https://hisaige.github.io/tags/shortcodes/</loc>
-    <lastmod>2018-03-07T16:01:23+08:00</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  
-  <url>
     <loc>https://hisaige.github.io/categories/shortcodes/</loc>
     <lastmod>2018-03-07T16:01:23+08:00</lastmod>
     <changefreq>weekly</changefreq>
@@ -114,7 +107,14 @@
   </url>
   
   <url>
-    <loc>https://hisaige.github.io/post/post/shortcodes-preview/</loc>
+    <loc>https://hisaige.github.io/tags/shortcodes/</loc>
+    <lastmod>2018-03-07T16:01:23+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://hisaige.github.io/post/shortcodes-preview/</loc>
     <lastmod>2018-03-05T16:01:23+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
@@ -128,14 +128,14 @@
   </url>
   
   <url>
-    <loc>https://hisaige.github.io/post/post/image-preview/</loc>
+    <loc>https://hisaige.github.io/post/image-preview/</loc>
     <lastmod>2018-03-04T16:01:23+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>https://hisaige.github.io/post/post/shortcode-notice/</loc>
+    <loc>https://hisaige.github.io/post/shortcode-notice/</loc>
     <lastmod>2018-03-04T16:01:23+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
@@ -156,7 +156,7 @@
   </url>
   
   <url>
-    <loc>https://hisaige.github.io/post/post/doc-footnote-preview/</loc>
+    <loc>https://hisaige.github.io/post/doc-footnote-preview/</loc>
     <lastmod>2018-03-01T16:01:23+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
@@ -177,13 +177,6 @@
   </url>
   
   <url>
-    <loc>https://hisaige.github.io/categories/english/</loc>
-    <lastmod>2017-08-31T15:43:48+08:00</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  
-  <url>
     <loc>https://hisaige.github.io/tags/english/</loc>
     <lastmod>2017-08-31T15:43:48+08:00</lastmod>
     <changefreq>weekly</changefreq>
@@ -191,7 +184,14 @@
   </url>
   
   <url>
-    <loc>https://hisaige.github.io/post/post/english-preview/</loc>
+    <loc>https://hisaige.github.io/categories/english/</loc>
+    <lastmod>2017-08-31T15:43:48+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://hisaige.github.io/post/english-preview/</loc>
     <lastmod>2017-08-31T15:43:48+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
@@ -212,14 +212,21 @@
   </url>
   
   <url>
-    <loc>https://hisaige.github.io/post/post/this-is-a-very-long-title/</loc>
+    <loc>https://hisaige.github.io/post/this-is-a-very-long-title/</loc>
     <lastmod>2017-08-30T15:43:48+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>https://hisaige.github.io/post/post/creating-a-new-theme/</loc>
+    <loc>https://hisaige.github.io/post/creating-a-new-theme/</loc>
+    <lastmod>2014-09-28T00:00:00+00:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://hisaige.github.io/post/linux%E4%B8%8Bgitnodejsnpm%E5%AE%89%E8%A3%85/</loc>
     <lastmod>2014-09-28T00:00:00+00:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
@@ -234,6 +241,13 @@
   
   <url>
     <loc>https://hisaige.github.io/tags/development/</loc>
+    <lastmod>2014-09-28T00:00:00+00:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://hisaige.github.io/tags/git/</loc>
     <lastmod>2014-09-28T00:00:00+00:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
@@ -261,6 +275,27 @@
   </url>
   
   <url>
+    <loc>https://hisaige.github.io/tags/hugo/</loc>
+    <lastmod>2014-09-28T00:00:00+00:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://hisaige.github.io/tags/nodejs/</loc>
+    <lastmod>2014-09-28T00:00:00+00:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://hisaige.github.io/tags/npm/</loc>
+    <lastmod>2014-09-28T00:00:00+00:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
     <loc>https://hisaige.github.io/tags/templates/</loc>
     <lastmod>2014-09-28T00:00:00+00:00</lastmod>
     <changefreq>weekly</changefreq>
@@ -275,21 +310,14 @@
   </url>
   
   <url>
-    <loc>https://hisaige.github.io/post/post/goisforlovers/</loc>
+    <loc>https://hisaige.github.io/post/goisforlovers/</loc>
     <lastmod>2014-04-02T00:00:00+00:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>https://hisaige.github.io/post/post/hugoisforlovers/</loc>
-    <lastmod>2014-04-02T00:00:00+00:00</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  
-  <url>
-    <loc>https://hisaige.github.io/tags/hugo/</loc>
+    <loc>https://hisaige.github.io/post/hugoisforlovers/</loc>
     <lastmod>2014-04-02T00:00:00+00:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
@@ -303,7 +331,7 @@
   </url>
   
   <url>
-    <loc>https://hisaige.github.io/post/post/migrate-from-jekyll/</loc>
+    <loc>https://hisaige.github.io/post/migrate-from-jekyll/</loc>
     <lastmod>2014-03-10T00:00:00+00:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
@@ -324,7 +352,7 @@
   </url>
   
   <url>
-    <loc>https://hisaige.github.io/post/post/syntax-highlighting/</loc>
+    <loc>https://hisaige.github.io/post/syntax-highlighting/</loc>
     <lastmod>2017-08-30T16:01:23+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>

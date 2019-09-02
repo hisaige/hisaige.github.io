@@ -6,17 +6,26 @@
     <description>Recent content in hugo on 目光呆滞的5741号代码搬运工</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Wed, 02 Apr 2014 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Sun, 28 Sep 2014 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="https://hisaige.github.io/tags/hugo/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
+      <title>Creating a New Theme</title>
+      <link>https://hisaige.github.io/post/linux%E4%B8%8Bgitnodejsnpm%E5%AE%89%E8%A3%85/</link>
+      <pubDate>Sun, 28 Sep 2014 00:00:00 +0000</pubDate>
+      
+      <guid>https://hisaige.github.io/post/linux%E4%B8%8Bgitnodejsnpm%E5%AE%89%E8%A3%85/</guid>
+      <description>linux下git&amp;nodeJS&amp;npm安装&amp;hugo部署 1. git 安装 1.安装前检查 #1.查看git版本,如果能出版本号，说明git已经安装，酌</description>
+    </item>
+    
+    <item>
       <title>Getting Started with Hugo</title>
-      <link>https://hisaige.github.io/post/post/hugoisforlovers/</link>
+      <link>https://hisaige.github.io/post/hugoisforlovers/</link>
       <pubDate>Wed, 02 Apr 2014 00:00:00 +0000</pubDate>
       
-      <guid>https://hisaige.github.io/post/post/hugoisforlovers/</guid>
+      <guid>https://hisaige.github.io/post/hugoisforlovers/</guid>
       <description>Step 1. Install Hugo Goto hugo releases and download the appropriate version for your os and architecture.
 Save it somewhere specific as we will be using it in the next step.
 More complete instructions are available at installing hugo
