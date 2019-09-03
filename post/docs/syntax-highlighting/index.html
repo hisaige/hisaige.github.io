@@ -79,7 +79,7 @@ function helloWorld () {
 
 <meta itemprop="datePublished" content="2011-08-30T16:01:23&#43;08:00" />
 <meta itemprop="dateModified" content="2017-08-30T16:01:23&#43;08:00" />
-<meta itemprop="wordCount" content="291">
+<meta itemprop="wordCount" content="320">
 
 
 
@@ -556,15 +556,36 @@ $
 </span><span style="color:#75715e"></span><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">GetTitleFunc</span>(<span style="color:#a6e22e">style</span> <span style="color:#66d9ef">string</span>) <span style="color:#66d9ef">func</span>(<span style="color:#a6e22e">s</span> <span style="color:#66d9ef">string</span>) <span style="color:#66d9ef">string</span> {
   <span style="color:#66d9ef">switch</span> <span style="color:#a6e22e">strings</span>.<span style="color:#a6e22e">ToLower</span>(<span style="color:#a6e22e">style</span>) {
   <span style="color:#66d9ef">case</span> <span style="color:#e6db74">&#34;go&#34;</span>:
-    <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">strings</span>.<span style="color:#a6e22e">Title</span>
+<span style="color:#960050;background-color:#1e0010">​</span>    <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">strings</span>.<span style="color:#a6e22e">Title</span>
 <span style="display:block;width:100%;background-color:#3c3d38">  <span style="color:#66d9ef">case</span> <span style="color:#e6db74">&#34;chicago&#34;</span>:
-</span><span style="display:block;width:100%;background-color:#3c3d38">    <span style="color:#a6e22e">tc</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">transform</span>.<span style="color:#a6e22e">NewTitleConverter</span>(<span style="color:#a6e22e">transform</span>.<span style="color:#a6e22e">ChicagoStyle</span>)
-</span><span style="display:block;width:100%;background-color:#3c3d38">    <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">tc</span>.<span style="color:#a6e22e">Title</span>
+</span><span style="display:block;width:100%;background-color:#3c3d38"><span style="color:#960050;background-color:#1e0010">​</span>    <span style="color:#a6e22e">tc</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">transform</span>.<span style="color:#a6e22e">NewTitleConverter</span>(<span style="color:#a6e22e">transform</span>.<span style="color:#a6e22e">ChicagoStyle</span>)
+</span><span style="display:block;width:100%;background-color:#3c3d38"><span style="color:#960050;background-color:#1e0010">​</span>    <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">tc</span>.<span style="color:#a6e22e">Title</span>
 </span>  <span style="color:#66d9ef">default</span>:
-    <span style="color:#a6e22e">tc</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">transform</span>.<span style="color:#a6e22e">NewTitleConverter</span>(<span style="color:#a6e22e">transform</span>.<span style="color:#a6e22e">APStyle</span>)
-    <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">tc</span>.<span style="color:#a6e22e">Title</span>
+<span style="color:#960050;background-color:#1e0010">​</span>    <span style="color:#a6e22e">tc</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">transform</span>.<span style="color:#a6e22e">NewTitleConverter</span>(<span style="color:#a6e22e">transform</span>.<span style="color:#a6e22e">APStyle</span>)
+<span style="color:#960050;background-color:#1e0010">​</span>    <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">tc</span>.<span style="color:#a6e22e">Title</span>
   }
 }</code></pre></td></tr></table>
+</div>
+</div>
+
+<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">199
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">200
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">201
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">202
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">203
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">204
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">205
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#e6db74">``` java
+</span><span style="color:#e6db74">public class HelloWorld {
+</span><span style="color:#e6db74">  public static void main(String[] args) {
+</span><span style="color:#e6db74">    System.out.println(&#34;Hello, World!&#34;);
+</span><span style="color:#e6db74">  }
+</span><span style="color:#e6db74">}
+</span><span style="color:#e6db74">```</span></code></pre></td></tr></table>
 </div>
 </div>
     </div>
