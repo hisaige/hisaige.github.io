@@ -362,146 +362,6 @@
   <header class="post-header">
     <h1 class="post-title">
       
-      <a class="post-link" href="/post/docs/linux%E4%B8%8Bgitnodejsnpm%E5%AE%89%E8%A3%85/">linux下git&amp;nodejs&amp;npm安装</a>
-    </h1>
-    
-    <div class="post-meta">
-      <time datetime="2014-09-28" class="post-time">
-        2014-09-28
-      </time>
-      <div class="post-category">
-          <a href="https://hisaige.github.io/categories/development/"> Development </a>
-          
-        </div>
-      <span class="more-meta"> 771 words </span>
-      <span class="more-meta"> 2 min read </span>
-      
-      
-      
-    </div>
-  </header>
-  
-  <div class="post-content">
-    
-    <div class="post-summary">
-      
-
-<h1>linux下git&nodeJS&npm安装&hugo部署</h1>
-
-<h2 id="1-git-安装">1. git 安装</h2>
-
-<p>1.安装前检查</p>
-
-<pre><code class="language-shell">#1.查看git版本,如果能出版本号，说明git已经安装，酌情考虑是否需要重新安装
-git --version
-#2.卸载git
-yum remove git
-
-</code></pre>
-
-<p>下载 <a href="https://github.com/git/git/releases/" title="git官方下载地址">git</a> ，然后解压，编译安装，配置。</p>
-
-<pre><code class="language-shell">#在local下建立git文件夹 查看当前目录 我的控制台打印出 /usr/local/git 
-pwd
-
-# shell下载
-wget https://github.com/git/git/archive/v2.23.0.tar.gz
-
-# 解压
-tar -xzvf git-2.18.1.tar.gz
-
-#进入解压目录
-cd git-2.18.1
-
-#配置git安装路径
-./configure prefix=/usr/local/git/git-2.18.1
-
-#编译安装
-make &amp;&amp; make install
-
-#注意 如果安装失败，则执行以下指令安装依赖包
-yum install curl-devel expat-devel gettext-devel openssl-devel zlib-devel 
-yum install gcc-c++ perl-ExtUtils-MakeMaker
-
-#最后配置环境变量，将git的运行指令添加到环境变量中
-    # 在 /etc/profile 最后一行加入
-    export PATH=$PATH:/usr/local/git/bin
- #或
- 	echo &quot;export PATH=$PATH:/usr/git/bin&quot; &gt;&gt; /etc/profile
-
-#使配置生效
-source /etc/profile
-
-# 查看git版本 
-git --version
-
-</code></pre>
-
-<h2 id="2-nodejs-npm">2. nodejs&amp;npm</h2>
-
-<p>根据需要下载 <a href="https://nodejs.org/en/download/current/" title="node官方下载地址">nodeJs</a> ，解压。以我的运行环境为例。</p>
-
-<pre><code class="language-shell">[root@localhost node]# ls
-node-v12.9.1-linux-x64  node-v12.9.1-linux-x64.tar.xz
-[root@localhost node]# cd node-v12.9.1-linux-x64/
-[root@localhost node-v12.9.1-linux-x64]# ls
-bin  CHANGELOG.md  include  lib  LICENSE  README.md  share
-[root@localhost node-v12.9.1-linux-x64]# cd bin
-[root@localhost bin]# ls
-node  npm  npx
-</code></pre>
-
-<p>配置软连接</p>
-
-<pre><code class="language-shell">[root@localhost bin]# ln -s /usr/local/node/node-v12.9.1-linux-x64/bin/npm   /usr/local/bin/
-[root@localhost bin]# ln -s /usr/local/node/node-v12.9.1-linux-x64/bin/npm   /usr/local/bin/
-</code></pre>
-
-<p>安装成功，查看版本</p>
-
-<pre><code class="language-shell">[root@localhost bin]# node -v
-v12.9.1
-[root@localhost bin]# npm -v
-6.10.2
-</code></pre>
-
-<h2 id="3-hugo安装及github部署">3. hugo安装及github部署</h2>
-
-<p>到 <a href="https://github.com/spf13/hugo/releases">Hugo Releases</a> 下载 <code>*Linux-64bit.tar.gz</code> 压缩包放置到 <code>/usr/local/hugo</code>下解压，生成一个名为 <code>hugo</code>的可执行文件。主题本人使用的是 <a href="https://github.com/xianmin/hugo-theme-jane">hugo-theme-jane</a> ，hugo网站创建的具体步骤可参考github上jane的教程说明。在这里主要讲的是github部署。</p>
-
-<p>首先在github上创建一个名为 <code>xxx.github.io</code>的仓库，其中 <code>xxx</code> 为你的github用户名。然后将你hugo目录下的public文件夹通过git上传到github上即可。可参考如下过程:</p>
-
-<pre><code class="language-shell">$ mkdir /usr/blog/git
-$ git clone '刚你创建的空仓库'
-$ cd /usr/local/hugo/myblog/public
-$ cp -r . /usr/blog/git
-$ cd /usr/blog/git/
-$ git add .
-$ git commit -m &quot;初始化hugo&quot;
-$ git push origin master
-</code></pre>
-
-<p>在启动hugo生成站点时，需要注意 一般的启动方式<code>hugo server</code>并不适用于远程部署。</p>
-
-<p>如果要部署到github，可参考如下编译方式：</p>
-
-<pre><code class="language-shell"># jane 是主题名，记住 .io/ 中的 / 不能缺少
-hugo --theme=jane --baseUrl=https://xxx.github.io/
-
-# 如果hugo指令不能用，可以配置环境变量或者软连接
-[root@localhost bin]# ln -s /usr/local/hugo/hugo /usr/local/bin/
-</code></pre>
-
-    </div>
-    
-  </div>
-</article>
-
-  
-    <article class="post bg-white">
-  <header class="post-header">
-    <h1 class="post-title">
-      
       <a class="post-link" href="/post/tool/linux%E4%B8%8Bgitnodejsnpm%E5%AE%89%E8%A3%85/">linux下git&amp;nodejs&amp;npm安装</a>
     </h1>
     
@@ -1320,6 +1180,225 @@ Liquid::Template.register_tag('image', Jekyll::ImageTag)
 
 <p><a href="http://heyitsalex.net/">Hey, it&rsquo;s Alex</a> was migrated in less than a <em>father-with-kids day</em> from Jekyll to Hugo. You can see all the changes (and screw-ups) by looking at this <a href="https://github.com/alexandre-normand/alexandre-normand/compare/869d69435bd2665c3fbf5b5c78d4c22759d7613a...b7f6605b1265e83b4b81495423294208cc74d610">diff</a>.</p>
 
+    </div>
+    
+  </div>
+</article>
+
+  
+    <article class="post bg-white">
+  <header class="post-header">
+    <h1 class="post-title">
+      
+      <a class="post-link" href="/post/docs/syntax-highlighting/">Syntax Highlighting</a>
+    </h1>
+    
+    <div class="post-meta">
+      <time datetime="2011-08-30" class="post-time">
+        2011-08-30
+      </time>
+      <div class="post-category">
+          <a href="https://hisaige.github.io/categories/syntax-highlighting/"> Syntax Highlighting </a>
+          <a href="https://hisaige.github.io/categories/index/"> index </a>
+          
+        </div>
+      <span class="more-meta"> 320 words </span>
+      <span class="more-meta"> 2 min read </span>
+      
+      
+      
+    </div>
+  </header>
+  
+  <div class="post-content">
+    
+    <div class="post-summary">
+      <p>More detail: <a href="https://gohugo.io/content-management/syntax-highlighting/">Syntax Highlighting | Hugo</a></p>
+
+<pre><code class="language-js">function helloWorld () {
+  alert(&quot;Hello, World!&quot;)
+}
+</code></pre>
+
+<pre><code class="language-java">public class HelloWorld {
+  public static void main(String[] args) {
+    System.out.println(&quot;Hello, World!&quot;);
+  }
+}
+</code></pre>
+
+<pre><code class="language-kotlin">package hello
+
+fun main(args: Array&lt;String&gt;) {
+  println(&quot;Hello World!&quot;)
+}
+</code></pre>
+
+<pre><code class="language-c">#include &lt;stdio.h&gt;
+
+/* Hello */
+int main(void){
+  printf(&quot;Hello, World!&quot;);
+  return 0;
+}
+</code></pre>
+
+<pre><code class="language-cpp">// 'Hello World!' program
+
+#include &lt;iostream&gt;
+
+int main(){
+  std::cout &lt;&lt; &quot;Hello World!&quot; &lt;&lt; std::endl;
+  return 0;
+}
+</code></pre>
+
+<pre><code class="language-cs">using System;
+class HelloWorld{
+  public static void Main(){
+    System.Console.WriteLine(&quot;Hello, World!&quot;);
+  }
+}
+</code></pre>
+
+<pre><code class="language-html">&lt;html&gt;
+&lt;body&gt;
+  Hello, World!
+&lt;/body&gt;
+&lt;/html&gt;
+</code></pre>
+
+<pre><code class="language-go">package main
+import fmt &quot;fmt&quot;
+
+func main()
+{
+   fmt.Printf(&quot;Hello, World!\n&quot;);
+}
+</code></pre>
+
+<pre><code class="language-scala">object HelloWorld with Application {
+  Console.println(&quot;Hello, World!&quot;);
+}
+</code></pre>
+
+<pre><code class="language-php">&lt;?php
+  echo 'Hello, World!';
+?&gt;
+</code></pre>
+
+<pre><code class="language-python">print(&quot;Hello, World!&quot;)
+</code></pre>
+
+<h2 id="no-named-code-block">no named code block</h2>
+
+<pre><code>## this is a comment
+$ echo this is a command
+this is a command
+
+## edit the file
+$vi foo.md
++++
+date = &quot;2014-09-28&quot;
+title = &quot;creating a new theme&quot;
++++
+
+bah and humbug
+:wq
+
+## show it
+$ cat foo.md
++++
+date = &quot;2014-09-28&quot;
+title = &quot;creating a new theme&quot;
++++
+
+bah and humbug
+$
+</code></pre>
+
+<h2 id="highlight-shortcode">highlight shortcode</h2>
+
+<p>example:</p>
+
+<pre><code class="language-shortcode">{{&lt; highlight go &quot;linenos=table,hl_lines=8 15-17,linenostart=199&quot; &gt;}}
+// ... code
+{{&lt; /highlight &gt;}}
+</code></pre>
+
+<p>result:</p>
+
+<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">199
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">200
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">201
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">202
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">203
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">204
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">205
+</span><span style="display:block;width:100%;background-color:#3c3d38"><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">206
+</span></span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">207
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">208
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">209
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">210
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">211
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">212
+</span><span style="display:block;width:100%;background-color:#3c3d38"><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">213
+</span></span><span style="display:block;width:100%;background-color:#3c3d38"><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">214
+</span></span><span style="display:block;width:100%;background-color:#3c3d38"><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">215
+</span></span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">216
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">217
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">218
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">219
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">220
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#75715e">// GetTitleFunc returns a func that can be used to transform a string to
+</span><span style="color:#75715e">// title case.
+</span><span style="color:#75715e">//
+</span><span style="color:#75715e">// The supported styles are
+</span><span style="color:#75715e">//
+</span><span style="color:#75715e">// - &#34;Go&#34; (strings.Title)
+</span><span style="color:#75715e">// - &#34;AP&#34; (see https://www.apstylebook.com/)
+</span><span style="display:block;width:100%;background-color:#3c3d38"><span style="color:#75715e">// - &#34;Chicago&#34; (see http://www.chicagomanualofstyle.org/home.html)
+</span></span><span style="color:#75715e">//
+</span><span style="color:#75715e">// If an unknown or empty style is provided, AP style is what you get.
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">GetTitleFunc</span>(<span style="color:#a6e22e">style</span> <span style="color:#66d9ef">string</span>) <span style="color:#66d9ef">func</span>(<span style="color:#a6e22e">s</span> <span style="color:#66d9ef">string</span>) <span style="color:#66d9ef">string</span> {
+  <span style="color:#66d9ef">switch</span> <span style="color:#a6e22e">strings</span>.<span style="color:#a6e22e">ToLower</span>(<span style="color:#a6e22e">style</span>) {
+  <span style="color:#66d9ef">case</span> <span style="color:#e6db74">&#34;go&#34;</span>:
+<span style="color:#960050;background-color:#1e0010">​</span>    <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">strings</span>.<span style="color:#a6e22e">Title</span>
+<span style="display:block;width:100%;background-color:#3c3d38">  <span style="color:#66d9ef">case</span> <span style="color:#e6db74">&#34;chicago&#34;</span>:
+</span><span style="display:block;width:100%;background-color:#3c3d38"><span style="color:#960050;background-color:#1e0010">​</span>    <span style="color:#a6e22e">tc</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">transform</span>.<span style="color:#a6e22e">NewTitleConverter</span>(<span style="color:#a6e22e">transform</span>.<span style="color:#a6e22e">ChicagoStyle</span>)
+</span><span style="display:block;width:100%;background-color:#3c3d38"><span style="color:#960050;background-color:#1e0010">​</span>    <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">tc</span>.<span style="color:#a6e22e">Title</span>
+</span>  <span style="color:#66d9ef">default</span>:
+<span style="color:#960050;background-color:#1e0010">​</span>    <span style="color:#a6e22e">tc</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">transform</span>.<span style="color:#a6e22e">NewTitleConverter</span>(<span style="color:#a6e22e">transform</span>.<span style="color:#a6e22e">APStyle</span>)
+<span style="color:#960050;background-color:#1e0010">​</span>    <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">tc</span>.<span style="color:#a6e22e">Title</span>
+  }
+}</code></pre></td></tr></table>
+</div>
+</div>
+
+<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">199
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">200
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">201
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">202
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">203
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">204
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">205
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#e6db74">``` java
+</span><span style="color:#e6db74">public class HelloWorld {
+</span><span style="color:#e6db74">  public static void main(String[] args) {
+</span><span style="color:#e6db74">    System.out.println(&#34;Hello, World!&#34;);
+</span><span style="color:#e6db74">  }
+</span><span style="color:#e6db74">}
+</span><span style="color:#e6db74">```</span></code></pre></td></tr></table>
+</div>
+</div>
     </div>
     
   </div>

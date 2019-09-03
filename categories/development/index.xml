@@ -58,15 +58,6 @@ We&amp;rsquo;ll start with creating a new site with a very basic template.</desc
     </item>
     
     <item>
-      <title>linux下git&amp;nodejs&amp;npm安装</title>
-      <link>https://hisaige.github.io/post/docs/linux%E4%B8%8Bgitnodejsnpm%E5%AE%89%E8%A3%85/</link>
-      <pubDate>Sun, 28 Sep 2014 00:00:00 +0000</pubDate>
-      
-      <guid>https://hisaige.github.io/post/docs/linux%E4%B8%8Bgitnodejsnpm%E5%AE%89%E8%A3%85/</guid>
-      <description>linux下git&amp;nodeJS&amp;npm安装&amp;hugo部署 1. git 安装 1.安装前检查 #1.查看git版本,如果能出版本号，说明git已经安装，酌</description>
-    </item>
-    
-    <item>
       <title>(Hu)go Template Primer</title>
       <link>https://hisaige.github.io/post/docs/goisforlovers/</link>
       <pubDate>Wed, 02 Apr 2014 00:00:00 +0000</pubDate>
