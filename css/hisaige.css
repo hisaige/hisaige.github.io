@@ -16,3 +16,10 @@
     margin: 0 !important;
     white-space: pre;
 }
+
+.post .post-content code {
+    padding: 3px 0px;
+    background: #f8f5ec;
+    border-radius: 4px;
+    color: #c7254e;
+}
