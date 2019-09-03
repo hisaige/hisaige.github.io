@@ -60,7 +60,7 @@
 <meta property="og:type" content="website" />
 <meta property="og:url" content="https://hisaige.github.io/" />
 
-<meta property="og:updated_time" content="2019-03-04T16:01:23+08:00" />
+<meta property="og:updated_time" content="2019-09-03T00:00:00+00:00" />
 <meta itemprop="name" content="目光呆滞的5741号代码搬运工">
 <meta itemprop="description" content="">
 
@@ -141,23 +141,23 @@
           <ul class="mobile-submenu-list">
             
               <li>
-                <a href="https://hisaige.github.io/post/jane-theme-preview/">Jane Theme Preview</a>
+                <a href="https://hisaige.github.io/post/docs/jane-theme-preview/">Jane Theme Preview</a>
               </li>
             
               <li>
-                <a href="https://hisaige.github.io/post/shortcodes-preview/">Shortcodes Preview</a>
+                <a href="https://hisaige.github.io/post/docs/shortcodes-preview/">Shortcodes Preview</a>
               </li>
             
               <li>
-                <a href="https://hisaige.github.io/post/image-preview/">Image Preview</a>
+                <a href="https://hisaige.github.io/post/docs/image-preview/">Image Preview</a>
               </li>
             
               <li>
-                <a href="https://hisaige.github.io/post/syntax-highlighting/">Syntax Highlighting</a>
+                <a href="https://hisaige.github.io/post/docs/syntax-highlighting/">Syntax Highlighting</a>
               </li>
             
               <li>
-                <a href="https://hisaige.github.io/post/math-preview/">Math Preview</a>
+                <a href="https://hisaige.github.io/post/docs/math-preview/">Math Preview</a>
               </li>
             
           </ul>
@@ -309,23 +309,23 @@
           <ul class="submenu">
             
               <li>
-                <a href="https://hisaige.github.io/post/jane-theme-preview/">Jane Theme Preview</a>
+                <a href="https://hisaige.github.io/post/docs/jane-theme-preview/">Jane Theme Preview</a>
               </li>
             
               <li>
-                <a href="https://hisaige.github.io/post/shortcodes-preview/">Shortcodes Preview</a>
+                <a href="https://hisaige.github.io/post/docs/shortcodes-preview/">Shortcodes Preview</a>
               </li>
             
               <li>
-                <a href="https://hisaige.github.io/post/image-preview/">Image Preview</a>
+                <a href="https://hisaige.github.io/post/docs/image-preview/">Image Preview</a>
               </li>
             
               <li>
-                <a href="https://hisaige.github.io/post/syntax-highlighting/">Syntax Highlighting</a>
+                <a href="https://hisaige.github.io/post/docs/syntax-highlighting/">Syntax Highlighting</a>
               </li>
             
               <li>
-                <a href="https://hisaige.github.io/post/math-preview/">Math Preview</a>
+                <a href="https://hisaige.github.io/post/docs/math-preview/">Math Preview</a>
               </li>
             
           </ul>
@@ -368,7 +368,7 @@
 
         </span>
       
-      <a class="post-link" href="/post/jane-theme-preview.zh-cn/">Jane 主题预览</a>
+      <a class="post-link" href="/post/docs/jane-theme-preview.zh-cn/">Jane 主题预览</a>
     </h1>
     
     <div class="post-meta">
@@ -409,7 +409,7 @@
 
         </span>
       
-      <a class="post-link" href="/post/jane-theme-preview/">Jane Theme Preview</a>
+      <a class="post-link" href="/post/docs/jane-theme-preview/">Jane Theme Preview</a>
     </h1>
     
     <div class="post-meta">
@@ -793,17 +793,15 @@ __double underscores__
   <header class="post-header">
     <h1 class="post-title">
       
-      <a class="post-link" href="/post/math-preview/">Math Preview</a>
+      <a class="post-link" href="/post/development/dorcker%E4%BD%BF%E7%94%A8%E6%8C%87%E5%8D%97/">docker的简单使用</a>
     </h1>
     
     <div class="post-meta">
-      <time datetime="2019-03-04" class="post-time">
-        2019-03-04
+      <time datetime="2019-09-03" class="post-time">
+        2019-09-03
       </time>
       <div class="post-category">
-          <a href="https://hisaige.github.io/categories/docs/"> docs </a>
-          <a href="https://hisaige.github.io/categories/math/"> math </a>
-          <a href="https://hisaige.github.io/categories/index/"> index </a>
+          <a href="https://hisaige.github.io/categories/development/"> Development </a>
           
         </div>
       
@@ -815,205 +813,291 @@ __double underscores__
   <div class="post-content">
     
     <div class="post-summary">
-      <p><a href="https://www.intmath.com/cg5/katex-mathjax-comparison.php">KaTeX and MathJax Comparison Demo, currently processed as KaTex</a></p>
+      
 
-<h2 id="repeating-fractions">Repeating fractions</h2>
+<h1>docker的简单使用</h1>
 
-<p><span  class="math">\[
-\frac{1}{\Bigl(\sqrt{\phi \sqrt{5}}-\phi\Bigr) e^{\frac25 \pi}} \equiv 1+\frac{e^{-2\pi}} {1+\frac{e^{-4\pi}} {1+\frac{e^{-6\pi}} {1+\frac{e^{-8\pi}} {1+\cdots} } } }
-\]</span></p>
+<h2 id="1-安装">1. 安装</h2>
 
-<h2 id="summation-notation">Summation notation</h2>
+<p>1.如果装了新版本，先卸载旧版</p>
 
-<p><span  class="math">\[
-\left( \sum_{k=1}^n a_k b_k \right)^2 \leq \left( \sum_{k=1}^n a_k^2 \right) \left( \sum_{k=1}^n b_k^2 \right)
-\]</span></p>
+<pre><code class="language-shell">sudo yum remove docker \
+                  docker-client \
+                  docker-client-latest \
+                  docker-common \
+                  docker-latest \
+                  docker-latest-logrotate \
+                  docker-logrotate \
+                  docker-engine
+</code></pre>
 
-<h2 id="sum-of-a-series">Sum of a Series</h2>
+<ol>
+<li><p>安装所需的包</p>
 
-<p>I broke up the next two examples into separate lines so it behaves better on a mobile phone. That's why they include \displaystyle.</p>
+<pre><code class="language-shell">sudo yum install -y yum-utils \
+device-mapper-persistent-data \
+lvm2
+</code></pre></li>
 
-<p><span  class="math">\[
-\displaystyle\sum_{i=1}^{k+1}i
-\]</span></p>
+<li><p>设置<strong>稳定</strong>存储库</p>
 
-<p><span  class="math">\[
-\displaystyle= \left(\sum_{i=1}^{k}i\right) +(k+1)
-\]</span></p>
+<pre><code class="language-shell"># docker切换阿里源（生产环境慎重）
+sudo yum-config-manager --add-repo https://mirrors.aliyun.com/docker-ce/linux/centos/docker-ce.repo
 
-<p><span  class="math">\[
-\displaystyle= \frac{k(k+1)}{2}+k+1
-\]</span></p>
+# 使用官方推荐的存储库，由于是国外网站，卡慢
+sudo yum-config-manager \
+--add-repo \
+https://download.docker.com/linux/centos/docker-ce.repo
+</code></pre></li>
 
-<p><span  class="math">\[
-\displaystyle= \frac{k(k+1)+2(k+1)}{2}
-\]</span></p>
+<li><p>安装最新版</p>
 
-<p><span  class="math">\[
-\displaystyle= \frac{(k+1)(k+2)}{2}
-\]</span></p>
+<pre><code class="language-shell">sudo yum install docker-ce docker-ce-cli containerd.io
 
-<p><span  class="math">\[
-\displaystyle= \frac{(k+1)((k+1)+1)}{2}
-\]</span></p>
+# 安装完毕后，可以使用以下命令查看docker版本
+docker version
+</code></pre></li>
 
-<h2 id="product-notation">Product notation</h2>
+<li><p>配置阿里云镜像加速和本地工作目录</p></li>
+</ol>
 
-<p><span  class="math">\[
-\displaystyle 1 + \frac{q^2}{(1-q)}+\frac{q^6}{(1-q)(1-q^2)}+\cdots = \displaystyle \prod_{j=0}^{\infty}\frac{1}{(1-q^{5j+2})(1-q^{5j+3})}, \displaystyle\text{ for }\lvert q\rvert < 1.
-\]</span></p>
+<p>​   ①添加并配置 /etc/docker/daemon.json 文件。</p>
 
-<h2 id="inline-math">Inline math</h2>
+<p>​   ②修改配置文件内容为, <code>/usr/local/docker</code> 是工作目录</p>
 
-<p>And here is some in-line math: <span  class="math">\( k_{n+1} = n^2 + k_n^2 - k_{n-1} \)</span> , followed by some more text.</p>
+<pre><code class="language-shell">{
+&quot;data-root&quot;: &quot;/usr/local/docker&quot;,
+&quot;registry-mirrors&quot;: [
+&quot;https://kfwkfulq.mirror.aliyuncs.com&quot;,
+&quot;https://2lqq34jg.mirror.aliyuncs.com&quot;,
+&quot;https://aa25jngu.mirror.aliyuncs.com&quot;,
+&quot;https://registry.docker-cn.com&quot;
+]
+}
+</code></pre>
 
-<h2 id="greek-letters">Greek Letters</h2>
+<h2 id="2-使用docker">2. 使用docker</h2>
 
-<p><span  class="math">\[
-\Gamma\ \Delta\ \Theta\ \Lambda\ \Xi\ \Pi\ \Sigma\ \Upsilon\ \Phi\ \Psi\ \Omega
-\alpha\ \beta\ \gamma\ \delta\ \epsilon\ \zeta\ \eta\ \theta\ \iota\ \kappa\ \lambda\ \mu\ \nu\ \xi \ \omicron\ \pi\ \rho\ \sigma\ \tau\ \upsilon\ \phi\ \chi\ \psi\ \omega\ \varepsilon\ \vartheta\ \varpi\ \varrho\ \varsigma\ \varphi
-\]</span></p>
+<ol>
+<li><p>万物皆起于 <code>hello-world</code></p>
 
-<h2 id="arrows">Arrows</h2>
+<pre><code class="language-shell"># 1.拉取hello-world镜像
+docker pull hello-world
 
-<p><span  class="math">\[
-\gets\ \to\ \leftarrow\ \rightarrow\ \uparrow\ \Uparrow\ \downarrow\ \Downarrow\ \updownarrow\ \Updownarrow
-\]</span></p>
+# 2.运行hello-world
+docker run hello-world
 
-<p><span  class="math">\[
-\Leftarrow\ \Rightarrow\ \leftrightarrow\ \Leftrightarrow\ \mapsto\ \hookleftarrow
-\leftharpoonup\ \leftharpoondown\ \rightleftharpoons\ \longleftarrow\ \Longleftarrow\ \longrightarrow
-\]</span></p>
+# 3.运行时如果出现以下文字，说明hello-world运行成功
+[root@localhost docker]# docker run hello-world
 
-<p><span  class="math">\[
-\Longrightarrow\ \longleftrightarrow\ \Longleftrightarrow\ \longmapsto\ \hookrightarrow\ \rightharpoonup
-\]</span></p>
+Hello from Docker!
+This message shows that your installation appears to be working correctly.
 
-<p><span  class="math">\[
-\rightharpoondown\ \leadsto\ \nearrow\ \searrow\ \swarrow\ \nwarrow
-\]</span></p>
+To generate this message, Docker took the following steps:
+1. The Docker client contacted the Docker daemon.
+2. The Docker daemon pulled the &quot;hello-world&quot; image from the Docker Hub.
+(amd64)
+3. The Docker daemon created a new container from that image which runs the
+executable that produces the output you are currently reading.
+4. The Docker daemon streamed that output to the Docker client, which sent it
+to your terminal.
 
-<h2 id="symbols">Symbols</h2>
+To try something more ambitious, you can run an Ubuntu container with:
+$ docker run -it ubuntu bash
 
-<p><span  class="math">\[
-\surd\ \barwedge\ \veebar\ \odot\ \oplus\ \otimes\ \oslash\ \circledcirc\ \boxdot\ \bigtriangleup
-\]</span></p>
+Share images, automate workflows, and more with a free Docker ID:
+https://hub.docker.com/
 
-<p><span  class="math">\[
-\bigtriangledown\ \dagger\ \diamond\ \star\ \triangleleft\ \triangleright\ \angle\ \infty\ \prime\ \triangle
-\]</span></p>
+For more examples and ideas, visit:
+https://docs.docker.com/get-started/
+#运行成功
+</code></pre></li>
 
-<h2 id="calculus">Calculus</h2>
+<li><p>镜像常用命令</p></li>
+</ol>
 
-<p><span  class="math">\[
-\int u \frac{dv}{dx}\,dx=uv-\int \frac{du}{dx}v\,dx
-\]</span></p>
+<p><code>-a</code> ：列出本地所有的镜像（含中间映像层）</p>
 
-<p><span  class="math">\[
-f(x) = \int_{-\infty}^\infty \hat f(\xi)\,e^{2 \pi i \xi x}
-\]</span></p>
+<p><code>-q</code> :  只显示镜像ID</p>
 
-<p><span  class="math">\[
-\oint \vec{F} \cdot d\vec{s}=0
-\]</span></p>
+<p><code>--digests</code> : 显示镜像的摘要信息</p>
 
-<h2 id="lorenz-equations">Lorenz Equations</h2>
+<p><code>--no-trunc</code> : 显示完整的镜像信息</p>
 
-<p><span  class="math">\[
-\begin{aligned} \dot{x} & = \sigma(y-x) \\ \dot{y} & = \rho x - y - xz \\ \dot{z} & = -\beta z + xy \end{aligned}
-\]</span></p>
+<pre><code class="language-shell"># 1.帮助信息
+docker --help
 
-<h2 id="cross-product">Cross Product</h2>
+# 2.显示所有镜像信息
+docker images
 
-<p>This works in KaTeX, but the separation of fractions in this environment is not so good.</p>
+# 3.去docker仓库查找镜像
+docker search xxx镜像名
+# 显示前两条
+docker search tomcat -limit 2
+#显示stars超过2000的
+docker search tomcat --filter=stars=2000
 
-<p><span  class="math">\[
-\mathbf{V}_1 \times \mathbf{V}_2 = \begin{vmatrix} \mathbf{i} & \mathbf{j} & \mathbf{k} \\ \frac{\partial X}{\partial u} & \frac{\partial Y}{\partial u} & 0 \\ \frac{\partial X}{\partial v} & \frac{\partial Y}{\partial v} & 0 \end{vmatrix}
-\]</span></p>
 
-<p>Here's a workaround: make the fractions smaller with an extra class that targets the spans with &quot;mfrac&quot; class (makes no difference in the MathJax case):</p>
+# 4.删除镜像, 以下 镜像id 可以换成 镜像名 -f强制删除
+docker rmi -f 镜像ID
+#删除多个
+docker rmi -f 镜像id1 镜像id2 镜像id3 ...
+#删除全部
+docker rmi -f $(docker images -q)
 
-<p><span  class="math">\[
-\mathbf{V}_1 \times \mathbf{V}_2 = \begin{vmatrix} \mathbf{i} & \mathbf{j} & \mathbf{k} \\ \frac{\partial X}{\partial u} & \frac{\partial Y}{\partial u} & 0 \\ \frac{\partial X}{\partial v} & \frac{\partial Y}{\partial v} & 0 \end{vmatrix}
-\]</span></p>
+# 5. 删除容器 -f强制删除 -a全部容器 -q 返回容器id
+docker rm 容器ID
+# 删除全部容器
+docker rm $(docker ps -aq)
 
-<h2 id="accents">Accents</h2>
 
-<p><span  class="math">\[
-\hat{x}\ \vec{x}\ \ddot{x}
-\]</span></p>
+</code></pre>
 
-<h2 id="stretchy-brackets">Stretchy brackets</h2>
+<ol>
+<li><p>容器常用命令</p>
 
-<p><span  class="math">\[
-\left(\frac{x^2}{y^3}\right)
-\]</span></p>
+<pre><code class="language-shell"># 1.新建启动容器
+docker run 容器名/容器id
+#启动容器
+docker start 容器id或容器名
+## --name=&quot;容器新名字&quot; 为容器指定一个名称
+## -d:后台运行容器，并返回容器id
+## -i:以交互模式运行容器，通常与 -t 联合使用
+## -t：为容器重新分配一个输入终端
+## (以 -it 方式启动时会进入伪终端，推出伪终端并停止使用 exit 指令，退出伪终端不关闭容器快捷键ctrl+p+q)
+## -P：随机端口映射
+## -p:指定端口映射
+		#通常有以下四种方式做映射
+		#1. ip:port:containerPort
+		#2. ip:containerPort
+		#3. hostPort:containerPort
+		#4.containerPort
+		
+# 2. 停止容器
+docker stop 容器名或容器id
+#强制停止
+docker kill 容器id或容器名
 
-<h2 id="evaluation-at-limits">Evaluation at limits</h2>
+# 3.删除容器 -f表示强制删除 -a表示关闭的容器 -q表示存活的容器
+docker rm -f $(docker ps -a -q)
+#或
+docker ps -a -q | xargs docker rm
 
-<p><span  class="math">\[
-\left.\frac{x^3}{3}\right|_0^1
-\]</span></p>
+# 4.退出容器/进入容器
+	#方式1 容器停止退出
+	exit
+	#方式2 容器不停止退出
+	ctrl + p + q
+#进入容器
+	#方式1 进入终端
+	docker attach 容器ID
+	#方式2 不进入终端 直接执行容器的功能指令
+	docker exec -t 镜像id 容器指令
 
-<h2 id="case-definitions">Case definitions</h2>
+# 5.查看容器日志
+docker logs
+# -t 加入时间戳
+# -f 跟随最新的日志打印
+# 	--tail 数字 显示最后多少条
 
-<p><span  class="math">\[
-f(n) = \begin{cases} \frac{n}{2}, & \text{if } n\text{ is even} \\ 3n+1, & \text{if } n\text{ is odd} \end{cases}
-\]</span></p>
+# 6.从容器内拷贝文件到主机
+docker cp 容器id:容器内路径 主机路径
+</code></pre></li>
 
-<h2 id="maxwells-equations">Maxwell's Equations</h2>
+<li><p>DockerFile保留字指令</p></li>
+</ol>
 
-<p><span  class="math">\[
-\begin{aligned} \nabla \times \vec{\mathbf{B}} -\, \frac1c\, \frac{\partial\vec{\mathbf{E}}}{\partial t} & = \frac{4\pi}{c}\vec{\mathbf{j}} \\ \nabla \cdot \vec{\mathbf{E}} & = 4 \pi \rho \\ \nabla \times \vec{\mathbf{E}}\, +\, \frac1c\, \frac{\partial\vec{\mathbf{B}}}{\partial t} & = \vec{\mathbf{0}} \\ \nabla \cdot \vec{\mathbf{B}} & = 0 \end{aligned}
-\]</span></p>
+<table>
+<thead>
+<tr>
+<th>build</th>
+<th>both</th>
+<th>run</th>
+</tr>
+</thead>
 
-<p>These equations are quite cramped. We can add vertical spacing using (for example) [1em] after each line break (\). as you can see here:</p>
+<tbody>
+<tr>
+<td>FROM</td>
+<td>WORKDIR</td>
+<td>CMD</td>
+</tr>
 
-<p><span  class="math">\[
-\begin{aligned} \nabla \times \vec{\mathbf{B}} -\, \frac1c\, \frac{\partial\vec{\mathbf{E}}}{\partial t} & = \frac{4\pi}{c}\vec{\mathbf{j}} \\[1em] \nabla \cdot \vec{\mathbf{E}} & = 4 \pi \rho \\[0.5em] \nabla \times \vec{\mathbf{E}}\, +\, \frac1c\, \frac{\partial\vec{\mathbf{B}}}{\partial t} & = \vec{\mathbf{0}} \\[1em] \nabla \cdot \vec{\mathbf{B}} & = 0 \end{aligned}
-\]</span></p>
+<tr>
+<td>MAINTAINER</td>
+<td>USER</td>
+<td>ENV</td>
+</tr>
 
-<h2 id="statistics">Statistics</h2>
+<tr>
+<td>COPY</td>
+<td></td>
+<td>EXPOSE</td>
+</tr>
 
-<p>Definition of combination:</p>
+<tr>
+<td>ADD</td>
+<td></td>
+<td>VOLUME</td>
+</tr>
 
-<p><span  class="math">\[
-\frac{n!}{k!(n-k)!} = {^n}C_k
-{n \choose k}
-\]</span></p>
+<tr>
+<td>RUN</td>
+<td></td>
+<td>ENTRYPOINT</td>
+</tr>
 
-<h2 id="fractions-on-fractions">Fractions on fractions</h2>
+<tr>
+<td>ONBUILD</td>
+<td></td>
+<td></td>
+</tr>
 
-<p><span  class="math">\[
-\frac{\frac{1}{x}+\frac{1}{y}}{y-z}
-\]</span></p>
+<tr>
+<td>.dockerignore</td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
 
-<h2 id="nth-root">n-th root</h2>
+<ol>
+<li>制作自定义linux镜像</li>
+</ol>
 
-<p><span  class="math">\[
-\sqrt[n]{1+x+x^2+x^3+\ldots}
-\]</span></p>
+<h2 id="n-linux随笔">n. linux随笔</h2>
 
-<h2 id="matrices">Matrices</h2>
+<ol>
+<li><p>vim/vi编辑文件时退出方式</p>
 
-<p><span  class="math">\[
-\begin{pmatrix} a_{11} & a_{12} & a_{13}\\ a_{21} & a_{22} & a_{23}\\ a_{31} & a_{32} & a_{33} \end{pmatrix}
-\begin{bmatrix} 0 & \cdots & 0 \\ \vdots & \ddots & \vdots \\ 0 & \cdots & 0 \end{bmatrix}
-\]</span></p>
+<pre><code class="language-shell">按ESC键 跳到命令模式，然后：
 
-<h2 id="punctuation">Punctuation</h2>
+:w - 保存文件，不退出 vim
+:w file -将修改另外保存到 file 中，不退出 vim
+:w! -强制保存，不退出 vim
+:wq -保存文件，退出 vim
+:wq! -强制保存文件，退出 vim
+:q -不保存文件，退出 vim
+:q! -不保存文件，强制退出 vim
+:e! -放弃所有修改，从上次保存文件开始再编辑
+</code></pre></li>
 
-<p><span  class="math">\[
-f(x) = \sqrt{1+x} \quad (x \ge -1)
-f(x) \sim x^2 \quad (x\to\infty)
-\]</span></p>
+<li><p>常用系统指令</p>
 
-<p>Now with punctuation:</p>
+<pre><code class="language-shell">重载系统服务(修改配置文件后需要做的事儿)：systemctl daemon-reload
 
-<p><span  class="math">\[
-f(x) = \sqrt{1+x}, \quad x \ge -1
-f(x) \sim x^2, \quad x\to\infty
-\]</span></p>
+设置开机启动：systemctl enable *.service
+
+启动服务：systemctl start *.service
+
+停止服务：systemctl stop *.service
+
+重启服务：systemctl reload *.service
+</code></pre></li>
+</ol>
+
+<p>​</p>
+
     </div>
     
   </div>
@@ -1063,6 +1147,18 @@ f(x) \sim x^2, \quad x\to\infty
       
       <li >
         <a href="/page/5/">5</a>
+      </li>
+      
+      <li >
+        <a href="/page/6/">6</a>
+      </li>
+      
+      <li >
+        <a href="/page/7/">7</a>
+      </li>
+      
+      <li >
+        <a href="/page/8/">8</a>
       </li>
       
     </ul>

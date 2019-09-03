@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>docker on 目光呆滞的5741号代码搬运工</title>
+    <link>https://hisaige.github.io/tags/docker/</link>
+    <description>Recent content in docker on 目光呆滞的5741号代码搬运工</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en</language>
+    <lastBuildDate>Tue, 03 Sep 2019 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="https://hisaige.github.io/tags/docker/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>docker的简单使用</title>
+      <link>https://hisaige.github.io/post/development/dorcker%E4%BD%BF%E7%94%A8%E6%8C%87%E5%8D%97/</link>
+      <pubDate>Tue, 03 Sep 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://hisaige.github.io/post/development/dorcker%E4%BD%BF%E7%94%A8%E6%8C%87%E5%8D%97/</guid>
+      <description>docker的简单使用 1. 安装 1.如果装了新版本，先卸载旧版 sudo yum remove docker \ docker-client \ docker-client-latest \ docker-common \ docker-latest \ docker-latest-logrotate \ docker-logrotate \ docker-engine 安装所需的包 sudo yum install -y yum-utils \ device-mapper-persistent-data \ lvm2 设置稳定存储库 #</description>
+    </item>
+    
+  </channel>
+</rss>

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>rabbitMQ on 目光呆滞的5741号代码搬运工</title>
+    <link>https://hisaige.github.io/tags/rabbitmq/</link>
+    <description>Recent content in rabbitMQ on 目光呆滞的5741号代码搬运工</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en</language>
+    <lastBuildDate>Tue, 03 Sep 2019 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="https://hisaige.github.io/tags/rabbitmq/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>rabbitMQ入门</title>
+      <link>https://hisaige.github.io/post/development/rabbitmq%E4%BD%BF%E7%94%A8%E7%AC%94%E8%AE%B0/</link>
+      <pubDate>Tue, 03 Sep 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://hisaige.github.io/post/development/rabbitmq%E4%BD%BF%E7%94%A8%E7%AC%94%E8%AE%B0/</guid>
+      <description>RabbitMQ学习笔记 1. 基本概念 如果使用默认方式接收队列，先启动多个监听者，再启动生产者，消费方式默认为轮询分发模式，不论监听者执行效率多</description>
+    </item>
+    
+  </channel>
+</rss>

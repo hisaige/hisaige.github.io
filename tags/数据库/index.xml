@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>数据库 on 目光呆滞的5741号代码搬运工</title>
+    <link>https://hisaige.github.io/tags/%E6%95%B0%E6%8D%AE%E5%BA%93/</link>
+    <description>Recent content in 数据库 on 目光呆滞的5741号代码搬运工</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en</language>
+    <lastBuildDate>Tue, 03 Sep 2019 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="https://hisaige.github.io/tags/%E6%95%B0%E6%8D%AE%E5%BA%93/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>数据源配置</title>
+      <link>https://hisaige.github.io/post/development/druid%E4%B8%A4%E7%A7%8D%E6%AF%94%E8%BE%83%E7%A8%B3%E7%9A%84%E9%85%8D%E7%BD%AE%E6%96%B9%E5%BC%8F/</link>
+      <pubDate>Tue, 03 Sep 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://hisaige.github.io/post/development/druid%E4%B8%A4%E7%A7%8D%E6%AF%94%E8%BE%83%E7%A8%B3%E7%9A%84%E9%85%8D%E7%BD%AE%E6%96%B9%E5%BC%8F/</guid>
+      <description>数据库之druid两种比较稳的配置方式 1. 方式一 pom如下，注意druid用的版本是1.1.18，低版本可能不适用 &amp;lt;!-- 分页插件 --&amp;gt; &amp;lt;dependency&amp;gt; &amp;lt;groupId&amp;gt;com.github.pagehelper&amp;lt;/groupId&amp;gt; &amp;lt;artifactId&amp;gt;pagehelper&amp;lt;/artifactId&amp;gt; &amp;lt;version&amp;gt;4.1.6&amp;lt;/version&amp;gt; &amp;lt;/dependency&amp;gt; &amp;lt;dependency&amp;gt; &amp;lt;groupId&amp;gt;tk.mybatis&amp;lt;/groupId&amp;gt; &amp;lt;artifactId&amp;gt;mapper-spring-boot-starter&amp;lt;/artifactId&amp;gt;</description>
+    </item>
+    
+  </channel>
+</rss>

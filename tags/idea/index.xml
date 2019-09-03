@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>idea on 目光呆滞的5741号代码搬运工</title>
+    <link>https://hisaige.github.io/tags/idea/</link>
+    <description>Recent content in idea on 目光呆滞的5741号代码搬运工</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en</language>
+    <lastBuildDate>Tue, 03 Sep 2019 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="https://hisaige.github.io/tags/idea/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>idea快捷键使用</title>
+      <link>https://hisaige.github.io/post/tool/idea%E5%BF%AB%E6%8D%B7%E9%94%AE%E4%BD%BF%E7%94%A8/</link>
+      <pubDate>Tue, 03 Sep 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://hisaige.github.io/post/tool/idea%E5%BF%AB%E6%8D%B7%E9%94%AE%E4%BD%BF%E7%94%A8/</guid>
+      <description>idea快捷键使用 1. 快捷键 ctrl + n == 搜索类、方法、属性 ctrl + shift + n == 搜索文件 **ctrl + alt +n == 代码提示 ** / ctrl + alt + 空格 = 代码提示 alt + f7 == 查询在某处使用 ctrl</description>
+    </item>
+    
+  </channel>
+</rss>

@@ -6,17 +6,17 @@
     <description>Recent content on 目光呆滞的5741号代码搬运工</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Mon, 04 Mar 2019 16:01:23 +0800</lastBuildDate>
+    <lastBuildDate>Tue, 03 Sep 2019 00:00:00 +0000</lastBuildDate>
     
         <atom:link href="https://hisaige.github.io/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>Jane 主题预览</title>
-      <link>https://hisaige.github.io/post/jane-theme-preview.zh-cn/</link>
+      <link>https://hisaige.github.io/post/docs/jane-theme-preview.zh-cn/</link>
       <pubDate>Tue, 06 Mar 2018 16:01:23 +0800</pubDate>
       
-      <guid>https://hisaige.github.io/post/jane-theme-preview.zh-cn/</guid>
+      <guid>https://hisaige.github.io/post/docs/jane-theme-preview.zh-cn/</guid>
       
         <description>&lt;p&gt;主题预览,内容有待填充。&lt;/p&gt;
 </description>
@@ -25,10 +25,10 @@
     
     <item>
       <title>Jane Theme Preview</title>
-      <link>https://hisaige.github.io/post/jane-theme-preview/</link>
+      <link>https://hisaige.github.io/post/docs/jane-theme-preview/</link>
       <pubDate>Mon, 01 Jan 2018 16:01:23 +0800</pubDate>
       
-      <guid>https://hisaige.github.io/post/jane-theme-preview/</guid>
+      <guid>https://hisaige.github.io/post/docs/jane-theme-preview/</guid>
       
         <description>&lt;p&gt;&lt;strong&gt;Markdown&lt;/strong&gt; is created by &lt;a href=&#34;http://daringfireball.net/&#34;&gt;Daring Fireball&lt;/a&gt;, the original guideline is &lt;a href=&#34;http://daringfireball.net/projects/markdown/syntax&#34;&gt;here&lt;/a&gt;. Its syntax, however, varies between different parsers or editors.&lt;/p&gt;
 
@@ -398,11 +398,1603 @@ __double underscores__
     </item>
     
     <item>
+      <title>docker的简单使用</title>
+      <link>https://hisaige.github.io/post/development/dorcker%E4%BD%BF%E7%94%A8%E6%8C%87%E5%8D%97/</link>
+      <pubDate>Tue, 03 Sep 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://hisaige.github.io/post/development/dorcker%E4%BD%BF%E7%94%A8%E6%8C%87%E5%8D%97/</guid>
+      
+        <description>
+
+&lt;h1&gt;docker的简单使用&lt;/h1&gt;
+
+&lt;h2 id=&#34;1-安装&#34;&gt;1. 安装&lt;/h2&gt;
+
+&lt;p&gt;1.如果装了新版本，先卸载旧版&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;sudo yum remove docker \
+                  docker-client \
+                  docker-client-latest \
+                  docker-common \
+                  docker-latest \
+                  docker-latest-logrotate \
+                  docker-logrotate \
+                  docker-engine
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;ol&gt;
+&lt;li&gt;&lt;p&gt;安装所需的包&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;sudo yum install -y yum-utils \
+device-mapper-persistent-data \
+lvm2
+&lt;/code&gt;&lt;/pre&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;设置&lt;strong&gt;稳定&lt;/strong&gt;存储库&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;# docker切换阿里源（生产环境慎重）
+sudo yum-config-manager --add-repo https://mirrors.aliyun.com/docker-ce/linux/centos/docker-ce.repo
+
+# 使用官方推荐的存储库，由于是国外网站，卡慢
+sudo yum-config-manager \
+--add-repo \
+https://download.docker.com/linux/centos/docker-ce.repo
+&lt;/code&gt;&lt;/pre&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;安装最新版&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;sudo yum install docker-ce docker-ce-cli containerd.io
+
+# 安装完毕后，可以使用以下命令查看docker版本
+docker version
+&lt;/code&gt;&lt;/pre&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;配置阿里云镜像加速和本地工作目录&lt;/p&gt;&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;​   ①添加并配置 /etc/docker/daemon.json 文件。&lt;/p&gt;
+
+&lt;p&gt;​   ②修改配置文件内容为, &lt;code&gt;/usr/local/docker&lt;/code&gt; 是工作目录&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;{
+&amp;quot;data-root&amp;quot;: &amp;quot;/usr/local/docker&amp;quot;,
+&amp;quot;registry-mirrors&amp;quot;: [
+&amp;quot;https://kfwkfulq.mirror.aliyuncs.com&amp;quot;,
+&amp;quot;https://2lqq34jg.mirror.aliyuncs.com&amp;quot;,
+&amp;quot;https://aa25jngu.mirror.aliyuncs.com&amp;quot;,
+&amp;quot;https://registry.docker-cn.com&amp;quot;
+]
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;2-使用docker&#34;&gt;2. 使用docker&lt;/h2&gt;
+
+&lt;ol&gt;
+&lt;li&gt;&lt;p&gt;万物皆起于 &lt;code&gt;hello-world&lt;/code&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;# 1.拉取hello-world镜像
+docker pull hello-world
+
+# 2.运行hello-world
+docker run hello-world
+
+# 3.运行时如果出现以下文字，说明hello-world运行成功
+[root@localhost docker]# docker run hello-world
+
+Hello from Docker!
+This message shows that your installation appears to be working correctly.
+
+To generate this message, Docker took the following steps:
+1. The Docker client contacted the Docker daemon.
+2. The Docker daemon pulled the &amp;quot;hello-world&amp;quot; image from the Docker Hub.
+(amd64)
+3. The Docker daemon created a new container from that image which runs the
+executable that produces the output you are currently reading.
+4. The Docker daemon streamed that output to the Docker client, which sent it
+to your terminal.
+
+To try something more ambitious, you can run an Ubuntu container with:
+$ docker run -it ubuntu bash
+
+Share images, automate workflows, and more with a free Docker ID:
+https://hub.docker.com/
+
+For more examples and ideas, visit:
+https://docs.docker.com/get-started/
+#运行成功
+&lt;/code&gt;&lt;/pre&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;镜像常用命令&lt;/p&gt;&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;&lt;code&gt;-a&lt;/code&gt; ：列出本地所有的镜像（含中间映像层）&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;-q&lt;/code&gt; :  只显示镜像ID&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;--digests&lt;/code&gt; : 显示镜像的摘要信息&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;--no-trunc&lt;/code&gt; : 显示完整的镜像信息&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;# 1.帮助信息
+docker --help
+
+# 2.显示所有镜像信息
+docker images
+
+# 3.去docker仓库查找镜像
+docker search xxx镜像名
+# 显示前两条
+docker search tomcat -limit 2
+#显示stars超过2000的
+docker search tomcat --filter=stars=2000
+
+
+# 4.删除镜像, 以下 镜像id 可以换成 镜像名 -f强制删除
+docker rmi -f 镜像ID
+#删除多个
+docker rmi -f 镜像id1 镜像id2 镜像id3 ...
+#删除全部
+docker rmi -f $(docker images -q)
+
+# 5. 删除容器 -f强制删除 -a全部容器 -q 返回容器id
+docker rm 容器ID
+# 删除全部容器
+docker rm $(docker ps -aq)
+
+
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;ol&gt;
+&lt;li&gt;&lt;p&gt;容器常用命令&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;# 1.新建启动容器
+docker run 容器名/容器id
+#启动容器
+docker start 容器id或容器名
+## --name=&amp;quot;容器新名字&amp;quot; 为容器指定一个名称
+## -d:后台运行容器，并返回容器id
+## -i:以交互模式运行容器，通常与 -t 联合使用
+## -t：为容器重新分配一个输入终端
+## (以 -it 方式启动时会进入伪终端，推出伪终端并停止使用 exit 指令，退出伪终端不关闭容器快捷键ctrl+p+q)
+## -P：随机端口映射
+## -p:指定端口映射
+		#通常有以下四种方式做映射
+		#1. ip:port:containerPort
+		#2. ip:containerPort
+		#3. hostPort:containerPort
+		#4.containerPort
+		
+# 2. 停止容器
+docker stop 容器名或容器id
+#强制停止
+docker kill 容器id或容器名
+
+# 3.删除容器 -f表示强制删除 -a表示关闭的容器 -q表示存活的容器
+docker rm -f $(docker ps -a -q)
+#或
+docker ps -a -q | xargs docker rm
+
+# 4.退出容器/进入容器
+	#方式1 容器停止退出
+	exit
+	#方式2 容器不停止退出
+	ctrl + p + q
+#进入容器
+	#方式1 进入终端
+	docker attach 容器ID
+	#方式2 不进入终端 直接执行容器的功能指令
+	docker exec -t 镜像id 容器指令
+
+# 5.查看容器日志
+docker logs
+# -t 加入时间戳
+# -f 跟随最新的日志打印
+# 	--tail 数字 显示最后多少条
+
+# 6.从容器内拷贝文件到主机
+docker cp 容器id:容器内路径 主机路径
+&lt;/code&gt;&lt;/pre&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;DockerFile保留字指令&lt;/p&gt;&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;build&lt;/th&gt;
+&lt;th&gt;both&lt;/th&gt;
+&lt;th&gt;run&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;FROM&lt;/td&gt;
+&lt;td&gt;WORKDIR&lt;/td&gt;
+&lt;td&gt;CMD&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;MAINTAINER&lt;/td&gt;
+&lt;td&gt;USER&lt;/td&gt;
+&lt;td&gt;ENV&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;COPY&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;td&gt;EXPOSE&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;ADD&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;td&gt;VOLUME&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;RUN&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;td&gt;ENTRYPOINT&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;ONBUILD&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;.dockerignore&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;ol&gt;
+&lt;li&gt;制作自定义linux镜像&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h2 id=&#34;n-linux随笔&#34;&gt;n. linux随笔&lt;/h2&gt;
+
+&lt;ol&gt;
+&lt;li&gt;&lt;p&gt;vim/vi编辑文件时退出方式&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;按ESC键 跳到命令模式，然后：
+
+:w - 保存文件，不退出 vim
+:w file -将修改另外保存到 file 中，不退出 vim
+:w! -强制保存，不退出 vim
+:wq -保存文件，退出 vim
+:wq! -强制保存文件，退出 vim
+:q -不保存文件，退出 vim
+:q! -不保存文件，强制退出 vim
+:e! -放弃所有修改，从上次保存文件开始再编辑
+&lt;/code&gt;&lt;/pre&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;常用系统指令&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;重载系统服务(修改配置文件后需要做的事儿)：systemctl daemon-reload
+
+设置开机启动：systemctl enable *.service
+
+启动服务：systemctl start *.service
+
+停止服务：systemctl stop *.service
+
+重启服务：systemctl reload *.service
+&lt;/code&gt;&lt;/pre&gt;&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;​&lt;/p&gt;
+</description>
+      
+    </item>
+    
+    <item>
+      <title>idea快捷键使用</title>
+      <link>https://hisaige.github.io/post/tool/idea%E5%BF%AB%E6%8D%B7%E9%94%AE%E4%BD%BF%E7%94%A8/</link>
+      <pubDate>Tue, 03 Sep 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://hisaige.github.io/post/tool/idea%E5%BF%AB%E6%8D%B7%E9%94%AE%E4%BD%BF%E7%94%A8/</guid>
+      
+        <description>
+
+&lt;p&gt;&lt;center&gt;&lt;h1&gt;
+    idea快捷键使用
+&lt;/h1&gt;&lt;/center&gt;&lt;/p&gt;
+
+&lt;h2 id=&#34;1-快捷-键&#34;&gt;1. 快捷&lt;strong&gt;键&lt;/strong&gt;&lt;/h2&gt;
+
+&lt;ol&gt;
+&lt;li&gt;&lt;strong&gt;ctrl + n  == 搜索类、方法、属性&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;ctrl + shift + n == 搜索文件&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;**ctrl + alt +n == 代码提示  **&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;/  ctrl + alt + 空格 = 代码提示&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;alt + f7 == 查询在某处使用&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;ctrl + q == 查看代码提示及内容&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;ctrl + b  == 查看类的声明 ==ctrl+左键&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;ctrl + f12  == 查看文件列表（类的方法列表）&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;ctrl + alt + ⬆/⬇ = 查看 父类/子类&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;ctrl + shift + ⬆/⬇ = 上移/下移一行代码&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;连续两次shift  == 查找文件&lt;/strong&gt;&lt;br /&gt;&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;连安两下 shift 查找文件&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;CtrL +shift +r 全局搜索&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;ctrl +r 搜索替换当前页的单词&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;查看类继承关系图：Ctrl+Alt+U&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;查看定义的变量在哪里被调用：Ctrl+Alt+F7&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;查看Java方法调用树(被调/主调)：Ctrl+Alt+H&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;**在codeStyle_java_import设置中，可以设置import多少个类自动变成import ***&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;ctrl +alt +v 自动生成返回值&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;ctrl + alt +t 生成环绕代码块 surround with&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;ctl + alt + &amp;lt;-  或 -&amp;gt;   上一步或下一步&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;ctrl + alt + m  抽取代码为方法&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;ctrl + e 打开最近文件&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;ctrl + h 查看类的继承关系&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;ctr + shift + u 大小写转化&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;shift + enter 向下插入空行&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;ctrl + alt + enter 向上插入空行&lt;/strong&gt;&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h2 id=&#34;2-使用技巧&#34;&gt;2.使用技巧&lt;/h2&gt;
+
+&lt;p&gt;debug篇&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;右键断点可以设置进入断点条件&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;ctrl + u&lt;/strong&gt; 进入查看debug时表达式的值&lt;/li&gt;
+&lt;/ol&gt;
+</description>
+      
+    </item>
+    
+    <item>
+      <title>rabbitMQ入门</title>
+      <link>https://hisaige.github.io/post/development/rabbitmq%E4%BD%BF%E7%94%A8%E7%AC%94%E8%AE%B0/</link>
+      <pubDate>Tue, 03 Sep 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://hisaige.github.io/post/development/rabbitmq%E4%BD%BF%E7%94%A8%E7%AC%94%E8%AE%B0/</guid>
+      
+        <description>
+
+&lt;h1&gt;RabbitMQ学习笔记&lt;/h1&gt;
+
+&lt;h2 id=&#34;1-基本概念&#34;&gt;1. 基本概念&lt;/h2&gt;
+
+&lt;ol&gt;
+&lt;li&gt;如果使用默认方式接收队列，先启动多个监听者，再启动生产者，消费方式默认为轮询分发模式，不论监听者执行效率多少，都是轮询获取mq消息。&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;使用多劳模式时，必须手动确认ack。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;// 能者多劳关键代码
+//1. 在队列声明之后
+channel.basicQos(1);
+//2. 在消费之后
+finally {
+         channel.basicAck(envelope.getDeliveryTag(), false);
+}
+//3.定义消费者
+channel.basicConsume(queueName, false, consumer);
+&lt;/code&gt;&lt;/pre&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;订阅模式、&lt;/p&gt;&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;多个队列绑定到同一个交换机上，生产者将消息发送到交换机，由消费者订阅消息。&lt;/p&gt;
+
+&lt;p&gt;注意exchange 类型 &lt;code&gt;type&lt;/code&gt;值为 &lt;code&gt;fanout&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;关键代码&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;//生产者
+Connection connection = ConnectionUtils.getConnection();
+        Channel channel = connection.createChannel();
+        channel.exchangeDeclare(exchange, &amp;quot;fanout&amp;quot;);
+        channel.basicQos(1);
+
+        for (int i = 0; i &amp;lt; 50; i++) {
+            String msg = sendStr + i;
+            channel.basicPublish(exchange, &amp;quot;&amp;quot;, null, msg.getBytes());
+        }
+        channel.close();
+        connection.close();
+
+//消费者
+onnection connection = ConnectionUtils.getConnection();
+        Channel channel = connection.createChannel();
+        channel.queueDeclare(queueName, false, false, false, null);
+        channel.queueBind(queueName, exchange, &amp;quot;&amp;quot;);
+        channel.basicQos(1);
+        Consumer consumer = new DefaultConsumer(channel) {
+            @Override
+            public void handleDelivery(String consumerTag, Envelope envelope, AMQP.BasicProperties properties, byte[] body) throws IOException {
+                String msg = new String(body, &amp;quot;utf-8&amp;quot;);
+                ... ...
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;ol&gt;
+&lt;li&gt;路由模式&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;在声明exchange时，给予路由关键字，在在channel绑定exchange时，也声明路由，在生产者将数据投递到exchange上后，exchange根据路由关键字将数据投递给channel。&lt;/p&gt;
+
+&lt;p&gt;注意exchange 类型 &lt;code&gt;type&lt;/code&gt;值为 &lt;code&gt;direct&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;关键代码：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;//生产者
+ Connection connection = ConnectionUtils.getConnection();
+        Channel channel = connection.createChannel();
+        channel.exchangeDeclare(exchange, &amp;quot;direct&amp;quot;);
+        channel.basicQos(1);
+        String routingKey = &amp;quot;error&amp;quot;;
+        for (int i = 0; i &amp;lt; 50; i++) {
+            String msg = sendStr + i;
+            channel.basicPublish(exchange, routingKey, null, msg.getBytes());
+        }
+        channel.close();
+        connection.close();
+
+
+//消费者
+String uuid = UUID.randomUUID().toString();
+        System.out.println(&amp;quot;start consumer:&amp;quot; + uuid);
+        Connection connection = ConnectionUtils.getConnection();
+        Channel channel = connection.createChannel();
+        channel.queueDeclare(queueName, false, false, false, null);
+        routKeys.forEach(routKey -&amp;gt;{
+            try {
+                channel.queueBind(queueName, exchange, routKey);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        });
+        channel.basicQos(1);
+        Consumer consumer = new DefaultConsumer(channel) {
+            @Override
+            public void handleDelivery(String consumerTag, Envelope envelope, AMQP.BasicProperties properties, byte[] body) throws IOException {
+                String msg = new String(body, &amp;quot;utf-8&amp;quot;);
+                ... ...
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;ol&gt;
+&lt;li&gt;topic模式&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;根据routingKey上的通配符分发事件。&lt;code&gt;*&lt;/code&gt;代表匹配一个关键字，&lt;code&gt;#&lt;/code&gt;代表匹配多个关键字.&lt;/p&gt;
+
+&lt;p&gt;关键代码：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;//服务端
+ channel.exchangeDeclare(exchange, &amp;quot;topic&amp;quot;);
+        channel.basicQos(1);
+        String routingKey = &amp;quot;goods，type.add&amp;quot;;
+        for (int i = 0; i &amp;lt; 50; i++) {
+            String msg = sendStr + i;
+            channel.basicPublish(exchange, routingKey, null, msg.getBytes());
+        }
+
+//客户端1,queueName队列可以收到消息
+channel.exchangeDeclare(exchange, &amp;quot;topic&amp;quot;);
+channel.queueDeclare(queueName, false, false, false, null);
+channel.queueBind(queueName, exchange, &amp;quot;goods.*.add&amp;quot;);
+
+//客户端2,queueName队列可以收到消息
+channel.exchangeDeclare(exchange, &amp;quot;topic&amp;quot;);
+channel.queueDeclare(queueName, false, false, false, null);
+channel.queueBind(queueName, exchange, &amp;quot;goods.#&amp;quot;);
+
+//客户端3,queueName队列不可以收到消息
+channel.exchangeDeclare(exchange, &amp;quot;topic&amp;quot;);
+channel.queueDeclare(queueName, false, false, false, null);
+channel.queueBind(queueName, exchange, &amp;quot;goods.type.delete&amp;quot;);
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;ol&gt;
+&lt;li&gt;事务确认机制&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;通过事务控制操作mq队列，关键代码如下。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;try{
+                channel.txSelect();
+                channel.basicPublish(&amp;quot;&amp;quot;, queueName, null, msg.getBytes());
+                //如果抛出异常，事件不发送到mq
+                //int a = 1/0;
+                channel.txCommit();
+            }catch (Exception e){
+                System.out.println(&amp;quot;channel rollback...&amp;quot;);
+                channel.txRollback();
+            }
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;ol&gt;
+&lt;li&gt;&lt;p&gt;conform模式确认机制&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;//方式1 单条 confirm
+//生产者开启confirm模式
+channel.confirmSelect();
+for (int i = 0; i &amp;lt; 50; i++) {
+String msg = sendStr + i;
+channel.basicPublish(&amp;quot;&amp;quot;, queueName, null, msg.getBytes());
+try{
+    if(channel.waitForConfirms()){
+        System.out.println(&amp;quot;消息发送成功&amp;quot;);
+    } else{
+        System.out.println(&amp;quot;消息发送失败&amp;quot;);
+    }
+} catch (Exception e){
+    e.printStackTrace();
+}
+}
+
+//方式2 批量confirm
+//生产者开启confirm模式
+channel.confirmSelect();
+for (int i = 0; i &amp;lt; 50; i++) {
+String msg = sendStr + i;
+channel.basicPublish(&amp;quot;&amp;quot;, queueName, null, msg.getBytes());
+}
+try{
+if(channel.waitForConfirms()){
+    System.out.println(&amp;quot;消息发送成功&amp;quot;);
+} else{
+    System.out.println(&amp;quot;消息发送失败&amp;quot;);
+}
+} catch (Exception e){
+e.printStackTrace();
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;/li&gt;
+&lt;/ol&gt;
+</description>
+      
+    </item>
+    
+    <item>
+      <title>springclould简要入门</title>
+      <link>https://hisaige.github.io/post/development/%E5%B0%9A%E7%A1%85%E8%B0%B7clould/</link>
+      <pubDate>Tue, 03 Sep 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://hisaige.github.io/post/development/%E5%B0%9A%E7%A1%85%E8%B0%B7clould/</guid>
+      
+        <description>
+
+&lt;h1&gt;尚硅谷clould&lt;/h1&gt;
+
+&lt;h2 id=&#34;统一配置&#34;&gt;统一配置&lt;/h2&gt;
+
+&lt;ol&gt;
+&lt;li&gt;统一配置启动方式1&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;&lt;img src=&#34;../../../static/imgs/测试服务统一配置方式1.bmp&#34; alt=&#34;统一配置启动方式1&#34; /&gt;&lt;/p&gt;
+</description>
+      
+    </item>
+    
+    <item>
+      <title>数据源配置</title>
+      <link>https://hisaige.github.io/post/development/druid%E4%B8%A4%E7%A7%8D%E6%AF%94%E8%BE%83%E7%A8%B3%E7%9A%84%E9%85%8D%E7%BD%AE%E6%96%B9%E5%BC%8F/</link>
+      <pubDate>Tue, 03 Sep 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://hisaige.github.io/post/development/druid%E4%B8%A4%E7%A7%8D%E6%AF%94%E8%BE%83%E7%A8%B3%E7%9A%84%E9%85%8D%E7%BD%AE%E6%96%B9%E5%BC%8F/</guid>
+      
+        <description>
+
+&lt;h1&gt;数据库之druid两种比较稳的配置方式&lt;/h1&gt;
+
+&lt;h1 id=&#34;1-方式一&#34;&gt;1. 方式一&lt;/h1&gt;
+
+&lt;p&gt;pom如下，注意druid用的版本是1.1.18，低版本可能不适用&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-xml&#34;&gt;		&amp;lt;!-- 分页插件 --&amp;gt;
+        &amp;lt;dependency&amp;gt;
+            &amp;lt;groupId&amp;gt;com.github.pagehelper&amp;lt;/groupId&amp;gt;
+            &amp;lt;artifactId&amp;gt;pagehelper&amp;lt;/artifactId&amp;gt;
+            &amp;lt;version&amp;gt;4.1.6&amp;lt;/version&amp;gt;
+        &amp;lt;/dependency&amp;gt;
+
+        &amp;lt;dependency&amp;gt;
+            &amp;lt;groupId&amp;gt;tk.mybatis&amp;lt;/groupId&amp;gt;
+            &amp;lt;artifactId&amp;gt;mapper-spring-boot-starter&amp;lt;/artifactId&amp;gt;
+            &amp;lt;version&amp;gt;2.1.5&amp;lt;/version&amp;gt;
+        &amp;lt;/dependency&amp;gt;
+
+        &amp;lt;dependency&amp;gt;
+            &amp;lt;groupId&amp;gt;mysql&amp;lt;/groupId&amp;gt;
+            &amp;lt;artifactId&amp;gt;mysql-connector-java&amp;lt;/artifactId&amp;gt;
+            &amp;lt;scope&amp;gt;runtime&amp;lt;/scope&amp;gt;
+        &amp;lt;/dependency&amp;gt;
+        &amp;lt;!-- https://mvnrepository.com/artifact/com.alibaba/druid-spring-boot-starter --&amp;gt;
+        &amp;lt;!-- https://mvnrepository.com/artifact/com.alibaba/druid-spring-boot-starter --&amp;gt;
+        &amp;lt;!-- https://mvnrepository.com/artifact/com.alibaba/druid-spring-boot-starter --&amp;gt;
+        &amp;lt;dependency&amp;gt;
+            &amp;lt;groupId&amp;gt;com.alibaba&amp;lt;/groupId&amp;gt;
+            &amp;lt;artifactId&amp;gt;druid-spring-boot-starter&amp;lt;/artifactId&amp;gt;
+            &amp;lt;version&amp;gt;1.1.18&amp;lt;/version&amp;gt;
+        &amp;lt;/dependency&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;配置类&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-java\&#34;&gt;package com.hisaige.database.config;
+
+import com.alibaba.druid.spring.boot.autoconfigure.properties.DruidStatProperties;
+import com.alibaba.druid.support.http.StatViewServlet;
+import com.alibaba.druid.support.http.WebStatFilter;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.boot.web.servlet.FilterRegistrationBean;
+import org.springframework.boot.web.servlet.ServletRegistrationBean;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.jdbc.datasource.DataSourceTransactionManager;
+
+import javax.sql.DataSource;
+import java.sql.SQLException;
+
+@Configuration
+public class DataSourceConfiguration {
+
+
+
+	@Resource
+	private DataSource dataSource;
+
+	/*
+	 * @Bean public SqlSessionFactory sqlSessionFactory(DataSource dataSource)
+	 * throws Exception { SqlSessionFactoryBean factory = new
+	 * SqlSessionFactoryBean(); factory.setDataSource(dataSource); return
+	 * factory.getObject(); }
+	 */
+
+	@Bean
+	public DataSourceTransactionManager transactionManager() throws SQLException {
+		DataSourceTransactionManager transManager = new DataSourceTransactionManager();
+		transManager.setDataSource(dataSource);
+		return transManager;
+	}
+	
+	/**
+	*分页插件配置，
+	*注意，如果分页插件要结合通用mapper使用的话，不要用分页插件的startter继承方式
+	*如下这种普通方式即可，因为分页插件的startter里面继承了mybatis的自动装配startter，
+	*这里面针对于mapper包扫描那块会出现冲突
+	*
+	*/
+	@Bean
+	public PageHelper pageHelper() {
+		PageHelper pageHelper = new PageHelper();
+		Properties props = new Properties();
+		props.setProperty(&amp;quot;dialect&amp;quot;, &amp;quot;mysql&amp;quot;);
+		// 表示支持从接口中读取pageNum和pageSize
+		props.setProperty(&amp;quot;supportMethodsArguments&amp;quot;, &amp;quot;true&amp;quot;);
+		pageHelper.setProperties(props);
+		return pageHelper;
+	}
+
+	/**
+	 * 配置监控服务器
+	 * 
+	 * @return 返回监控注册的servlet对象
+	 * @author SimpleWu
+	 */
+	@Bean
+	public ServletRegistrationBean&amp;lt;StatViewServlet&amp;gt; statViewServlet() {
+
+		// 这里也可以通过读取yml配置文件的方式读取配置信息来设置黑白名单
+		System.out.println(&amp;quot;------------userName&amp;quot; + druidStatProperties.getStatViewServlet().getLoginUsername());
+
+		ServletRegistrationBean&amp;lt;StatViewServlet&amp;gt; servletRegistrationBean = new ServletRegistrationBean&amp;lt;&amp;gt;(
+				new StatViewServlet(), &amp;quot;/druid/*&amp;quot;);
+		// 添加IP白名单
+		servletRegistrationBean.addInitParameter(&amp;quot;allow&amp;quot;, &amp;quot;127.0.0.1&amp;quot;); // 本机使用IP将不能访问，但可以使用localhost作IP访问
+		// 添加IP黑名单，当白名单和黑名单重复时，黑名单优先级更高
+		servletRegistrationBean.addInitParameter(&amp;quot;deny&amp;quot;, &amp;quot;192.16.13.243&amp;quot;);
+		// 添加控制台管理用户
+		servletRegistrationBean.addInitParameter(&amp;quot;loginUsername&amp;quot;, &amp;quot;admin&amp;quot;);
+		servletRegistrationBean.addInitParameter(&amp;quot;loginPassword&amp;quot;, &amp;quot;admin&amp;quot;);
+		// 是否能够重置数据
+		servletRegistrationBean.addInitParameter(&amp;quot;resetEnable&amp;quot;, &amp;quot;true&amp;quot;);
+		return servletRegistrationBean;
+	}
+
+	/**
+	 * 配置服务过滤器
+	 *
+	 * @return 返回过滤器配置对象
+	 */
+	@Bean
+	public FilterRegistrationBean&amp;lt;WebStatFilter&amp;gt; statFilter() {
+		FilterRegistrationBean&amp;lt;WebStatFilter&amp;gt; filterRegistrationBean = new FilterRegistrationBean&amp;lt;&amp;gt;(
+				new WebStatFilter());
+		// 添加过滤规则
+		filterRegistrationBean.addUrlPatterns(&amp;quot;/*&amp;quot;);
+		// 忽略过滤格式
+		filterRegistrationBean.addInitParameter(&amp;quot;exclusions&amp;quot;, &amp;quot;*.js,*.gif,*.jpg,*.png,*.css,*.ico,/druid/*,&amp;quot;);
+		return filterRegistrationBean;
+	}
+
+}
+
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;yml配置文件&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-yml&#34;&gt;spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3316/test?useUnicode=true&amp;amp;characterEncoding=UTF-8&amp;amp;useJDBCCompliantTimezoneShift=true&amp;amp;useLegacyDatetimeCode=false&amp;amp;serverTimezone=UTC
+    username: root
+    password: cyj515818
+    type: com.alibaba.druid.pool.DruidDataSource
+    druid:
+      # 下面为连接池的补充设置，应用到上面所有数据源中      # 初始化大小，最小，最大
+      initial-size: 5
+      min-idle: 5
+      max-active: 20
+      # 配置获取连接等待超时的时间
+      max-wait: 60000
+      # 配置间隔多久才进行一次检测，检测需要关闭的空闲连接，单位是毫秒
+      time-between-eviction-runs-millis: 60000
+      # 配置一个连接在池中最小生存的时间，单位是毫秒
+      min-evictable-idle-time-millis: 300000
+      validation-query: SELECT 1 FROM DUAL
+      test-while-idle: true
+      test-on-borrow: false
+      test-on-return: false
+      # 打开PSCache，并且指定每个连接上PSCache的大小
+      pool-prepared-statements: true
+      #   配置监控统计拦截的filters，去掉后监控界面sql无法统计，&#39;wall&#39;用于防火墙
+      max-pool-prepared-statement-per-connection-size: 20
+      filters: stat,wall
+      use-global-data-source-stat: true
+      # 通过connectProperties属性来打开mergeSql功能；慢SQL记录
+      connect-properties: druid.stat.mergeSql=true;druid.stat.slowSqlMillis=5000
+      # 配置监控服务器,目前下面这种配置在1.1.10可以，高版本比如1.1.16不行,
+      # 目前使用的是较高版本，所以先注释，使用DataSourceConfiguration中的注释代替
+      keep-alive: true
+      stat-view-servlet:
+        login-username: admin
+        login-password: 123456
+        reset-enable: false
+        url-pattern: /druid/*
+        # 添加IP白名单
+        allow: 127.0.0.1
+        # 添加IP黑名单，当白名单和黑名单重复时，黑名单优先级更高
+        deny: 192.168.1.3
+      #配置过滤规则
+      web-stat-filter:
+        # 添加过滤规则
+        url-pattern: /*
+        # 忽略过滤格式
+        exclusions: &amp;quot;*.js,*.gif,*.jpg,*.png,*.css,*.ico,/druid/*&amp;quot;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;测试分类插件&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;	@Test
+	public void test3(){
+		PageHelper.startPage(2, 2);
+		List&amp;lt;User&amp;gt; users=userMapper.selectAll();
+		PageInfo&amp;lt;User&amp;gt; pageInfo = new PageInfo&amp;lt;&amp;gt;(users);
+		System.out.println(pageInfo);
+	}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h1 id=&#34;2-配置方式二&#34;&gt;2. 配置方式二&lt;/h1&gt;
+
+&lt;p&gt;配置二是一种比较稳妥的方式，避免duid版本改动时配置的方式发生变动而需要再修改druid相关配置。&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;&lt;p&gt;首先定义一个包含druid绝大部分配置属性的properties&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;package com.hisaige.database.config.data;
+
+import java.io.PrintWriter;
+import java.sql.Driver;
+import java.util.Date;
+import java.util.IdentityHashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Properties;
+import java.util.concurrent.locks.Condition;
+import java.util.concurrent.locks.ReentrantLock;
+
+import javax.security.auth.callback.NameCallback;
+import javax.security.auth.callback.PasswordCallback;
+
+import com.alibaba.druid.pool.DruidPooledConnection;
+import com.alibaba.druid.pool.ExceptionSorter;
+import com.alibaba.druid.pool.ValidConnectionChecker;
+
+public class DruidProperties {
+
+	public final static int DEFAULT_INITIAL_SIZE = 0;
+	public final static int DEFAULT_MAX_ACTIVE_SIZE = 8;
+	public final static int DEFAULT_MAX_IDLE = 8;
+	public final static int DEFAULT_MIN_IDLE = 0;
+	public final static int DEFAULT_MAX_WAIT = -1;
+	public final static String DEFAULT_VALIDATION_QUERY = null; //
+	public final static boolean DEFAULT_TEST_ON_BORROW = false;
+	public final static boolean DEFAULT_TEST_ON_RETURN = false;
+	public final static boolean DEFAULT_WHILE_IDLE = true;
+	public static final long DEFAULT_TIME_BETWEEN_EVICTION_RUNS_MILLIS = 60 * 1000L;
+	public static final long DEFAULT_TIME_BETWEEN_CONNECT_ERROR_MILLIS = 500;
+	public static final int DEFAULT_NUM_TESTS_PER_EVICTION_RUN = 3;
+
+	public static final long DEFAULT_MIN_EVICTABLE_IDLE_TIME_MILLIS = 1000L * 60L * 30L;
+	public static final long DEFAULT_MAX_EVICTABLE_IDLE_TIME_MILLIS = 1000L * 60L * 60L * 7;
+	public static final long DEFAULT_PHY_TIMEOUT_MILLIS = -1;
+
+	private volatile boolean defaultAutoCommit = true;
+	private volatile Boolean defaultReadOnly;
+	private volatile Integer defaultTransactionIsolation;
+	private volatile String defaultCatalog = null;
+
+	private volatile String username;
+	private volatile String password;
+	private volatile String jdbcUrl;
+	private volatile String driverClass;
+	private volatile ClassLoader driverClassLoader;
+	private volatile Properties connectProperties = new Properties();
+
+	private volatile PasswordCallback passwordCallback;
+	private volatile NameCallback userCallback;
+
+	private volatile int initialSize = DEFAULT_INITIAL_SIZE;
+	private volatile int maxActive = DEFAULT_MAX_ACTIVE_SIZE;
+	private volatile int minIdle = DEFAULT_MIN_IDLE;
+	private volatile int maxIdle = DEFAULT_MAX_IDLE;
+	private volatile long maxWait = DEFAULT_MAX_WAIT;
+	private int notFullTimeoutRetryCount = 0;
+
+	private volatile String validationQuery = DEFAULT_VALIDATION_QUERY;
+	private volatile int validationQueryTimeout = -1;
+	private volatile boolean testOnBorrow = DEFAULT_TEST_ON_BORROW;
+	private volatile boolean testOnReturn = DEFAULT_TEST_ON_RETURN;
+	private volatile boolean testWhileIdle = DEFAULT_WHILE_IDLE;
+	private volatile boolean poolPreparedStatements = false;
+	private volatile boolean sharePreparedStatements = false;
+	private volatile boolean useGlobalDataSourceStat = true;
+	private volatile int maxPoolPreparedStatementPerConnectionSize = 10;
+
+	private volatile boolean inited = false;
+	private volatile boolean initExceptionThrow = true;
+
+	private PrintWriter logWriter = new PrintWriter(System.out);
+
+	private volatile boolean clearFiltersEnable = true;
+	private volatile ExceptionSorter exceptionSorter = null;
+
+	private Driver driver;
+
+	private volatile int queryTimeout;
+	private volatile int transactionQueryTimeout;
+
+	private long createTimespan;
+
+	private volatile int maxWaitThreadCount = -1;
+	private volatile boolean accessToUnderlyingConnectionAllowed = true;
+
+	private volatile long timeBetweenEvictionRunsMillis = DEFAULT_TIME_BETWEEN_EVICTION_RUNS_MILLIS;
+	private volatile int numTestsPerEvictionRun = DEFAULT_NUM_TESTS_PER_EVICTION_RUN;
+	private volatile long minEvictableIdleTimeMillis = DEFAULT_MIN_EVICTABLE_IDLE_TIME_MILLIS;
+	private volatile long maxEvictableIdleTimeMillis = DEFAULT_MAX_EVICTABLE_IDLE_TIME_MILLIS;
+	private volatile long keepAliveBetweenTimeMillis = DEFAULT_TIME_BETWEEN_EVICTION_RUNS_MILLIS * 2;
+	private volatile long phyTimeoutMillis = DEFAULT_PHY_TIMEOUT_MILLIS;
+	private volatile long phyMaxUseCount = -1;
+
+	private volatile boolean removeAbandoned;
+	private volatile long removeAbandonedTimeoutMillis = 300 * 1000;
+	private volatile boolean logAbandoned;
+
+	private volatile int maxOpenPreparedStatements = -1;
+
+	private volatile List&amp;lt;String&amp;gt; connectionInitSqls;
+
+	private volatile String dbType;
+
+	private volatile long timeBetweenConnectErrorMillis = DEFAULT_TIME_BETWEEN_CONNECT_ERROR_MILLIS;
+
+	private volatile ValidConnectionChecker validConnectionChecker = null;
+
+	private final Map&amp;lt;DruidPooledConnection, Object&amp;gt; activeConnections = new IdentityHashMap&amp;lt;DruidPooledConnection, Object&amp;gt;();
+
+	private long id;
+
+	private int connectionErrorRetryAttempts = 1;
+	private boolean breakAfterAcquireFailure = false;
+	private long transactionThresholdMillis = 0L;
+
+	private Date initedTime;
+	private volatile long errorCount = 0L;
+	private volatile long dupCloseCount = 0L;
+	private volatile long startTransactionCount = 0L;
+	private volatile long commitCount = 0L;
+	private volatile long rollbackCount = 0L;
+	private volatile long cachedPreparedStatementHitCount = 0L;
+	private volatile long preparedStatementCount = 0L;
+	private volatile long closedPreparedStatementCount = 0L;
+	private volatile long cachedPreparedStatementCount = 0L;
+	private volatile long cachedPreparedStatementDeleteCount = 0L;
+	private volatile long cachedPreparedStatementMissCount = 0L;
+
+	private boolean dupCloseLogEnable = false;
+
+	private volatile long executeCount = 0L;
+	private volatile long executeQueryCount = 0L;
+	private volatile long executeUpdateCount = 0L;
+	private volatile long executeBatchCount = 0L;
+
+	private volatile Throwable createError;
+	private volatile Throwable lastError;
+	private volatile long lastErrorTimeMillis;
+	private volatile Throwable lastCreateError;
+	private volatile long lastCreateErrorTimeMillis;
+	private volatile long lastCreateStartTimeMillis;
+
+	private boolean isOracle = false;
+	private boolean isMySql = false;
+	private boolean useOracleImplicitCache = true;
+
+	private ReentrantLock lock;
+	private Condition notEmpty;
+	private Condition empty;
+
+	private ReentrantLock activeConnectionLock = new ReentrantLock();
+
+	private volatile int createErrorCount = 0;
+	private volatile int creatingCount = 0;
+	private volatile int directCreateCount = 0;
+	private volatile long createCount = 0L;
+	private volatile long destroyCount = 0L;
+	private volatile long createStartNanos = 0L;
+	public boolean isDefaultAutoCommit() {
+		return defaultAutoCommit;
+	}
+	public void setDefaultAutoCommit(boolean defaultAutoCommit) {
+		this.defaultAutoCommit = defaultAutoCommit;
+	}
+	public Boolean getDefaultReadOnly() {
+		return defaultReadOnly;
+	}
+	public void setDefaultReadOnly(Boolean defaultReadOnly) {
+		this.defaultReadOnly = defaultReadOnly;
+	}
+	public Integer getDefaultTransactionIsolation() {
+		return defaultTransactionIsolation;
+	}
+	public void setDefaultTransactionIsolation(Integer defaultTransactionIsolation) {
+		this.defaultTransactionIsolation = defaultTransactionIsolation;
+	}
+	public String getDefaultCatalog() {
+		return defaultCatalog;
+	}
+	public void setDefaultCatalog(String defaultCatalog) {
+		this.defaultCatalog = defaultCatalog;
+	}
+	public String getUsername() {
+		return username;
+	}
+	public void setUsername(String username) {
+		this.username = username;
+	}
+	public String getPassword() {
+		return password;
+	}
+	public void setPassword(String password) {
+		this.password = password;
+	}
+	public String getJdbcUrl() {
+		return jdbcUrl;
+	}
+	public void setJdbcUrl(String jdbcUrl) {
+		this.jdbcUrl = jdbcUrl;
+	}
+	public String getDriverClass() {
+		return driverClass;
+	}
+	public void setDriverClass(String driverClass) {
+		this.driverClass = driverClass;
+	}
+	public ClassLoader getDriverClassLoader() {
+		return driverClassLoader;
+	}
+	public void setDriverClassLoader(ClassLoader driverClassLoader) {
+		this.driverClassLoader = driverClassLoader;
+	}
+	public Properties getConnectProperties() {
+		return connectProperties;
+	}
+	public void setConnectProperties(Properties connectProperties) {
+		this.connectProperties = connectProperties;
+	}
+	public PasswordCallback getPasswordCallback() {
+		return passwordCallback;
+	}
+	public void setPasswordCallback(PasswordCallback passwordCallback) {
+		this.passwordCallback = passwordCallback;
+	}
+	public NameCallback getUserCallback() {
+		return userCallback;
+	}
+	public void setUserCallback(NameCallback userCallback) {
+		this.userCallback = userCallback;
+	}
+	public int getInitialSize() {
+		return initialSize;
+	}
+	public void setInitialSize(int initialSize) {
+		this.initialSize = initialSize;
+	}
+	public int getMaxActive() {
+		return maxActive;
+	}
+	public void setMaxActive(int maxActive) {
+		this.maxActive = maxActive;
+	}
+	public int getMinIdle() {
+		return minIdle;
+	}
+	public void setMinIdle(int minIdle) {
+		this.minIdle = minIdle;
+	}
+	public int getMaxIdle() {
+		return maxIdle;
+	}
+	public void setMaxIdle(int maxIdle) {
+		this.maxIdle = maxIdle;
+	}
+	public long getMaxWait() {
+		return maxWait;
+	}
+	public void setMaxWait(long maxWait) {
+		this.maxWait = maxWait;
+	}
+	public int getNotFullTimeoutRetryCount() {
+		return notFullTimeoutRetryCount;
+	}
+	public void setNotFullTimeoutRetryCount(int notFullTimeoutRetryCount) {
+		this.notFullTimeoutRetryCount = notFullTimeoutRetryCount;
+	}
+	public String getValidationQuery() {
+		return validationQuery;
+	}
+	public void setValidationQuery(String validationQuery) {
+		this.validationQuery = validationQuery;
+	}
+	public int getValidationQueryTimeout() {
+		return validationQueryTimeout;
+	}
+	public void setValidationQueryTimeout(int validationQueryTimeout) {
+		this.validationQueryTimeout = validationQueryTimeout;
+	}
+	public boolean isTestOnBorrow() {
+		return testOnBorrow;
+	}
+	public void setTestOnBorrow(boolean testOnBorrow) {
+		this.testOnBorrow = testOnBorrow;
+	}
+	public boolean isTestOnReturn() {
+		return testOnReturn;
+	}
+	public void setTestOnReturn(boolean testOnReturn) {
+		this.testOnReturn = testOnReturn;
+	}
+	public boolean isTestWhileIdle() {
+		return testWhileIdle;
+	}
+	public void setTestWhileIdle(boolean testWhileIdle) {
+		this.testWhileIdle = testWhileIdle;
+	}
+	public boolean isPoolPreparedStatements() {
+		return poolPreparedStatements;
+	}
+	public void setPoolPreparedStatements(boolean poolPreparedStatements) {
+		this.poolPreparedStatements = poolPreparedStatements;
+	}
+	public boolean isSharePreparedStatements() {
+		return sharePreparedStatements;
+	}
+	public void setSharePreparedStatements(boolean sharePreparedStatements) {
+		this.sharePreparedStatements = sharePreparedStatements;
+	}
+	public boolean isUseGlobalDataSourceStat() {
+		return useGlobalDataSourceStat;
+	}
+	public void setUseGlobalDataSourceStat(boolean useGlobalDataSourceStat) {
+		this.useGlobalDataSourceStat = useGlobalDataSourceStat;
+	}
+	public int getMaxPoolPreparedStatementPerConnectionSize() {
+		return maxPoolPreparedStatementPerConnectionSize;
+	}
+	public void setMaxPoolPreparedStatementPerConnectionSize(int maxPoolPreparedStatementPerConnectionSize) {
+		this.maxPoolPreparedStatementPerConnectionSize = maxPoolPreparedStatementPerConnectionSize;
+	}
+	public boolean isInited() {
+		return inited;
+	}
+	public void setInited(boolean inited) {
+		this.inited = inited;
+	}
+	public boolean isInitExceptionThrow() {
+		return initExceptionThrow;
+	}
+	public void setInitExceptionThrow(boolean initExceptionThrow) {
+		this.initExceptionThrow = initExceptionThrow;
+	}
+	public PrintWriter getLogWriter() {
+		return logWriter;
+	}
+	public void setLogWriter(PrintWriter logWriter) {
+		this.logWriter = logWriter;
+	}
+	public boolean isClearFiltersEnable() {
+		return clearFiltersEnable;
+	}
+	public void setClearFiltersEnable(boolean clearFiltersEnable) {
+		this.clearFiltersEnable = clearFiltersEnable;
+	}
+	public ExceptionSorter getExceptionSorter() {
+		return exceptionSorter;
+	}
+	public void setExceptionSorter(ExceptionSorter exceptionSorter) {
+		this.exceptionSorter = exceptionSorter;
+	}
+	public Driver getDriver() {
+		return driver;
+	}
+	public void setDriver(Driver driver) {
+		this.driver = driver;
+	}
+	public int getQueryTimeout() {
+		return queryTimeout;
+	}
+	public void setQueryTimeout(int queryTimeout) {
+		this.queryTimeout = queryTimeout;
+	}
+	public int getTransactionQueryTimeout() {
+		return transactionQueryTimeout;
+	}
+	public void setTransactionQueryTimeout(int transactionQueryTimeout) {
+		this.transactionQueryTimeout = transactionQueryTimeout;
+	}
+	public long getCreateTimespan() {
+		return createTimespan;
+	}
+	public void setCreateTimespan(long createTimespan) {
+		this.createTimespan = createTimespan;
+	}
+	public int getMaxWaitThreadCount() {
+		return maxWaitThreadCount;
+	}
+	public void setMaxWaitThreadCount(int maxWaitThreadCount) {
+		this.maxWaitThreadCount = maxWaitThreadCount;
+	}
+	public boolean isAccessToUnderlyingConnectionAllowed() {
+		return accessToUnderlyingConnectionAllowed;
+	}
+	public void setAccessToUnderlyingConnectionAllowed(boolean accessToUnderlyingConnectionAllowed) {
+		this.accessToUnderlyingConnectionAllowed = accessToUnderlyingConnectionAllowed;
+	}
+	public long getTimeBetweenEvictionRunsMillis() {
+		return timeBetweenEvictionRunsMillis;
+	}
+	public void setTimeBetweenEvictionRunsMillis(long timeBetweenEvictionRunsMillis) {
+		this.timeBetweenEvictionRunsMillis = timeBetweenEvictionRunsMillis;
+	}
+	public int getNumTestsPerEvictionRun() {
+		return numTestsPerEvictionRun;
+	}
+	public void setNumTestsPerEvictionRun(int numTestsPerEvictionRun) {
+		this.numTestsPerEvictionRun = numTestsPerEvictionRun;
+	}
+	public long getMinEvictableIdleTimeMillis() {
+		return minEvictableIdleTimeMillis;
+	}
+	public void setMinEvictableIdleTimeMillis(long minEvictableIdleTimeMillis) {
+		this.minEvictableIdleTimeMillis = minEvictableIdleTimeMillis;
+	}
+	public long getMaxEvictableIdleTimeMillis() {
+		return maxEvictableIdleTimeMillis;
+	}
+	public void setMaxEvictableIdleTimeMillis(long maxEvictableIdleTimeMillis) {
+		this.maxEvictableIdleTimeMillis = maxEvictableIdleTimeMillis;
+	}
+	public long getKeepAliveBetweenTimeMillis() {
+		return keepAliveBetweenTimeMillis;
+	}
+	public void setKeepAliveBetweenTimeMillis(long keepAliveBetweenTimeMillis) {
+		this.keepAliveBetweenTimeMillis = keepAliveBetweenTimeMillis;
+	}
+	public long getPhyTimeoutMillis() {
+		return phyTimeoutMillis;
+	}
+	public void setPhyTimeoutMillis(long phyTimeoutMillis) {
+		this.phyTimeoutMillis = phyTimeoutMillis;
+	}
+	public long getPhyMaxUseCount() {
+		return phyMaxUseCount;
+	}
+	public void setPhyMaxUseCount(long phyMaxUseCount) {
+		this.phyMaxUseCount = phyMaxUseCount;
+	}
+	public boolean isRemoveAbandoned() {
+		return removeAbandoned;
+	}
+	public void setRemoveAbandoned(boolean removeAbandoned) {
+		this.removeAbandoned = removeAbandoned;
+	}
+	public long getRemoveAbandonedTimeoutMillis() {
+		return removeAbandonedTimeoutMillis;
+	}
+	public void setRemoveAbandonedTimeoutMillis(long removeAbandonedTimeoutMillis) {
+		this.removeAbandonedTimeoutMillis = removeAbandonedTimeoutMillis;
+	}
+	public boolean isLogAbandoned() {
+		return logAbandoned;
+	}
+	public void setLogAbandoned(boolean logAbandoned) {
+		this.logAbandoned = logAbandoned;
+	}
+	public int getMaxOpenPreparedStatements() {
+		return maxOpenPreparedStatements;
+	}
+	public void setMaxOpenPreparedStatements(int maxOpenPreparedStatements) {
+		this.maxOpenPreparedStatements = maxOpenPreparedStatements;
+	}
+	public List&amp;lt;String&amp;gt; getConnectionInitSqls() {
+		return connectionInitSqls;
+	}
+	public void setConnectionInitSqls(List&amp;lt;String&amp;gt; connectionInitSqls) {
+		this.connectionInitSqls = connectionInitSqls;
+	}
+	public String getDbType() {
+		return dbType;
+	}
+	public void setDbType(String dbType) {
+		this.dbType = dbType;
+	}
+	public long getTimeBetweenConnectErrorMillis() {
+		return timeBetweenConnectErrorMillis;
+	}
+	public void setTimeBetweenConnectErrorMillis(long timeBetweenConnectErrorMillis) {
+		this.timeBetweenConnectErrorMillis = timeBetweenConnectErrorMillis;
+	}
+	public ValidConnectionChecker getValidConnectionChecker() {
+		return validConnectionChecker;
+	}
+	public void setValidConnectionChecker(ValidConnectionChecker validConnectionChecker) {
+		this.validConnectionChecker = validConnectionChecker;
+	}
+	public long getId() {
+		return id;
+	}
+	public void setId(long id) {
+		this.id = id;
+	}
+	public int getConnectionErrorRetryAttempts() {
+		return connectionErrorRetryAttempts;
+	}
+	public void setConnectionErrorRetryAttempts(int connectionErrorRetryAttempts) {
+		this.connectionErrorRetryAttempts = connectionErrorRetryAttempts;
+	}
+	public boolean isBreakAfterAcquireFailure() {
+		return breakAfterAcquireFailure;
+	}
+	public void setBreakAfterAcquireFailure(boolean breakAfterAcquireFailure) {
+		this.breakAfterAcquireFailure = breakAfterAcquireFailure;
+	}
+	public long getTransactionThresholdMillis() {
+		return transactionThresholdMillis;
+	}
+	public void setTransactionThresholdMillis(long transactionThresholdMillis) {
+		this.transactionThresholdMillis = transactionThresholdMillis;
+	}
+	public Date getInitedTime() {
+		return initedTime;
+	}
+	public void setInitedTime(Date initedTime) {
+		this.initedTime = initedTime;
+	}
+	public long getErrorCount() {
+		return errorCount;
+	}
+	public void setErrorCount(long errorCount) {
+		this.errorCount = errorCount;
+	}
+	public long getDupCloseCount() {
+		return dupCloseCount;
+	}
+	public void setDupCloseCount(long dupCloseCount) {
+		this.dupCloseCount = dupCloseCount;
+	}
+	public long getStartTransactionCount() {
+		return startTransactionCount;
+	}
+	public void setStartTransactionCount(long startTransactionCount) {
+		this.startTransactionCount = startTransactionCount;
+	}
+	public long getCommitCount() {
+		return commitCount;
+	}
+	public void setCommitCount(long commitCount) {
+		this.commitCount = commitCount;
+	}
+	public long getRollbackCount() {
+		return rollbackCount;
+	}
+	public void setRollbackCount(long rollbackCount) {
+		this.rollbackCount = rollbackCount;
+	}
+	public long getCachedPreparedStatementHitCount() {
+		return cachedPreparedStatementHitCount;
+	}
+	public void setCachedPreparedStatementHitCount(long cachedPreparedStatementHitCount) {
+		this.cachedPreparedStatementHitCount = cachedPreparedStatementHitCount;
+	}
+	public long getPreparedStatementCount() {
+		return preparedStatementCount;
+	}
+	public void setPreparedStatementCount(long preparedStatementCount) {
+		this.preparedStatementCount = preparedStatementCount;
+	}
+	public long getClosedPreparedStatementCount() {
+		return closedPreparedStatementCount;
+	}
+	public void setClosedPreparedStatementCount(long closedPreparedStatementCount) {
+		this.closedPreparedStatementCount = closedPreparedStatementCount;
+	}
+	public long getCachedPreparedStatementCount() {
+		return cachedPreparedStatementCount;
+	}
+	public void setCachedPreparedStatementCount(long cachedPreparedStatementCount) {
+		this.cachedPreparedStatementCount = cachedPreparedStatementCount;
+	}
+	public long getCachedPreparedStatementDeleteCount() {
+		return cachedPreparedStatementDeleteCount;
+	}
+	public void setCachedPreparedStatementDeleteCount(long cachedPreparedStatementDeleteCount) {
+		this.cachedPreparedStatementDeleteCount = cachedPreparedStatementDeleteCount;
+	}
+	public long getCachedPreparedStatementMissCount() {
+		return cachedPreparedStatementMissCount;
+	}
+	public void setCachedPreparedStatementMissCount(long cachedPreparedStatementMissCount) {
+		this.cachedPreparedStatementMissCount = cachedPreparedStatementMissCount;
+	}
+	public boolean isDupCloseLogEnable() {
+		return dupCloseLogEnable;
+	}
+	public void setDupCloseLogEnable(boolean dupCloseLogEnable) {
+		this.dupCloseLogEnable = dupCloseLogEnable;
+	}
+	public long getExecuteCount() {
+		return executeCount;
+	}
+	public void setExecuteCount(long executeCount) {
+		this.executeCount = executeCount;
+	}
+	public long getExecuteQueryCount() {
+		return executeQueryCount;
+	}
+	public void setExecuteQueryCount(long executeQueryCount) {
+		this.executeQueryCount = executeQueryCount;
+	}
+	public long getExecuteUpdateCount() {
+		return executeUpdateCount;
+	}
+	public void setExecuteUpdateCount(long executeUpdateCount) {
+		this.executeUpdateCount = executeUpdateCount;
+	}
+	public long getExecuteBatchCount() {
+		return executeBatchCount;
+	}
+	public void setExecuteBatchCount(long executeBatchCount) {
+		this.executeBatchCount = executeBatchCount;
+	}
+	public Throwable getCreateError() {
+		return createError;
+	}
+	public void setCreateError(Throwable createError) {
+		this.createError = createError;
+	}
+	public Throwable getLastError() {
+		return lastError;
+	}
+	public void setLastError(Throwable lastError) {
+		this.lastError = lastError;
+	}
+	public long getLastErrorTimeMillis() {
+		return lastErrorTimeMillis;
+	}
+	public void setLastErrorTimeMillis(long lastErrorTimeMillis) {
+		this.lastErrorTimeMillis = lastErrorTimeMillis;
+	}
+	public Throwable getLastCreateError() {
+		return lastCreateError;
+	}
+	public void setLastCreateError(Throwable lastCreateError) {
+		this.lastCreateError = lastCreateError;
+	}
+	public long getLastCreateErrorTimeMillis() {
+		return lastCreateErrorTimeMillis;
+	}
+	public void setLastCreateErrorTimeMillis(long lastCreateErrorTimeMillis) {
+		this.lastCreateErrorTimeMillis = lastCreateErrorTimeMillis;
+	}
+	public long getLastCreateStartTimeMillis() {
+		return lastCreateStartTimeMillis;
+	}
+	public void setLastCreateStartTimeMillis(long lastCreateStartTimeMillis) {
+		this.lastCreateStartTimeMillis = lastCreateStartTimeMillis;
+	}
+	public boolean isOracle() {
+		return isOracle;
+	}
+	public void setOracle(boolean isOracle) {
+		this.isOracle = isOracle;
+	}
+	public boolean isMySql() {
+		return isMySql;
+	}
+	public void setMySql(boolean isMySql) {
+		this.isMySql = isMySql;
+	}
+	public boolean isUseOracleImplicitCache() {
+		return useOracleImplicitCache;
+	}
+	public void setUseOracleImplicitCache(boolean useOracleImplicitCache) {
+		this.useOracleImplicitCache = useOracleImplicitCache;
+	}
+	public ReentrantLock getLock() {
+		return lock;
+	}
+	public void setLock(ReentrantLock lock) {
+		this.lock = lock;
+	}
+	public Condition getNotEmpty() {
+		return notEmpty;
+	}
+	public void setNotEmpty(Condition notEmpty) {
+		this.notEmpty = notEmpty;
+	}
+	public Condition getEmpty() {
+		return empty;
+	}
+	public void setEmpty(Condition empty) {
+		this.empty = empty;
+	}
+	public ReentrantLock getActiveConnectionLock() {
+		return activeConnectionLock;
+	}
+	public void setActiveConnectionLock(ReentrantLock activeConnectionLock) {
+		this.activeConnectionLock = activeConnectionLock;
+	}
+	public int getCreateErrorCount() {
+		return createErrorCount;
+	}
+	public void setCreateErrorCount(int createErrorCount) {
+		this.createErrorCount = createErrorCount;
+	}
+	public int getCreatingCount() {
+		return creatingCount;
+	}
+	public void setCreatingCount(int creatingCount) {
+		this.creatingCount = creatingCount;
+	}
+	public int getDirectCreateCount() {
+		return directCreateCount;
+	}
+	public void setDirectCreateCount(int directCreateCount) {
+		this.directCreateCount = directCreateCount;
+	}
+	public long getCreateCount() {
+		return createCount;
+	}
+	public void setCreateCount(long createCount) {
+		this.createCount = createCount;
+	}
+	public long getDestroyCount() {
+		return destroyCount;
+	}
+	public void setDestroyCount(long destroyCount) {
+		this.destroyCount = destroyCount;
+	}
+	public long getCreateStartNanos() {
+		return createStartNanos;
+	}
+	public void setCreateStartNanos(long createStartNanos) {
+		this.createStartNanos = createStartNanos;
+	}
+	public Map&amp;lt;DruidPooledConnection, Object&amp;gt; getActiveConnections() {
+		return activeConnections;
+	}
+}
+
+&lt;/code&gt;&lt;/pre&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;再写一个基本配置继承于上面的properties类&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;package com.hisaige.database.config.data;
+
+import org.springframework.boot.context.properties.ConfigurationProperties;
+
+@ConfigurationProperties(prefix = &amp;quot;spring.datasource.druid&amp;quot;)
+public class DataBaseProperties extends DruidProperties {
+
+private String filters;
+private String connectionProperties;
+//当前配置下暂时用不到
+private String dialect;
+//当前配置下暂时用不到
+private String showSql;
+//当前配置下暂时用不到
+private String model;
+public String getFilters() {
+  return filters;
+}
+
+public void setFilters(String filters) {
+  this.filters = filters;
+}
+
+public String getConnectionProperties() {
+  return connectionProperties;
+}
+
+public void setConnectionProperties(String connectionProperties) {
+  this.connectionProperties = connectionProperties;
+}
+
+public String getDialect() {
+  return dialect;
+}
+
+public void setDialect(String dialect) {
+  this.dialect = dialect;
+}
+
+public String getShowSql() {
+  return showSql;
+}
+
+public void setShowSql(String showSql) {
+  this.showSql = showSql;
+}
+
+public String getModel() {
+  return model;
+}
+
+public void setModel(String model) {
+  this.model = model;
+}
+
+@Override
+public String toString() {
+  return &amp;quot;DataBaseProperties [filters=&amp;quot; + filters + &amp;quot;, connectionProperties=&amp;quot; + connectionProperties
+        + &amp;quot;, dialect=&amp;quot; + dialect + &amp;quot;, showSql=&amp;quot; + showSql + &amp;quot;, model=&amp;quot; + model + &amp;quot;]&amp;quot;;
+}
+// druid
+
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;/li&gt;
+&lt;/ol&gt;
+</description>
+      
+    </item>
+    
+    <item>
       <title>Math Preview</title>
-      <link>https://hisaige.github.io/post/math-preview/</link>
+      <link>https://hisaige.github.io/post/docs/math-preview/</link>
       <pubDate>Mon, 04 Mar 2019 16:01:23 +0800</pubDate>
       
-      <guid>https://hisaige.github.io/post/math-preview/</guid>
+      <guid>https://hisaige.github.io/post/docs/math-preview/</guid>
       
         <description>&lt;p&gt;&lt;a href=&#34;https://www.intmath.com/cg5/katex-mathjax-comparison.php&#34;&gt;KaTeX and MathJax Comparison Demo, currently processed as KaTex&lt;/a&gt;&lt;/p&gt;
 
@@ -608,10 +2200,10 @@ f(x) \sim x^2, \quad x\to\infty
     
     <item>
       <title>Shortcodes Preview</title>
-      <link>https://hisaige.github.io/post/shortcodes-preview/</link>
+      <link>https://hisaige.github.io/post/docs/shortcodes-preview/</link>
       <pubDate>Sun, 04 Mar 2018 16:01:23 +0800</pubDate>
       
-      <guid>https://hisaige.github.io/post/shortcodes-preview/</guid>
+      <guid>https://hisaige.github.io/post/docs/shortcodes-preview/</guid>
       
         <description>&lt;h2 id=&#34;what-a-shortcode-is&#34;&gt;What a Shortcode is&lt;/h2&gt;
 
@@ -1027,10 +2619,10 @@ Yes !.
     
     <item>
       <title>Image Preview</title>
-      <link>https://hisaige.github.io/post/image-preview/</link>
+      <link>https://hisaige.github.io/post/docs/image-preview/</link>
       <pubDate>Sat, 03 Mar 2018 16:01:23 +0800</pubDate>
       
-      <guid>https://hisaige.github.io/post/image-preview/</guid>
+      <guid>https://hisaige.github.io/post/docs/image-preview/</guid>
       
         <description>&lt;p&gt;Thanks for &lt;a href=&#34;https://github.com/liwenyip/hugo-easy-gallery&#34;&gt;liwenyip/hugo-easy-gallery&lt;/a&gt; &amp;amp; &lt;a href=&#34;https://github.com/xianmin/hugo-theme-jane/pull/48&#34;&gt;Zebradil · Pull Request #48&lt;/a&gt; .&lt;/p&gt;
 
@@ -1145,10 +2737,10 @@ Yes !.
     
     <item>
       <title>Shortcodes Notice Preview</title>
-      <link>https://hisaige.github.io/post/shortcode-notice/</link>
+      <link>https://hisaige.github.io/post/docs/shortcode-notice/</link>
       <pubDate>Sat, 03 Mar 2018 16:01:23 +0800</pubDate>
       
-      <guid>https://hisaige.github.io/post/shortcode-notice/</guid>
+      <guid>https://hisaige.github.io/post/docs/shortcode-notice/</guid>
       
         <description>
 
@@ -1255,10 +2847,10 @@ A warning disclaimer
     
     <item>
       <title>Jane-Theme Footnote Preview</title>
-      <link>https://hisaige.github.io/post/doc-footnote-preview/</link>
+      <link>https://hisaige.github.io/post/docs/doc-footnote-preview/</link>
       <pubDate>Thu, 01 Mar 2018 16:01:23 +0800</pubDate>
       
-      <guid>https://hisaige.github.io/post/doc-footnote-preview/</guid>
+      <guid>https://hisaige.github.io/post/docs/doc-footnote-preview/</guid>
       
         <description>&lt;p&gt;Hugo-theme-jane optimized for footnote. When you mouse hover the footnote&lt;sup class=&#34;footnote-ref&#34; id=&#34;fnref:example&#34;&gt;&lt;a href=&#34;#fn:example&#34;&gt;1&lt;/a&gt;&lt;/sup&gt; , footnote content will be displayed.&lt;/p&gt;
 
@@ -1350,10 +2942,10 @@ A warning disclaimer
     
     <item>
       <title>English Creating a New Theme</title>
-      <link>https://hisaige.github.io/post/english-preview/</link>
+      <link>https://hisaige.github.io/post/docs/english-preview/</link>
       <pubDate>Thu, 31 Aug 2017 15:43:48 +0800</pubDate>
       
-      <guid>https://hisaige.github.io/post/english-preview/</guid>
+      <guid>https://hisaige.github.io/post/docs/english-preview/</guid>
       
         <description>&lt;h2 id=&#34;introduction&#34;&gt;Introduction&lt;/h2&gt;
 
@@ -2451,10 +4043,10 @@ $ vi themes/zafta/layouts/_default/single.html
     
     <item>
       <title>This is a very long title This is a very long title This is a very long title This is a very long title This is a very long title</title>
-      <link>https://hisaige.github.io/post/this-is-a-very-long-title/</link>
+      <link>https://hisaige.github.io/post/docs/this-is-a-very-long-title/</link>
       <pubDate>Wed, 30 Aug 2017 15:43:48 +0800</pubDate>
       
-      <guid>https://hisaige.github.io/post/this-is-a-very-long-title/</guid>
+      <guid>https://hisaige.github.io/post/docs/this-is-a-very-long-title/</guid>
       
         <description>&lt;p&gt;This is a very long titleThis is a very long titleThis is a very long titleThis is a very long titleThis is a very long titleThis is a very long titleThis is a very long titleThis is a very long titleThis is a very long titleThis is a very long titleThis is a very long titleThis is a very long titleThis is a very long titleThis is a very long titleThis is a very long titleThis is a very long titleThis is a very long titleThis is a very long titleThis is a very long titleThis is a very long titleThis is a very long titleThis is a very long titleThis is a very long titleThis is a very long titleThis is a very long titleThis is a very long titleThis is a very long titleThis is a very long titleThis is a very long titleThis is a very long titleThis is a very long titleThis is a very long titleThis is a very long titleThis is a very long titleThis is a very long titleThis is a very long titleThis is a very long titleThis is a very long titleThis is a very long titleThis is a very long titleThis is a very long titleThis is a very long titleThis is a very long titleThis is a very long titleThis is a very long titleThis is a very long titleThis is a very long titleThis is a very long titleThis is a very long title&lt;/p&gt;
 </description>
@@ -2463,10 +4055,10 @@ $ vi themes/zafta/layouts/_default/single.html
     
     <item>
       <title>Creating a New Theme</title>
-      <link>https://hisaige.github.io/post/creating-a-new-theme/</link>
+      <link>https://hisaige.github.io/post/docs/creating-a-new-theme/</link>
       <pubDate>Sun, 28 Sep 2014 00:00:00 +0000</pubDate>
       
-      <guid>https://hisaige.github.io/post/creating-a-new-theme/</guid>
+      <guid>https://hisaige.github.io/post/docs/creating-a-new-theme/</guid>
       
         <description>
 
@@ -3567,10 +5159,128 @@ $ vi themes/zafta/layouts/_default/single.html
     
     <item>
       <title>linux下git&amp;nodejs&amp;npm安装</title>
-      <link>https://hisaige.github.io/post/linux%E4%B8%8Bgitnodejsnpm%E5%AE%89%E8%A3%85/</link>
+      <link>https://hisaige.github.io/post/docs/linux%E4%B8%8Bgitnodejsnpm%E5%AE%89%E8%A3%85/</link>
       <pubDate>Sun, 28 Sep 2014 00:00:00 +0000</pubDate>
       
-      <guid>https://hisaige.github.io/post/linux%E4%B8%8Bgitnodejsnpm%E5%AE%89%E8%A3%85/</guid>
+      <guid>https://hisaige.github.io/post/docs/linux%E4%B8%8Bgitnodejsnpm%E5%AE%89%E8%A3%85/</guid>
+      
+        <description>
+
+&lt;h1&gt;linux下git&amp;nodeJS&amp;npm安装&amp;hugo部署&lt;/h1&gt;
+
+&lt;h2 id=&#34;1-git-安装&#34;&gt;1. git 安装&lt;/h2&gt;
+
+&lt;p&gt;1.安装前检查&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;#1.查看git版本,如果能出版本号，说明git已经安装，酌情考虑是否需要重新安装
+git --version
+#2.卸载git
+yum remove git
+
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;下载 &lt;a href=&#34;https://github.com/git/git/releases/&#34; title=&#34;git官方下载地址&#34;&gt;git&lt;/a&gt; ，然后解压，编译安装，配置。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;#在local下建立git文件夹 查看当前目录 我的控制台打印出 /usr/local/git 
+pwd
+
+# shell下载
+wget https://github.com/git/git/archive/v2.23.0.tar.gz
+
+# 解压
+tar -xzvf git-2.18.1.tar.gz
+
+#进入解压目录
+cd git-2.18.1
+
+#配置git安装路径
+./configure prefix=/usr/local/git/git-2.18.1
+
+#编译安装
+make &amp;amp;&amp;amp; make install
+
+#注意 如果安装失败，则执行以下指令安装依赖包
+yum install curl-devel expat-devel gettext-devel openssl-devel zlib-devel 
+yum install gcc-c++ perl-ExtUtils-MakeMaker
+
+#最后配置环境变量，将git的运行指令添加到环境变量中
+    # 在 /etc/profile 最后一行加入
+    export PATH=$PATH:/usr/local/git/bin
+ #或
+ 	echo &amp;quot;export PATH=$PATH:/usr/git/bin&amp;quot; &amp;gt;&amp;gt; /etc/profile
+
+#使配置生效
+source /etc/profile
+
+# 查看git版本 
+git --version
+
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;2-nodejs-npm&#34;&gt;2. nodejs&amp;amp;npm&lt;/h2&gt;
+
+&lt;p&gt;根据需要下载 &lt;a href=&#34;https://nodejs.org/en/download/current/&#34; title=&#34;node官方下载地址&#34;&gt;nodeJs&lt;/a&gt; ，解压。以我的运行环境为例。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;[root@localhost node]# ls
+node-v12.9.1-linux-x64  node-v12.9.1-linux-x64.tar.xz
+[root@localhost node]# cd node-v12.9.1-linux-x64/
+[root@localhost node-v12.9.1-linux-x64]# ls
+bin  CHANGELOG.md  include  lib  LICENSE  README.md  share
+[root@localhost node-v12.9.1-linux-x64]# cd bin
+[root@localhost bin]# ls
+node  npm  npx
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;配置软连接&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;[root@localhost bin]# ln -s /usr/local/node/node-v12.9.1-linux-x64/bin/npm   /usr/local/bin/
+[root@localhost bin]# ln -s /usr/local/node/node-v12.9.1-linux-x64/bin/npm   /usr/local/bin/
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;安装成功，查看版本&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;[root@localhost bin]# node -v
+v12.9.1
+[root@localhost bin]# npm -v
+6.10.2
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;3-hugo安装及github部署&#34;&gt;3. hugo安装及github部署&lt;/h2&gt;
+
+&lt;p&gt;到 &lt;a href=&#34;https://github.com/spf13/hugo/releases&#34;&gt;Hugo Releases&lt;/a&gt; 下载 &lt;code&gt;*Linux-64bit.tar.gz&lt;/code&gt; 压缩包放置到 &lt;code&gt;/usr/local/hugo&lt;/code&gt;下解压，生成一个名为 &lt;code&gt;hugo&lt;/code&gt;的可执行文件。主题本人使用的是 &lt;a href=&#34;https://github.com/xianmin/hugo-theme-jane&#34;&gt;hugo-theme-jane&lt;/a&gt; ，hugo网站创建的具体步骤可参考github上jane的教程说明。在这里主要讲的是github部署。&lt;/p&gt;
+
+&lt;p&gt;首先在github上创建一个名为 &lt;code&gt;xxx.github.io&lt;/code&gt;的仓库，其中 &lt;code&gt;xxx&lt;/code&gt; 为你的github用户名。然后将你hugo目录下的public文件夹通过git上传到github上即可。可参考如下过程:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;$ mkdir /usr/blog/git
+$ git clone &#39;刚你创建的空仓库&#39;
+$ cd /usr/local/hugo/myblog/public
+$ cp -r . /usr/blog/git
+$ cd /usr/blog/git/
+$ git add .
+$ git commit -m &amp;quot;初始化hugo&amp;quot;
+$ git push origin master
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;在启动hugo生成站点时，需要注意 一般的启动方式&lt;code&gt;hugo server&lt;/code&gt;并不适用于远程部署。&lt;/p&gt;
+
+&lt;p&gt;如果要部署到github，可参考如下编译方式：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;# jane 是主题名，记住 .io/ 中的 / 不能缺少
+hugo --theme=jane --baseUrl=https://xxx.github.io/
+
+# 如果hugo指令不能用，可以配置环境变量或者软连接
+[root@localhost bin]# ln -s /usr/local/hugo/hugo /usr/local/bin/
+&lt;/code&gt;&lt;/pre&gt;
+</description>
+      
+    </item>
+    
+    <item>
+      <title>linux下git&amp;nodejs&amp;npm安装</title>
+      <link>https://hisaige.github.io/post/tool/linux%E4%B8%8Bgitnodejsnpm%E5%AE%89%E8%A3%85/</link>
+      <pubDate>Sun, 28 Sep 2014 00:00:00 +0000</pubDate>
+      
+      <guid>https://hisaige.github.io/post/tool/linux%E4%B8%8Bgitnodejsnpm%E5%AE%89%E8%A3%85/</guid>
       
         <description>
 
@@ -3685,10 +5395,10 @@ hugo --theme=jane --baseUrl=https://xxx.github.io/
     
     <item>
       <title>(Hu)go Template Primer</title>
-      <link>https://hisaige.github.io/post/goisforlovers/</link>
+      <link>https://hisaige.github.io/post/docs/goisforlovers/</link>
       <pubDate>Wed, 02 Apr 2014 00:00:00 +0000</pubDate>
       
-      <guid>https://hisaige.github.io/post/goisforlovers/</guid>
+      <guid>https://hisaige.github.io/post/docs/goisforlovers/</guid>
       
         <description>
 
@@ -4033,10 +5743,10 @@ so, such as in this example:&lt;/p&gt;
     
     <item>
       <title>Getting Started with Hugo</title>
-      <link>https://hisaige.github.io/post/hugoisforlovers/</link>
+      <link>https://hisaige.github.io/post/docs/hugoisforlovers/</link>
       <pubDate>Wed, 02 Apr 2014 00:00:00 +0000</pubDate>
       
-      <guid>https://hisaige.github.io/post/hugoisforlovers/</guid>
+      <guid>https://hisaige.github.io/post/docs/hugoisforlovers/</guid>
       
         <description>
 
@@ -4117,360 +5827,6 @@ Having nearly instant feedback enables you to have your creativity flow without 
 
 &lt;p&gt;The best way to learn something is to play with it.&lt;/p&gt;
 </description>
-      
-    </item>
-    
-    <item>
-      <title>Migrate to Hugo from Jekyll</title>
-      <link>https://hisaige.github.io/post/migrate-from-jekyll/</link>
-      <pubDate>Mon, 10 Mar 2014 00:00:00 +0000</pubDate>
-      
-      <guid>https://hisaige.github.io/post/migrate-from-jekyll/</guid>
-      
-        <description>
-
-&lt;h2 id=&#34;move-static-content-to-static&#34;&gt;Move static content to &lt;code&gt;static&lt;/code&gt;&lt;/h2&gt;
-
-&lt;p&gt;Jekyll has a rule that any directory not starting with &lt;code&gt;_&lt;/code&gt; will be copied as-is to the &lt;code&gt;_site&lt;/code&gt; output. Hugo keeps all static content under &lt;code&gt;static&lt;/code&gt;. You should therefore move it all there.
-With Jekyll, something that looked like&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;▾ &amp;lt;root&amp;gt;/
-    ▾ images/
-        logo.png
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;should become&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;▾ &amp;lt;root&amp;gt;/
-    ▾ static/
-        ▾ images/
-            logo.png
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;Additionally, you&amp;rsquo;ll want any files that should reside at the root (such as &lt;code&gt;CNAME&lt;/code&gt;) to be moved to &lt;code&gt;static&lt;/code&gt;.&lt;/p&gt;
-
-&lt;h2 id=&#34;create-your-hugo-configuration-file&#34;&gt;Create your Hugo configuration file&lt;/h2&gt;
-
-&lt;p&gt;Hugo can read your configuration as JSON, YAML or TOML. Hugo supports parameters custom configuration too. Refer to the &lt;a href=&#34;https://hisaige.github.io/overview/configuration/&#34;&gt;Hugo configuration documentation&lt;/a&gt; for details.&lt;/p&gt;
-
-&lt;h2 id=&#34;set-your-configuration-publish-folder-to-site&#34;&gt;Set your configuration publish folder to &lt;code&gt;_site&lt;/code&gt;&lt;/h2&gt;
-
-&lt;p&gt;The default is for Jekyll to publish to &lt;code&gt;_site&lt;/code&gt; and for Hugo to publish to &lt;code&gt;public&lt;/code&gt;. If, like me, you have &lt;a href=&#34;http://blog.blindgaenger.net/generate_github_pages_in_a_submodule.html&#34;&gt;&lt;code&gt;_site&lt;/code&gt; mapped to a git submodule on the &lt;code&gt;gh-pages&lt;/code&gt; branch&lt;/a&gt;, you&amp;rsquo;ll want to do one of two alternatives:&lt;/p&gt;
-
-&lt;ol&gt;
-&lt;li&gt;&lt;p&gt;Change your submodule to point to map &lt;code&gt;gh-pages&lt;/code&gt; to public instead of &lt;code&gt;_site&lt;/code&gt; (recommended).&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;git submodule deinit _site
-git rm _site
-git submodule add -b gh-pages git@github.com:your-username/your-repo.git public
-&lt;/code&gt;&lt;/pre&gt;&lt;/li&gt;
-
-&lt;li&gt;&lt;p&gt;Or, change the Hugo configuration to use &lt;code&gt;_site&lt;/code&gt; instead of &lt;code&gt;public&lt;/code&gt;.&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;{
-    ..
-    &amp;quot;publishdir&amp;quot;: &amp;quot;_site&amp;quot;,
-    ..
-}
-&lt;/code&gt;&lt;/pre&gt;&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;h2 id=&#34;convert-jekyll-templates-to-hugo-templates&#34;&gt;Convert Jekyll templates to Hugo templates&lt;/h2&gt;
-
-&lt;p&gt;That&amp;rsquo;s the bulk of the work right here. The documentation is your friend. You should refer to &lt;a href=&#34;http://jekyllrb.com/docs/templates/&#34;&gt;Jekyll&amp;rsquo;s template documentation&lt;/a&gt; if you need to refresh your memory on how you built your blog and &lt;a href=&#34;https://hisaige.github.io/layout/templates/&#34;&gt;Hugo&amp;rsquo;s template&lt;/a&gt; to learn Hugo&amp;rsquo;s way.&lt;/p&gt;
-
-&lt;p&gt;As a single reference data point, converting my templates for &lt;a href=&#34;http://heyitsalex.net/&#34;&gt;heyitsalex.net&lt;/a&gt; took me no more than a few hours.&lt;/p&gt;
-
-&lt;h2 id=&#34;convert-jekyll-plugins-to-hugo-shortcodes&#34;&gt;Convert Jekyll plugins to Hugo shortcodes&lt;/h2&gt;
-
-&lt;p&gt;Jekyll has &lt;a href=&#34;http://jekyllrb.com/docs/plugins/&#34;&gt;plugins&lt;/a&gt;; Hugo has &lt;a href=&#34;https://hisaige.github.io/doc/shortcodes/&#34;&gt;shortcodes&lt;/a&gt;. It&amp;rsquo;s fairly trivial to do a port.&lt;/p&gt;
-
-&lt;h3 id=&#34;implementation&#34;&gt;Implementation&lt;/h3&gt;
-
-&lt;p&gt;As an example, I was using a custom &lt;a href=&#34;https://github.com/alexandre-normand/alexandre-normand/blob/74bb12036a71334fdb7dba84e073382fc06908ec/_plugins/image_tag.rb&#34;&gt;&lt;code&gt;image_tag&lt;/code&gt;&lt;/a&gt; plugin to generate figures with caption when running Jekyll. As I read about shortcodes, I found Hugo had a nice built-in shortcode that does exactly the same thing.&lt;/p&gt;
-
-&lt;p&gt;Jekyll&amp;rsquo;s plugin:&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;module Jekyll
-  class ImageTag &amp;lt; Liquid::Tag
-    @url = nil
-    @caption = nil
-    @class = nil
-    @link = nil
-    // Patterns
-    IMAGE_URL_WITH_CLASS_AND_CAPTION =
-    IMAGE_URL_WITH_CLASS_AND_CAPTION_AND_LINK = /(\w+)(\s+)((https?:\/\/|\/)(\S+))(\s+)&amp;quot;(.*?)&amp;quot;(\s+)-&amp;gt;((https?:\/\/|\/)(\S+))(\s*)/i
-    IMAGE_URL_WITH_CAPTION = /((https?:\/\/|\/)(\S+))(\s+)&amp;quot;(.*?)&amp;quot;/i
-    IMAGE_URL_WITH_CLASS = /(\w+)(\s+)((https?:\/\/|\/)(\S+))/i
-    IMAGE_URL = /((https?:\/\/|\/)(\S+))/i
-    def initialize(tag_name, markup, tokens)
-      super
-      if markup =~ IMAGE_URL_WITH_CLASS_AND_CAPTION_AND_LINK
-        @class   = $1
-        @url     = $3
-        @caption = $7
-        @link = $9
-      elsif markup =~ IMAGE_URL_WITH_CLASS_AND_CAPTION
-        @class   = $1
-        @url     = $3
-        @caption = $7
-      elsif markup =~ IMAGE_URL_WITH_CAPTION
-        @url     = $1
-        @caption = $5
-      elsif markup =~ IMAGE_URL_WITH_CLASS
-        @class = $1
-        @url   = $3
-      elsif markup =~ IMAGE_URL
-        @url = $1
-      end
-    end
-    def render(context)
-      if @class
-        source = &amp;quot;&amp;lt;figure class=&#39;#{@class}&#39;&amp;gt;&amp;quot;
-      else
-        source = &amp;quot;&amp;lt;figure&amp;gt;&amp;quot;
-      end
-      if @link
-        source += &amp;quot;&amp;lt;a href=\&amp;quot;#{@link}\&amp;quot;&amp;gt;&amp;quot;
-      end
-      source += &amp;quot;&amp;lt;img src=\&amp;quot;#{@url}\&amp;quot;&amp;gt;&amp;quot;
-      if @link
-        source += &amp;quot;&amp;lt;/a&amp;gt;&amp;quot;
-      end
-      source += &amp;quot;&amp;lt;figcaption&amp;gt;#{@caption}&amp;lt;/figcaption&amp;gt;&amp;quot; if @caption
-      source += &amp;quot;&amp;lt;/figure&amp;gt;&amp;quot;
-      source
-    end
-  end
-end
-Liquid::Template.register_tag(&#39;image&#39;, Jekyll::ImageTag)
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;is written as this Hugo shortcode:&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;&amp;lt;!-- image --&amp;gt;
-&amp;lt;figure {{ with .Get &amp;quot;class&amp;quot; }}class=&amp;quot;{{.}}&amp;quot;{{ end }}&amp;gt;
-    {{ with .Get &amp;quot;link&amp;quot;}}&amp;lt;a href=&amp;quot;{{.}}&amp;quot;&amp;gt;{{ end }}
-        &amp;lt;img src=&amp;quot;{{ .Get &amp;quot;src&amp;quot; }}&amp;quot; {{ if or (.Get &amp;quot;alt&amp;quot;) (.Get &amp;quot;caption&amp;quot;) }}alt=&amp;quot;{{ with .Get &amp;quot;alt&amp;quot;}}{{.}}{{else}}{{ .Get &amp;quot;caption&amp;quot; }}{{ end }}&amp;quot;{{ end }} /&amp;gt;
-    {{ if .Get &amp;quot;link&amp;quot;}}&amp;lt;/a&amp;gt;{{ end }}
-    {{ if or (or (.Get &amp;quot;title&amp;quot;) (.Get &amp;quot;caption&amp;quot;)) (.Get &amp;quot;attr&amp;quot;)}}
-    &amp;lt;figcaption&amp;gt;{{ if isset .Params &amp;quot;title&amp;quot; }}
-        {{ .Get &amp;quot;title&amp;quot; }}{{ end }}
-        {{ if or (.Get &amp;quot;caption&amp;quot;) (.Get &amp;quot;attr&amp;quot;)}}&amp;lt;p&amp;gt;
-        {{ .Get &amp;quot;caption&amp;quot; }}
-        {{ with .Get &amp;quot;attrlink&amp;quot;}}&amp;lt;a href=&amp;quot;{{.}}&amp;quot;&amp;gt; {{ end }}
-            {{ .Get &amp;quot;attr&amp;quot; }}
-        {{ if .Get &amp;quot;attrlink&amp;quot;}}&amp;lt;/a&amp;gt; {{ end }}
-        &amp;lt;/p&amp;gt; {{ end }}
-    &amp;lt;/figcaption&amp;gt;
-    {{ end }}
-&amp;lt;/figure&amp;gt;
-&amp;lt;!-- image --&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h3 id=&#34;usage&#34;&gt;Usage&lt;/h3&gt;
-
-&lt;p&gt;I simply changed:&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;{% image full http://farm5.staticflickr.com/4136/4829260124_57712e570a_o_d.jpg &amp;quot;One of my favorite touristy-type photos. I secretly waited for the good light while we were &amp;quot;having fun&amp;quot; and took this. Only regret: a stupid pole in the top-left corner of the frame I had to clumsily get rid of at post-processing.&amp;quot; -&amp;gt;http://www.flickr.com/photos/alexnormand/4829260124/in/set-72157624547713078/ %}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;to this (this example uses a slightly extended version named &lt;code&gt;fig&lt;/code&gt;, different than the built-in &lt;code&gt;figure&lt;/code&gt;):&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;{{% fig class=&amp;quot;full&amp;quot; src=&amp;quot;http://farm5.staticflickr.com/4136/4829260124_57712e570a_o_d.jpg&amp;quot; title=&amp;quot;One of my favorite touristy-type photos. I secretly waited for the good light while we were having fun and took this. Only regret: a stupid pole in the top-left corner of the frame I had to clumsily get rid of at post-processing.&amp;quot; link=&amp;quot;http://www.flickr.com/photos/alexnormand/4829260124/in/set-72157624547713078/&amp;quot; %}}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;As a bonus, the shortcode named parameters are, arguably, more readable.&lt;/p&gt;
-
-&lt;h2 id=&#34;finishing-touches&#34;&gt;Finishing touches&lt;/h2&gt;
-
-&lt;h3 id=&#34;fix-content&#34;&gt;Fix content&lt;/h3&gt;
-
-&lt;p&gt;Depending on the amount of customization that was done with each post with Jekyll, this step will require more or less effort. There are no hard and fast rules here except that &lt;code&gt;hugo server --watch&lt;/code&gt; is your friend. Test your changes and fix errors as needed.&lt;/p&gt;
-
-&lt;h3 id=&#34;clean-up&#34;&gt;Clean up&lt;/h3&gt;
-
-&lt;p&gt;You&amp;rsquo;ll want to remove the Jekyll configuration at this point. If you have anything else that isn&amp;rsquo;t used, delete it.&lt;/p&gt;
-
-&lt;h2 id=&#34;a-practical-example-in-a-diff&#34;&gt;A practical example in a diff&lt;/h2&gt;
-
-&lt;p&gt;&lt;a href=&#34;http://heyitsalex.net/&#34;&gt;Hey, it&amp;rsquo;s Alex&lt;/a&gt; was migrated in less than a &lt;em&gt;father-with-kids day&lt;/em&gt; from Jekyll to Hugo. You can see all the changes (and screw-ups) by looking at this &lt;a href=&#34;https://github.com/alexandre-normand/alexandre-normand/compare/869d69435bd2665c3fbf5b5c78d4c22759d7613a...b7f6605b1265e83b4b81495423294208cc74d610&#34;&gt;diff&lt;/a&gt;.&lt;/p&gt;
-</description>
-      
-    </item>
-    
-    <item>
-      <title>Syntax Highlighting</title>
-      <link>https://hisaige.github.io/post/syntax-highlighting/</link>
-      <pubDate>Tue, 30 Aug 2011 16:01:23 +0800</pubDate>
-      
-      <guid>https://hisaige.github.io/post/syntax-highlighting/</guid>
-      
-        <description>&lt;p&gt;More detail: &lt;a href=&#34;https://gohugo.io/content-management/syntax-highlighting/&#34;&gt;Syntax Highlighting | Hugo&lt;/a&gt;&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-js&#34;&gt;function helloWorld () {
-  alert(&amp;quot;Hello, World!&amp;quot;)
-}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;public class HelloWorld {
-  public static void main(String[] args) {
-    System.out.println(&amp;quot;Hello, World!&amp;quot;);
-  }
-}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-kotlin&#34;&gt;package hello
-
-fun main(args: Array&amp;lt;String&amp;gt;) {
-  println(&amp;quot;Hello World!&amp;quot;)
-}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-c&#34;&gt;#include &amp;lt;stdio.h&amp;gt;
-
-/* Hello */
-int main(void){
-  printf(&amp;quot;Hello, World!&amp;quot;);
-  return 0;
-}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-cpp&#34;&gt;// &#39;Hello World!&#39; program
-
-#include &amp;lt;iostream&amp;gt;
-
-int main(){
-  std::cout &amp;lt;&amp;lt; &amp;quot;Hello World!&amp;quot; &amp;lt;&amp;lt; std::endl;
-  return 0;
-}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-cs&#34;&gt;using System;
-class HelloWorld{
-  public static void Main(){
-    System.Console.WriteLine(&amp;quot;Hello, World!&amp;quot;);
-  }
-}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-html&#34;&gt;&amp;lt;html&amp;gt;
-&amp;lt;body&amp;gt;
-  Hello, World!
-&amp;lt;/body&amp;gt;
-&amp;lt;/html&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-go&#34;&gt;package main
-import fmt &amp;quot;fmt&amp;quot;
-
-func main()
-{
-   fmt.Printf(&amp;quot;Hello, World!\n&amp;quot;);
-}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-scala&#34;&gt;object HelloWorld with Application {
-  Console.println(&amp;quot;Hello, World!&amp;quot;);
-}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-php&#34;&gt;&amp;lt;?php
-  echo &#39;Hello, World!&#39;;
-?&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;print(&amp;quot;Hello, World!&amp;quot;)
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h2 id=&#34;no-named-code-block&#34;&gt;no named code block&lt;/h2&gt;
-
-&lt;pre&gt;&lt;code&gt;## this is a comment
-$ echo this is a command
-this is a command
-
-## edit the file
-$vi foo.md
-+++
-date = &amp;quot;2014-09-28&amp;quot;
-title = &amp;quot;creating a new theme&amp;quot;
-+++
-
-bah and humbug
-:wq
-
-## show it
-$ cat foo.md
-+++
-date = &amp;quot;2014-09-28&amp;quot;
-title = &amp;quot;creating a new theme&amp;quot;
-+++
-
-bah and humbug
-$
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h2 id=&#34;highlight-shortcode&#34;&gt;highlight shortcode&lt;/h2&gt;
-
-&lt;p&gt;example:&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-shortcode&#34;&gt;{{&amp;lt; highlight go &amp;quot;linenos=table,hl_lines=8 15-17,linenostart=199&amp;quot; &amp;gt;}}
-// ... code
-{{&amp;lt; /highlight &amp;gt;}}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;result:&lt;/p&gt;
-
-&lt;div class=&#34;highlight&#34;&gt;&lt;div style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;
-&lt;table style=&#34;border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;&#34;&gt;&lt;tr&gt;&lt;td style=&#34;vertical-align:top;padding:0;margin:0;border:0;&#34;&gt;
-&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-go&#34; data-lang=&#34;go&#34;&gt;&lt;span style=&#34;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt;199
-&lt;/span&gt;&lt;span style=&#34;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt;200
-&lt;/span&gt;&lt;span style=&#34;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt;201
-&lt;/span&gt;&lt;span style=&#34;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt;202
-&lt;/span&gt;&lt;span style=&#34;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt;203
-&lt;/span&gt;&lt;span style=&#34;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt;204
-&lt;/span&gt;&lt;span style=&#34;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt;205
-&lt;/span&gt;&lt;span style=&#34;display:block;width:100%;background-color:#3c3d38&#34;&gt;&lt;span style=&#34;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt;206
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt;207
-&lt;/span&gt;&lt;span style=&#34;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt;208
-&lt;/span&gt;&lt;span style=&#34;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt;209
-&lt;/span&gt;&lt;span style=&#34;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt;210
-&lt;/span&gt;&lt;span style=&#34;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt;211
-&lt;/span&gt;&lt;span style=&#34;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt;212
-&lt;/span&gt;&lt;span style=&#34;display:block;width:100%;background-color:#3c3d38&#34;&gt;&lt;span style=&#34;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt;213
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:block;width:100%;background-color:#3c3d38&#34;&gt;&lt;span style=&#34;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt;214
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:block;width:100%;background-color:#3c3d38&#34;&gt;&lt;span style=&#34;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt;215
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt;216
-&lt;/span&gt;&lt;span style=&#34;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt;217
-&lt;/span&gt;&lt;span style=&#34;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt;218
-&lt;/span&gt;&lt;span style=&#34;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt;219
-&lt;/span&gt;&lt;span style=&#34;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt;220
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
-&lt;td style=&#34;vertical-align:top;padding:0;margin:0;border:0;&#34;&gt;
-&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-go&#34; data-lang=&#34;go&#34;&gt;&lt;span style=&#34;color:#75715e&#34;&gt;// GetTitleFunc returns a func that can be used to transform a string to
-&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;// title case.
-&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;//
-&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;// The supported styles are
-&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;//
-&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;// - &amp;#34;Go&amp;#34; (strings.Title)
-&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;// - &amp;#34;AP&amp;#34; (see https://www.apstylebook.com/)
-&lt;/span&gt;&lt;span style=&#34;display:block;width:100%;background-color:#3c3d38&#34;&gt;&lt;span style=&#34;color:#75715e&#34;&gt;// - &amp;#34;Chicago&amp;#34; (see http://www.chicagomanualofstyle.org/home.html)
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;//
-&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;// If an unknown or empty style is provided, AP style is what you get.
-&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;func&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;GetTitleFunc&lt;/span&gt;(&lt;span style=&#34;color:#a6e22e&#34;&gt;style&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;string&lt;/span&gt;) &lt;span style=&#34;color:#66d9ef&#34;&gt;func&lt;/span&gt;(&lt;span style=&#34;color:#a6e22e&#34;&gt;s&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;string&lt;/span&gt;) &lt;span style=&#34;color:#66d9ef&#34;&gt;string&lt;/span&gt; {
-  &lt;span style=&#34;color:#66d9ef&#34;&gt;switch&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;strings&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;ToLower&lt;/span&gt;(&lt;span style=&#34;color:#a6e22e&#34;&gt;style&lt;/span&gt;) {
-  &lt;span style=&#34;color:#66d9ef&#34;&gt;case&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;go&amp;#34;&lt;/span&gt;:
-    &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;strings&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Title&lt;/span&gt;
-&lt;span style=&#34;display:block;width:100%;background-color:#3c3d38&#34;&gt;  &lt;span style=&#34;color:#66d9ef&#34;&gt;case&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;chicago&amp;#34;&lt;/span&gt;:
-&lt;/span&gt;&lt;span style=&#34;display:block;width:100%;background-color:#3c3d38&#34;&gt;    &lt;span style=&#34;color:#a6e22e&#34;&gt;tc&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;:=&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;transform&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;NewTitleConverter&lt;/span&gt;(&lt;span style=&#34;color:#a6e22e&#34;&gt;transform&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;ChicagoStyle&lt;/span&gt;)
-&lt;/span&gt;&lt;span style=&#34;display:block;width:100%;background-color:#3c3d38&#34;&gt;    &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;tc&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Title&lt;/span&gt;
-&lt;/span&gt;  &lt;span style=&#34;color:#66d9ef&#34;&gt;default&lt;/span&gt;:
-    &lt;span style=&#34;color:#a6e22e&#34;&gt;tc&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;:=&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;transform&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;NewTitleConverter&lt;/span&gt;(&lt;span style=&#34;color:#a6e22e&#34;&gt;transform&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;APStyle&lt;/span&gt;)
-    &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;tc&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Title&lt;/span&gt;
-  }
-}&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
-&lt;/div&gt;
-&lt;/div&gt;</description>
       
     </item>
     

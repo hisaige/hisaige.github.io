@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>spring on 目光呆滞的5741号代码搬运工</title>
+    <link>https://hisaige.github.io/tags/spring/</link>
+    <description>Recent content in spring on 目光呆滞的5741号代码搬运工</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en</language>
+    <lastBuildDate>Tue, 03 Sep 2019 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="https://hisaige.github.io/tags/spring/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>springclould简要入门</title>
+      <link>https://hisaige.github.io/post/development/%E5%B0%9A%E7%A1%85%E8%B0%B7clould/</link>
+      <pubDate>Tue, 03 Sep 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://hisaige.github.io/post/development/%E5%B0%9A%E7%A1%85%E8%B0%B7clould/</guid>
+      <description>尚硅谷clould 统一配置 统一配置启动方式1</description>
+    </item>
+    
+  </channel>
+</rss>
