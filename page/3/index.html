@@ -362,1283 +362,12 @@
   <header class="post-header">
     <h1 class="post-title">
       
-      <a class="post-link" href="/post/development/druid%E4%B8%A4%E7%A7%8D%E6%AF%94%E8%BE%83%E7%A8%B3%E7%9A%84%E9%85%8D%E7%BD%AE%E6%96%B9%E5%BC%8F/">数据源配置</a>
+      <a class="post-link" href="/post/docs/shortcode-notice/">Shortcodes Notice Preview</a>
     </h1>
     
     <div class="post-meta">
-      <time datetime="2019-09-03" class="post-time">
-        3099-09-03
-      </time>
-      <div class="post-category">
-          <a href="https://hisaige.github.io/categories/development/"> Development </a>
-          
-        </div>
-      <span class="more-meta"> 3494 words </span>
-      <span class="more-meta"> 7 min read </span>
-      
-      
-      
-    </div>
-  </header>
-  
-  <div class="post-content">
-    
-    <div class="post-summary">
-      
-
-<h1>数据库之druid两种比较稳的配置方式</h1>
-
-<h1 id="1-方式一">1. 方式一</h1>
-
-<p>pom如下，注意druid用的版本是1.1.18，低版本可能不适用</p>
-
-<pre><code class="language-xml">		&lt;!-- 分页插件 --&gt;
-        &lt;dependency&gt;
-            &lt;groupId&gt;com.github.pagehelper&lt;/groupId&gt;
-            &lt;artifactId&gt;pagehelper&lt;/artifactId&gt;
-            &lt;version&gt;4.1.6&lt;/version&gt;
-        &lt;/dependency&gt;
-
-        &lt;dependency&gt;
-            &lt;groupId&gt;tk.mybatis&lt;/groupId&gt;
-            &lt;artifactId&gt;mapper-spring-boot-starter&lt;/artifactId&gt;
-            &lt;version&gt;2.1.5&lt;/version&gt;
-        &lt;/dependency&gt;
-
-        &lt;dependency&gt;
-            &lt;groupId&gt;mysql&lt;/groupId&gt;
-            &lt;artifactId&gt;mysql-connector-java&lt;/artifactId&gt;
-            &lt;scope&gt;runtime&lt;/scope&gt;
-        &lt;/dependency&gt;
-        &lt;!-- https://mvnrepository.com/artifact/com.alibaba/druid-spring-boot-starter --&gt;
-        &lt;!-- https://mvnrepository.com/artifact/com.alibaba/druid-spring-boot-starter --&gt;
-        &lt;!-- https://mvnrepository.com/artifact/com.alibaba/druid-spring-boot-starter --&gt;
-        &lt;dependency&gt;
-            &lt;groupId&gt;com.alibaba&lt;/groupId&gt;
-            &lt;artifactId&gt;druid-spring-boot-starter&lt;/artifactId&gt;
-            &lt;version&gt;1.1.18&lt;/version&gt;
-        &lt;/dependency&gt;
-</code></pre>
-
-<p>配置类</p>
-
-<pre><code class="language-java\">package com.hisaige.database.config;
-
-import com.alibaba.druid.spring.boot.autoconfigure.properties.DruidStatProperties;
-import com.alibaba.druid.support.http.StatViewServlet;
-import com.alibaba.druid.support.http.WebStatFilter;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.context.properties.EnableConfigurationProperties;
-import org.springframework.boot.web.servlet.FilterRegistrationBean;
-import org.springframework.boot.web.servlet.ServletRegistrationBean;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.jdbc.datasource.DataSourceTransactionManager;
-
-import javax.sql.DataSource;
-import java.sql.SQLException;
-
-@Configuration
-public class DataSourceConfiguration {
-
-
-
-	@Resource
-	private DataSource dataSource;
-
-	/*
-	 * @Bean public SqlSessionFactory sqlSessionFactory(DataSource dataSource)
-	 * throws Exception { SqlSessionFactoryBean factory = new
-	 * SqlSessionFactoryBean(); factory.setDataSource(dataSource); return
-	 * factory.getObject(); }
-	 */
-
-	@Bean
-	public DataSourceTransactionManager transactionManager() throws SQLException {
-		DataSourceTransactionManager transManager = new DataSourceTransactionManager();
-		transManager.setDataSource(dataSource);
-		return transManager;
-	}
-	
-	/**
-	*分页插件配置，
-	*注意，如果分页插件要结合通用mapper使用的话，不要用分页插件的startter继承方式
-	*如下这种普通方式即可，因为分页插件的startter里面继承了mybatis的自动装配startter，
-	*这里面针对于mapper包扫描那块会出现冲突
-	*
-	*/
-	@Bean
-	public PageHelper pageHelper() {
-		PageHelper pageHelper = new PageHelper();
-		Properties props = new Properties();
-		props.setProperty(&quot;dialect&quot;, &quot;mysql&quot;);
-		// 表示支持从接口中读取pageNum和pageSize
-		props.setProperty(&quot;supportMethodsArguments&quot;, &quot;true&quot;);
-		pageHelper.setProperties(props);
-		return pageHelper;
-	}
-
-	/**
-	 * 配置监控服务器
-	 * 
-	 * @return 返回监控注册的servlet对象
-	 * @author SimpleWu
-	 */
-	@Bean
-	public ServletRegistrationBean&lt;StatViewServlet&gt; statViewServlet() {
-
-		// 这里也可以通过读取yml配置文件的方式读取配置信息来设置黑白名单
-		System.out.println(&quot;------------userName&quot; + druidStatProperties.getStatViewServlet().getLoginUsername());
-
-		ServletRegistrationBean&lt;StatViewServlet&gt; servletRegistrationBean = new ServletRegistrationBean&lt;&gt;(
-				new StatViewServlet(), &quot;/druid/*&quot;);
-		// 添加IP白名单
-		servletRegistrationBean.addInitParameter(&quot;allow&quot;, &quot;127.0.0.1&quot;); // 本机使用IP将不能访问，但可以使用localhost作IP访问
-		// 添加IP黑名单，当白名单和黑名单重复时，黑名单优先级更高
-		servletRegistrationBean.addInitParameter(&quot;deny&quot;, &quot;192.16.13.243&quot;);
-		// 添加控制台管理用户
-		servletRegistrationBean.addInitParameter(&quot;loginUsername&quot;, &quot;admin&quot;);
-		servletRegistrationBean.addInitParameter(&quot;loginPassword&quot;, &quot;admin&quot;);
-		// 是否能够重置数据
-		servletRegistrationBean.addInitParameter(&quot;resetEnable&quot;, &quot;true&quot;);
-		return servletRegistrationBean;
-	}
-
-	/**
-	 * 配置服务过滤器
-	 *
-	 * @return 返回过滤器配置对象
-	 */
-	@Bean
-	public FilterRegistrationBean&lt;WebStatFilter&gt; statFilter() {
-		FilterRegistrationBean&lt;WebStatFilter&gt; filterRegistrationBean = new FilterRegistrationBean&lt;&gt;(
-				new WebStatFilter());
-		// 添加过滤规则
-		filterRegistrationBean.addUrlPatterns(&quot;/*&quot;);
-		// 忽略过滤格式
-		filterRegistrationBean.addInitParameter(&quot;exclusions&quot;, &quot;*.js,*.gif,*.jpg,*.png,*.css,*.ico,/druid/*,&quot;);
-		return filterRegistrationBean;
-	}
-
-}
-
-</code></pre>
-
-<p>yml配置文件</p>
-
-<pre><code class="language-yml">spring:
-  datasource:
-    driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3316/test?useUnicode=true&amp;characterEncoding=UTF-8&amp;useJDBCCompliantTimezoneShift=true&amp;useLegacyDatetimeCode=false&amp;serverTimezone=UTC
-    username: root
-    password: cyj515818
-    type: com.alibaba.druid.pool.DruidDataSource
-    druid:
-      # 下面为连接池的补充设置，应用到上面所有数据源中      # 初始化大小，最小，最大
-      initial-size: 5
-      min-idle: 5
-      max-active: 20
-      # 配置获取连接等待超时的时间
-      max-wait: 60000
-      # 配置间隔多久才进行一次检测，检测需要关闭的空闲连接，单位是毫秒
-      time-between-eviction-runs-millis: 60000
-      # 配置一个连接在池中最小生存的时间，单位是毫秒
-      min-evictable-idle-time-millis: 300000
-      validation-query: SELECT 1 FROM DUAL
-      test-while-idle: true
-      test-on-borrow: false
-      test-on-return: false
-      # 打开PSCache，并且指定每个连接上PSCache的大小
-      pool-prepared-statements: true
-      #   配置监控统计拦截的filters，去掉后监控界面sql无法统计，'wall'用于防火墙
-      max-pool-prepared-statement-per-connection-size: 20
-      filters: stat,wall
-      use-global-data-source-stat: true
-      # 通过connectProperties属性来打开mergeSql功能；慢SQL记录
-      connect-properties: druid.stat.mergeSql=true;druid.stat.slowSqlMillis=5000
-      # 配置监控服务器,目前下面这种配置在1.1.10可以，高版本比如1.1.16不行,
-      # 目前使用的是较高版本，所以先注释，使用DataSourceConfiguration中的注释代替
-      keep-alive: true
-      stat-view-servlet:
-        login-username: admin
-        login-password: 123456
-        reset-enable: false
-        url-pattern: /druid/*
-        # 添加IP白名单
-        allow: 127.0.0.1
-        # 添加IP黑名单，当白名单和黑名单重复时，黑名单优先级更高
-        deny: 192.168.1.3
-      #配置过滤规则
-      web-stat-filter:
-        # 添加过滤规则
-        url-pattern: /*
-        # 忽略过滤格式
-        exclusions: &quot;*.js,*.gif,*.jpg,*.png,*.css,*.ico,/druid/*&quot;
-</code></pre>
-
-<p>测试分类插件</p>
-
-<pre><code class="language-java">	@Test
-	public void test3(){
-		PageHelper.startPage(2, 2);
-		List&lt;User&gt; users=userMapper.selectAll();
-		PageInfo&lt;User&gt; pageInfo = new PageInfo&lt;&gt;(users);
-		System.out.println(pageInfo);
-	}
-</code></pre>
-
-<h1 id="2-配置方式二">2. 配置方式二</h1>
-
-<p>配置二是一种比较稳妥的方式，避免duid版本改动时配置的方式发生变动而需要再修改druid相关配置。</p>
-
-<ol>
-<li><p>首先定义一个包含druid绝大部分配置属性的properties</p>
-
-<pre><code class="language-java">package com.hisaige.database.config.data;
-
-import java.io.PrintWriter;
-import java.sql.Driver;
-import java.util.Date;
-import java.util.IdentityHashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Properties;
-import java.util.concurrent.locks.Condition;
-import java.util.concurrent.locks.ReentrantLock;
-
-import javax.security.auth.callback.NameCallback;
-import javax.security.auth.callback.PasswordCallback;
-
-import com.alibaba.druid.pool.DruidPooledConnection;
-import com.alibaba.druid.pool.ExceptionSorter;
-import com.alibaba.druid.pool.ValidConnectionChecker;
-
-public class DruidProperties {
-
-	public final static int DEFAULT_INITIAL_SIZE = 0;
-	public final static int DEFAULT_MAX_ACTIVE_SIZE = 8;
-	public final static int DEFAULT_MAX_IDLE = 8;
-	public final static int DEFAULT_MIN_IDLE = 0;
-	public final static int DEFAULT_MAX_WAIT = -1;
-	public final static String DEFAULT_VALIDATION_QUERY = null; //
-	public final static boolean DEFAULT_TEST_ON_BORROW = false;
-	public final static boolean DEFAULT_TEST_ON_RETURN = false;
-	public final static boolean DEFAULT_WHILE_IDLE = true;
-	public static final long DEFAULT_TIME_BETWEEN_EVICTION_RUNS_MILLIS = 60 * 1000L;
-	public static final long DEFAULT_TIME_BETWEEN_CONNECT_ERROR_MILLIS = 500;
-	public static final int DEFAULT_NUM_TESTS_PER_EVICTION_RUN = 3;
-
-	public static final long DEFAULT_MIN_EVICTABLE_IDLE_TIME_MILLIS = 1000L * 60L * 30L;
-	public static final long DEFAULT_MAX_EVICTABLE_IDLE_TIME_MILLIS = 1000L * 60L * 60L * 7;
-	public static final long DEFAULT_PHY_TIMEOUT_MILLIS = -1;
-
-	private volatile boolean defaultAutoCommit = true;
-	private volatile Boolean defaultReadOnly;
-	private volatile Integer defaultTransactionIsolation;
-	private volatile String defaultCatalog = null;
-
-	private volatile String username;
-	private volatile String password;
-	private volatile String jdbcUrl;
-	private volatile String driverClass;
-	private volatile ClassLoader driverClassLoader;
-	private volatile Properties connectProperties = new Properties();
-
-	private volatile PasswordCallback passwordCallback;
-	private volatile NameCallback userCallback;
-
-	private volatile int initialSize = DEFAULT_INITIAL_SIZE;
-	private volatile int maxActive = DEFAULT_MAX_ACTIVE_SIZE;
-	private volatile int minIdle = DEFAULT_MIN_IDLE;
-	private volatile int maxIdle = DEFAULT_MAX_IDLE;
-	private volatile long maxWait = DEFAULT_MAX_WAIT;
-	private int notFullTimeoutRetryCount = 0;
-
-	private volatile String validationQuery = DEFAULT_VALIDATION_QUERY;
-	private volatile int validationQueryTimeout = -1;
-	private volatile boolean testOnBorrow = DEFAULT_TEST_ON_BORROW;
-	private volatile boolean testOnReturn = DEFAULT_TEST_ON_RETURN;
-	private volatile boolean testWhileIdle = DEFAULT_WHILE_IDLE;
-	private volatile boolean poolPreparedStatements = false;
-	private volatile boolean sharePreparedStatements = false;
-	private volatile boolean useGlobalDataSourceStat = true;
-	private volatile int maxPoolPreparedStatementPerConnectionSize = 10;
-
-	private volatile boolean inited = false;
-	private volatile boolean initExceptionThrow = true;
-
-	private PrintWriter logWriter = new PrintWriter(System.out);
-
-	private volatile boolean clearFiltersEnable = true;
-	private volatile ExceptionSorter exceptionSorter = null;
-
-	private Driver driver;
-
-	private volatile int queryTimeout;
-	private volatile int transactionQueryTimeout;
-
-	private long createTimespan;
-
-	private volatile int maxWaitThreadCount = -1;
-	private volatile boolean accessToUnderlyingConnectionAllowed = true;
-
-	private volatile long timeBetweenEvictionRunsMillis = DEFAULT_TIME_BETWEEN_EVICTION_RUNS_MILLIS;
-	private volatile int numTestsPerEvictionRun = DEFAULT_NUM_TESTS_PER_EVICTION_RUN;
-	private volatile long minEvictableIdleTimeMillis = DEFAULT_MIN_EVICTABLE_IDLE_TIME_MILLIS;
-	private volatile long maxEvictableIdleTimeMillis = DEFAULT_MAX_EVICTABLE_IDLE_TIME_MILLIS;
-	private volatile long keepAliveBetweenTimeMillis = DEFAULT_TIME_BETWEEN_EVICTION_RUNS_MILLIS * 2;
-	private volatile long phyTimeoutMillis = DEFAULT_PHY_TIMEOUT_MILLIS;
-	private volatile long phyMaxUseCount = -1;
-
-	private volatile boolean removeAbandoned;
-	private volatile long removeAbandonedTimeoutMillis = 300 * 1000;
-	private volatile boolean logAbandoned;
-
-	private volatile int maxOpenPreparedStatements = -1;
-
-	private volatile List&lt;String&gt; connectionInitSqls;
-
-	private volatile String dbType;
-
-	private volatile long timeBetweenConnectErrorMillis = DEFAULT_TIME_BETWEEN_CONNECT_ERROR_MILLIS;
-
-	private volatile ValidConnectionChecker validConnectionChecker = null;
-
-	private final Map&lt;DruidPooledConnection, Object&gt; activeConnections = new IdentityHashMap&lt;DruidPooledConnection, Object&gt;();
-
-	private long id;
-
-	private int connectionErrorRetryAttempts = 1;
-	private boolean breakAfterAcquireFailure = false;
-	private long transactionThresholdMillis = 0L;
-
-	private Date initedTime;
-	private volatile long errorCount = 0L;
-	private volatile long dupCloseCount = 0L;
-	private volatile long startTransactionCount = 0L;
-	private volatile long commitCount = 0L;
-	private volatile long rollbackCount = 0L;
-	private volatile long cachedPreparedStatementHitCount = 0L;
-	private volatile long preparedStatementCount = 0L;
-	private volatile long closedPreparedStatementCount = 0L;
-	private volatile long cachedPreparedStatementCount = 0L;
-	private volatile long cachedPreparedStatementDeleteCount = 0L;
-	private volatile long cachedPreparedStatementMissCount = 0L;
-
-	private boolean dupCloseLogEnable = false;
-
-	private volatile long executeCount = 0L;
-	private volatile long executeQueryCount = 0L;
-	private volatile long executeUpdateCount = 0L;
-	private volatile long executeBatchCount = 0L;
-
-	private volatile Throwable createError;
-	private volatile Throwable lastError;
-	private volatile long lastErrorTimeMillis;
-	private volatile Throwable lastCreateError;
-	private volatile long lastCreateErrorTimeMillis;
-	private volatile long lastCreateStartTimeMillis;
-
-	private boolean isOracle = false;
-	private boolean isMySql = false;
-	private boolean useOracleImplicitCache = true;
-
-	private ReentrantLock lock;
-	private Condition notEmpty;
-	private Condition empty;
-
-	private ReentrantLock activeConnectionLock = new ReentrantLock();
-
-	private volatile int createErrorCount = 0;
-	private volatile int creatingCount = 0;
-	private volatile int directCreateCount = 0;
-	private volatile long createCount = 0L;
-	private volatile long destroyCount = 0L;
-	private volatile long createStartNanos = 0L;
-	public boolean isDefaultAutoCommit() {
-		return defaultAutoCommit;
-	}
-	public void setDefaultAutoCommit(boolean defaultAutoCommit) {
-		this.defaultAutoCommit = defaultAutoCommit;
-	}
-	public Boolean getDefaultReadOnly() {
-		return defaultReadOnly;
-	}
-	public void setDefaultReadOnly(Boolean defaultReadOnly) {
-		this.defaultReadOnly = defaultReadOnly;
-	}
-	public Integer getDefaultTransactionIsolation() {
-		return defaultTransactionIsolation;
-	}
-	public void setDefaultTransactionIsolation(Integer defaultTransactionIsolation) {
-		this.defaultTransactionIsolation = defaultTransactionIsolation;
-	}
-	public String getDefaultCatalog() {
-		return defaultCatalog;
-	}
-	public void setDefaultCatalog(String defaultCatalog) {
-		this.defaultCatalog = defaultCatalog;
-	}
-	public String getUsername() {
-		return username;
-	}
-	public void setUsername(String username) {
-		this.username = username;
-	}
-	public String getPassword() {
-		return password;
-	}
-	public void setPassword(String password) {
-		this.password = password;
-	}
-	public String getJdbcUrl() {
-		return jdbcUrl;
-	}
-	public void setJdbcUrl(String jdbcUrl) {
-		this.jdbcUrl = jdbcUrl;
-	}
-	public String getDriverClass() {
-		return driverClass;
-	}
-	public void setDriverClass(String driverClass) {
-		this.driverClass = driverClass;
-	}
-	public ClassLoader getDriverClassLoader() {
-		return driverClassLoader;
-	}
-	public void setDriverClassLoader(ClassLoader driverClassLoader) {
-		this.driverClassLoader = driverClassLoader;
-	}
-	public Properties getConnectProperties() {
-		return connectProperties;
-	}
-	public void setConnectProperties(Properties connectProperties) {
-		this.connectProperties = connectProperties;
-	}
-	public PasswordCallback getPasswordCallback() {
-		return passwordCallback;
-	}
-	public void setPasswordCallback(PasswordCallback passwordCallback) {
-		this.passwordCallback = passwordCallback;
-	}
-	public NameCallback getUserCallback() {
-		return userCallback;
-	}
-	public void setUserCallback(NameCallback userCallback) {
-		this.userCallback = userCallback;
-	}
-	public int getInitialSize() {
-		return initialSize;
-	}
-	public void setInitialSize(int initialSize) {
-		this.initialSize = initialSize;
-	}
-	public int getMaxActive() {
-		return maxActive;
-	}
-	public void setMaxActive(int maxActive) {
-		this.maxActive = maxActive;
-	}
-	public int getMinIdle() {
-		return minIdle;
-	}
-	public void setMinIdle(int minIdle) {
-		this.minIdle = minIdle;
-	}
-	public int getMaxIdle() {
-		return maxIdle;
-	}
-	public void setMaxIdle(int maxIdle) {
-		this.maxIdle = maxIdle;
-	}
-	public long getMaxWait() {
-		return maxWait;
-	}
-	public void setMaxWait(long maxWait) {
-		this.maxWait = maxWait;
-	}
-	public int getNotFullTimeoutRetryCount() {
-		return notFullTimeoutRetryCount;
-	}
-	public void setNotFullTimeoutRetryCount(int notFullTimeoutRetryCount) {
-		this.notFullTimeoutRetryCount = notFullTimeoutRetryCount;
-	}
-	public String getValidationQuery() {
-		return validationQuery;
-	}
-	public void setValidationQuery(String validationQuery) {
-		this.validationQuery = validationQuery;
-	}
-	public int getValidationQueryTimeout() {
-		return validationQueryTimeout;
-	}
-	public void setValidationQueryTimeout(int validationQueryTimeout) {
-		this.validationQueryTimeout = validationQueryTimeout;
-	}
-	public boolean isTestOnBorrow() {
-		return testOnBorrow;
-	}
-	public void setTestOnBorrow(boolean testOnBorrow) {
-		this.testOnBorrow = testOnBorrow;
-	}
-	public boolean isTestOnReturn() {
-		return testOnReturn;
-	}
-	public void setTestOnReturn(boolean testOnReturn) {
-		this.testOnReturn = testOnReturn;
-	}
-	public boolean isTestWhileIdle() {
-		return testWhileIdle;
-	}
-	public void setTestWhileIdle(boolean testWhileIdle) {
-		this.testWhileIdle = testWhileIdle;
-	}
-	public boolean isPoolPreparedStatements() {
-		return poolPreparedStatements;
-	}
-	public void setPoolPreparedStatements(boolean poolPreparedStatements) {
-		this.poolPreparedStatements = poolPreparedStatements;
-	}
-	public boolean isSharePreparedStatements() {
-		return sharePreparedStatements;
-	}
-	public void setSharePreparedStatements(boolean sharePreparedStatements) {
-		this.sharePreparedStatements = sharePreparedStatements;
-	}
-	public boolean isUseGlobalDataSourceStat() {
-		return useGlobalDataSourceStat;
-	}
-	public void setUseGlobalDataSourceStat(boolean useGlobalDataSourceStat) {
-		this.useGlobalDataSourceStat = useGlobalDataSourceStat;
-	}
-	public int getMaxPoolPreparedStatementPerConnectionSize() {
-		return maxPoolPreparedStatementPerConnectionSize;
-	}
-	public void setMaxPoolPreparedStatementPerConnectionSize(int maxPoolPreparedStatementPerConnectionSize) {
-		this.maxPoolPreparedStatementPerConnectionSize = maxPoolPreparedStatementPerConnectionSize;
-	}
-	public boolean isInited() {
-		return inited;
-	}
-	public void setInited(boolean inited) {
-		this.inited = inited;
-	}
-	public boolean isInitExceptionThrow() {
-		return initExceptionThrow;
-	}
-	public void setInitExceptionThrow(boolean initExceptionThrow) {
-		this.initExceptionThrow = initExceptionThrow;
-	}
-	public PrintWriter getLogWriter() {
-		return logWriter;
-	}
-	public void setLogWriter(PrintWriter logWriter) {
-		this.logWriter = logWriter;
-	}
-	public boolean isClearFiltersEnable() {
-		return clearFiltersEnable;
-	}
-	public void setClearFiltersEnable(boolean clearFiltersEnable) {
-		this.clearFiltersEnable = clearFiltersEnable;
-	}
-	public ExceptionSorter getExceptionSorter() {
-		return exceptionSorter;
-	}
-	public void setExceptionSorter(ExceptionSorter exceptionSorter) {
-		this.exceptionSorter = exceptionSorter;
-	}
-	public Driver getDriver() {
-		return driver;
-	}
-	public void setDriver(Driver driver) {
-		this.driver = driver;
-	}
-	public int getQueryTimeout() {
-		return queryTimeout;
-	}
-	public void setQueryTimeout(int queryTimeout) {
-		this.queryTimeout = queryTimeout;
-	}
-	public int getTransactionQueryTimeout() {
-		return transactionQueryTimeout;
-	}
-	public void setTransactionQueryTimeout(int transactionQueryTimeout) {
-		this.transactionQueryTimeout = transactionQueryTimeout;
-	}
-	public long getCreateTimespan() {
-		return createTimespan;
-	}
-	public void setCreateTimespan(long createTimespan) {
-		this.createTimespan = createTimespan;
-	}
-	public int getMaxWaitThreadCount() {
-		return maxWaitThreadCount;
-	}
-	public void setMaxWaitThreadCount(int maxWaitThreadCount) {
-		this.maxWaitThreadCount = maxWaitThreadCount;
-	}
-	public boolean isAccessToUnderlyingConnectionAllowed() {
-		return accessToUnderlyingConnectionAllowed;
-	}
-	public void setAccessToUnderlyingConnectionAllowed(boolean accessToUnderlyingConnectionAllowed) {
-		this.accessToUnderlyingConnectionAllowed = accessToUnderlyingConnectionAllowed;
-	}
-	public long getTimeBetweenEvictionRunsMillis() {
-		return timeBetweenEvictionRunsMillis;
-	}
-	public void setTimeBetweenEvictionRunsMillis(long timeBetweenEvictionRunsMillis) {
-		this.timeBetweenEvictionRunsMillis = timeBetweenEvictionRunsMillis;
-	}
-	public int getNumTestsPerEvictionRun() {
-		return numTestsPerEvictionRun;
-	}
-	public void setNumTestsPerEvictionRun(int numTestsPerEvictionRun) {
-		this.numTestsPerEvictionRun = numTestsPerEvictionRun;
-	}
-	public long getMinEvictableIdleTimeMillis() {
-		return minEvictableIdleTimeMillis;
-	}
-	public void setMinEvictableIdleTimeMillis(long minEvictableIdleTimeMillis) {
-		this.minEvictableIdleTimeMillis = minEvictableIdleTimeMillis;
-	}
-	public long getMaxEvictableIdleTimeMillis() {
-		return maxEvictableIdleTimeMillis;
-	}
-	public void setMaxEvictableIdleTimeMillis(long maxEvictableIdleTimeMillis) {
-		this.maxEvictableIdleTimeMillis = maxEvictableIdleTimeMillis;
-	}
-	public long getKeepAliveBetweenTimeMillis() {
-		return keepAliveBetweenTimeMillis;
-	}
-	public void setKeepAliveBetweenTimeMillis(long keepAliveBetweenTimeMillis) {
-		this.keepAliveBetweenTimeMillis = keepAliveBetweenTimeMillis;
-	}
-	public long getPhyTimeoutMillis() {
-		return phyTimeoutMillis;
-	}
-	public void setPhyTimeoutMillis(long phyTimeoutMillis) {
-		this.phyTimeoutMillis = phyTimeoutMillis;
-	}
-	public long getPhyMaxUseCount() {
-		return phyMaxUseCount;
-	}
-	public void setPhyMaxUseCount(long phyMaxUseCount) {
-		this.phyMaxUseCount = phyMaxUseCount;
-	}
-	public boolean isRemoveAbandoned() {
-		return removeAbandoned;
-	}
-	public void setRemoveAbandoned(boolean removeAbandoned) {
-		this.removeAbandoned = removeAbandoned;
-	}
-	public long getRemoveAbandonedTimeoutMillis() {
-		return removeAbandonedTimeoutMillis;
-	}
-	public void setRemoveAbandonedTimeoutMillis(long removeAbandonedTimeoutMillis) {
-		this.removeAbandonedTimeoutMillis = removeAbandonedTimeoutMillis;
-	}
-	public boolean isLogAbandoned() {
-		return logAbandoned;
-	}
-	public void setLogAbandoned(boolean logAbandoned) {
-		this.logAbandoned = logAbandoned;
-	}
-	public int getMaxOpenPreparedStatements() {
-		return maxOpenPreparedStatements;
-	}
-	public void setMaxOpenPreparedStatements(int maxOpenPreparedStatements) {
-		this.maxOpenPreparedStatements = maxOpenPreparedStatements;
-	}
-	public List&lt;String&gt; getConnectionInitSqls() {
-		return connectionInitSqls;
-	}
-	public void setConnectionInitSqls(List&lt;String&gt; connectionInitSqls) {
-		this.connectionInitSqls = connectionInitSqls;
-	}
-	public String getDbType() {
-		return dbType;
-	}
-	public void setDbType(String dbType) {
-		this.dbType = dbType;
-	}
-	public long getTimeBetweenConnectErrorMillis() {
-		return timeBetweenConnectErrorMillis;
-	}
-	public void setTimeBetweenConnectErrorMillis(long timeBetweenConnectErrorMillis) {
-		this.timeBetweenConnectErrorMillis = timeBetweenConnectErrorMillis;
-	}
-	public ValidConnectionChecker getValidConnectionChecker() {
-		return validConnectionChecker;
-	}
-	public void setValidConnectionChecker(ValidConnectionChecker validConnectionChecker) {
-		this.validConnectionChecker = validConnectionChecker;
-	}
-	public long getId() {
-		return id;
-	}
-	public void setId(long id) {
-		this.id = id;
-	}
-	public int getConnectionErrorRetryAttempts() {
-		return connectionErrorRetryAttempts;
-	}
-	public void setConnectionErrorRetryAttempts(int connectionErrorRetryAttempts) {
-		this.connectionErrorRetryAttempts = connectionErrorRetryAttempts;
-	}
-	public boolean isBreakAfterAcquireFailure() {
-		return breakAfterAcquireFailure;
-	}
-	public void setBreakAfterAcquireFailure(boolean breakAfterAcquireFailure) {
-		this.breakAfterAcquireFailure = breakAfterAcquireFailure;
-	}
-	public long getTransactionThresholdMillis() {
-		return transactionThresholdMillis;
-	}
-	public void setTransactionThresholdMillis(long transactionThresholdMillis) {
-		this.transactionThresholdMillis = transactionThresholdMillis;
-	}
-	public Date getInitedTime() {
-		return initedTime;
-	}
-	public void setInitedTime(Date initedTime) {
-		this.initedTime = initedTime;
-	}
-	public long getErrorCount() {
-		return errorCount;
-	}
-	public void setErrorCount(long errorCount) {
-		this.errorCount = errorCount;
-	}
-	public long getDupCloseCount() {
-		return dupCloseCount;
-	}
-	public void setDupCloseCount(long dupCloseCount) {
-		this.dupCloseCount = dupCloseCount;
-	}
-	public long getStartTransactionCount() {
-		return startTransactionCount;
-	}
-	public void setStartTransactionCount(long startTransactionCount) {
-		this.startTransactionCount = startTransactionCount;
-	}
-	public long getCommitCount() {
-		return commitCount;
-	}
-	public void setCommitCount(long commitCount) {
-		this.commitCount = commitCount;
-	}
-	public long getRollbackCount() {
-		return rollbackCount;
-	}
-	public void setRollbackCount(long rollbackCount) {
-		this.rollbackCount = rollbackCount;
-	}
-	public long getCachedPreparedStatementHitCount() {
-		return cachedPreparedStatementHitCount;
-	}
-	public void setCachedPreparedStatementHitCount(long cachedPreparedStatementHitCount) {
-		this.cachedPreparedStatementHitCount = cachedPreparedStatementHitCount;
-	}
-	public long getPreparedStatementCount() {
-		return preparedStatementCount;
-	}
-	public void setPreparedStatementCount(long preparedStatementCount) {
-		this.preparedStatementCount = preparedStatementCount;
-	}
-	public long getClosedPreparedStatementCount() {
-		return closedPreparedStatementCount;
-	}
-	public void setClosedPreparedStatementCount(long closedPreparedStatementCount) {
-		this.closedPreparedStatementCount = closedPreparedStatementCount;
-	}
-	public long getCachedPreparedStatementCount() {
-		return cachedPreparedStatementCount;
-	}
-	public void setCachedPreparedStatementCount(long cachedPreparedStatementCount) {
-		this.cachedPreparedStatementCount = cachedPreparedStatementCount;
-	}
-	public long getCachedPreparedStatementDeleteCount() {
-		return cachedPreparedStatementDeleteCount;
-	}
-	public void setCachedPreparedStatementDeleteCount(long cachedPreparedStatementDeleteCount) {
-		this.cachedPreparedStatementDeleteCount = cachedPreparedStatementDeleteCount;
-	}
-	public long getCachedPreparedStatementMissCount() {
-		return cachedPreparedStatementMissCount;
-	}
-	public void setCachedPreparedStatementMissCount(long cachedPreparedStatementMissCount) {
-		this.cachedPreparedStatementMissCount = cachedPreparedStatementMissCount;
-	}
-	public boolean isDupCloseLogEnable() {
-		return dupCloseLogEnable;
-	}
-	public void setDupCloseLogEnable(boolean dupCloseLogEnable) {
-		this.dupCloseLogEnable = dupCloseLogEnable;
-	}
-	public long getExecuteCount() {
-		return executeCount;
-	}
-	public void setExecuteCount(long executeCount) {
-		this.executeCount = executeCount;
-	}
-	public long getExecuteQueryCount() {
-		return executeQueryCount;
-	}
-	public void setExecuteQueryCount(long executeQueryCount) {
-		this.executeQueryCount = executeQueryCount;
-	}
-	public long getExecuteUpdateCount() {
-		return executeUpdateCount;
-	}
-	public void setExecuteUpdateCount(long executeUpdateCount) {
-		this.executeUpdateCount = executeUpdateCount;
-	}
-	public long getExecuteBatchCount() {
-		return executeBatchCount;
-	}
-	public void setExecuteBatchCount(long executeBatchCount) {
-		this.executeBatchCount = executeBatchCount;
-	}
-	public Throwable getCreateError() {
-		return createError;
-	}
-	public void setCreateError(Throwable createError) {
-		this.createError = createError;
-	}
-	public Throwable getLastError() {
-		return lastError;
-	}
-	public void setLastError(Throwable lastError) {
-		this.lastError = lastError;
-	}
-	public long getLastErrorTimeMillis() {
-		return lastErrorTimeMillis;
-	}
-	public void setLastErrorTimeMillis(long lastErrorTimeMillis) {
-		this.lastErrorTimeMillis = lastErrorTimeMillis;
-	}
-	public Throwable getLastCreateError() {
-		return lastCreateError;
-	}
-	public void setLastCreateError(Throwable lastCreateError) {
-		this.lastCreateError = lastCreateError;
-	}
-	public long getLastCreateErrorTimeMillis() {
-		return lastCreateErrorTimeMillis;
-	}
-	public void setLastCreateErrorTimeMillis(long lastCreateErrorTimeMillis) {
-		this.lastCreateErrorTimeMillis = lastCreateErrorTimeMillis;
-	}
-	public long getLastCreateStartTimeMillis() {
-		return lastCreateStartTimeMillis;
-	}
-	public void setLastCreateStartTimeMillis(long lastCreateStartTimeMillis) {
-		this.lastCreateStartTimeMillis = lastCreateStartTimeMillis;
-	}
-	public boolean isOracle() {
-		return isOracle;
-	}
-	public void setOracle(boolean isOracle) {
-		this.isOracle = isOracle;
-	}
-	public boolean isMySql() {
-		return isMySql;
-	}
-	public void setMySql(boolean isMySql) {
-		this.isMySql = isMySql;
-	}
-	public boolean isUseOracleImplicitCache() {
-		return useOracleImplicitCache;
-	}
-	public void setUseOracleImplicitCache(boolean useOracleImplicitCache) {
-		this.useOracleImplicitCache = useOracleImplicitCache;
-	}
-	public ReentrantLock getLock() {
-		return lock;
-	}
-	public void setLock(ReentrantLock lock) {
-		this.lock = lock;
-	}
-	public Condition getNotEmpty() {
-		return notEmpty;
-	}
-	public void setNotEmpty(Condition notEmpty) {
-		this.notEmpty = notEmpty;
-	}
-	public Condition getEmpty() {
-		return empty;
-	}
-	public void setEmpty(Condition empty) {
-		this.empty = empty;
-	}
-	public ReentrantLock getActiveConnectionLock() {
-		return activeConnectionLock;
-	}
-	public void setActiveConnectionLock(ReentrantLock activeConnectionLock) {
-		this.activeConnectionLock = activeConnectionLock;
-	}
-	public int getCreateErrorCount() {
-		return createErrorCount;
-	}
-	public void setCreateErrorCount(int createErrorCount) {
-		this.createErrorCount = createErrorCount;
-	}
-	public int getCreatingCount() {
-		return creatingCount;
-	}
-	public void setCreatingCount(int creatingCount) {
-		this.creatingCount = creatingCount;
-	}
-	public int getDirectCreateCount() {
-		return directCreateCount;
-	}
-	public void setDirectCreateCount(int directCreateCount) {
-		this.directCreateCount = directCreateCount;
-	}
-	public long getCreateCount() {
-		return createCount;
-	}
-	public void setCreateCount(long createCount) {
-		this.createCount = createCount;
-	}
-	public long getDestroyCount() {
-		return destroyCount;
-	}
-	public void setDestroyCount(long destroyCount) {
-		this.destroyCount = destroyCount;
-	}
-	public long getCreateStartNanos() {
-		return createStartNanos;
-	}
-	public void setCreateStartNanos(long createStartNanos) {
-		this.createStartNanos = createStartNanos;
-	}
-	public Map&lt;DruidPooledConnection, Object&gt; getActiveConnections() {
-		return activeConnections;
-	}
-}
-
-</code></pre></li>
-
-<li><p>再写一个基本配置继承于上面的properties类</p>
-
-<pre><code class="language-java">package com.hisaige.database.config.data;
-
-import org.springframework.boot.context.properties.ConfigurationProperties;
-
-@ConfigurationProperties(prefix = &quot;spring.datasource.druid&quot;)
-public class DataBaseProperties extends DruidProperties {
-
-private String filters;
-private String connectionProperties;
-//当前配置下暂时用不到
-private String dialect;
-//当前配置下暂时用不到
-private String showSql;
-//当前配置下暂时用不到
-private String model;
-public String getFilters() {
-  return filters;
-}
-
-public void setFilters(String filters) {
-  this.filters = filters;
-}
-
-public String getConnectionProperties() {
-  return connectionProperties;
-}
-
-public void setConnectionProperties(String connectionProperties) {
-  this.connectionProperties = connectionProperties;
-}
-
-public String getDialect() {
-  return dialect;
-}
-
-public void setDialect(String dialect) {
-  this.dialect = dialect;
-}
-
-public String getShowSql() {
-  return showSql;
-}
-
-public void setShowSql(String showSql) {
-  this.showSql = showSql;
-}
-
-public String getModel() {
-  return model;
-}
-
-public void setModel(String model) {
-  this.model = model;
-}
-
-@Override
-public String toString() {
-  return &quot;DataBaseProperties [filters=&quot; + filters + &quot;, connectionProperties=&quot; + connectionProperties
-        + &quot;, dialect=&quot; + dialect + &quot;, showSql=&quot; + showSql + &quot;, model=&quot; + model + &quot;]&quot;;
-}
-// druid
-
-}
-</code></pre></li>
-
-<li></li>
-</ol>
-
-    </div>
-    
-  </div>
-</article>
-
-  
-    <article class="post bg-white">
-  <header class="post-header">
-    <h1 class="post-title">
-      
-      <a class="post-link" href="/post/docs/math-preview/">Math Preview</a>
-    </h1>
-    
-    <div class="post-meta">
-      <time datetime="2019-03-04" class="post-time">
-        4039-09-04
-      </time>
-      <div class="post-category">
-          <a href="https://hisaige.github.io/categories/docs/"> docs </a>
-          <a href="https://hisaige.github.io/categories/math/"> math </a>
-          <a href="https://hisaige.github.io/categories/index/"> index </a>
-          
-        </div>
-      <span class="more-meta"> 649 words </span>
-      <span class="more-meta"> 4 min read </span>
-      
-      
-      
-    </div>
-  </header>
-  
-  <div class="post-content">
-    
-    <div class="post-summary">
-      <p><a href="https://www.intmath.com/cg5/katex-mathjax-comparison.php">KaTeX and MathJax Comparison Demo, currently processed as KaTex</a></p>
-
-<h2 id="repeating-fractions">Repeating fractions</h2>
-
-<p><span  class="math">\[
-\frac{1}{\Bigl(\sqrt{\phi \sqrt{5}}-\phi\Bigr) e^{\frac25 \pi}} \equiv 1+\frac{e^{-2\pi}} {1+\frac{e^{-4\pi}} {1+\frac{e^{-6\pi}} {1+\frac{e^{-8\pi}} {1+\cdots} } } }
-\]</span></p>
-
-<h2 id="summation-notation">Summation notation</h2>
-
-<p><span  class="math">\[
-\left( \sum_{k=1}^n a_k b_k \right)^2 \leq \left( \sum_{k=1}^n a_k^2 \right) \left( \sum_{k=1}^n b_k^2 \right)
-\]</span></p>
-
-<h2 id="sum-of-a-series">Sum of a Series</h2>
-
-<p>I broke up the next two examples into separate lines so it behaves better on a mobile phone. That's why they include \displaystyle.</p>
-
-<p><span  class="math">\[
-\displaystyle\sum_{i=1}^{k+1}i
-\]</span></p>
-
-<p><span  class="math">\[
-\displaystyle= \left(\sum_{i=1}^{k}i\right) +(k+1)
-\]</span></p>
-
-<p><span  class="math">\[
-\displaystyle= \frac{k(k+1)}{2}+k+1
-\]</span></p>
-
-<p><span  class="math">\[
-\displaystyle= \frac{k(k+1)+2(k+1)}{2}
-\]</span></p>
-
-<p><span  class="math">\[
-\displaystyle= \frac{(k+1)(k+2)}{2}
-\]</span></p>
-
-<p><span  class="math">\[
-\displaystyle= \frac{(k+1)((k+1)+1)}{2}
-\]</span></p>
-
-<h2 id="product-notation">Product notation</h2>
-
-<p><span  class="math">\[
-\displaystyle 1 + \frac{q^2}{(1-q)}+\frac{q^6}{(1-q)(1-q^2)}+\cdots = \displaystyle \prod_{j=0}^{\infty}\frac{1}{(1-q^{5j+2})(1-q^{5j+3})}, \displaystyle\text{ for }\lvert q\rvert < 1.
-\]</span></p>
-
-<h2 id="inline-math">Inline math</h2>
-
-<p>And here is some in-line math: <span  class="math">\( k_{n+1} = n^2 + k_n^2 - k_{n-1} \)</span> , followed by some more text.</p>
-
-<h2 id="greek-letters">Greek Letters</h2>
-
-<p><span  class="math">\[
-\Gamma\ \Delta\ \Theta\ \Lambda\ \Xi\ \Pi\ \Sigma\ \Upsilon\ \Phi\ \Psi\ \Omega
-\alpha\ \beta\ \gamma\ \delta\ \epsilon\ \zeta\ \eta\ \theta\ \iota\ \kappa\ \lambda\ \mu\ \nu\ \xi \ \omicron\ \pi\ \rho\ \sigma\ \tau\ \upsilon\ \phi\ \chi\ \psi\ \omega\ \varepsilon\ \vartheta\ \varpi\ \varrho\ \varsigma\ \varphi
-\]</span></p>
-
-<h2 id="arrows">Arrows</h2>
-
-<p><span  class="math">\[
-\gets\ \to\ \leftarrow\ \rightarrow\ \uparrow\ \Uparrow\ \downarrow\ \Downarrow\ \updownarrow\ \Updownarrow
-\]</span></p>
-
-<p><span  class="math">\[
-\Leftarrow\ \Rightarrow\ \leftrightarrow\ \Leftrightarrow\ \mapsto\ \hookleftarrow
-\leftharpoonup\ \leftharpoondown\ \rightleftharpoons\ \longleftarrow\ \Longleftarrow\ \longrightarrow
-\]</span></p>
-
-<p><span  class="math">\[
-\Longrightarrow\ \longleftrightarrow\ \Longleftrightarrow\ \longmapsto\ \hookrightarrow\ \rightharpoonup
-\]</span></p>
-
-<p><span  class="math">\[
-\rightharpoondown\ \leadsto\ \nearrow\ \searrow\ \swarrow\ \nwarrow
-\]</span></p>
-
-<h2 id="symbols">Symbols</h2>
-
-<p><span  class="math">\[
-\surd\ \barwedge\ \veebar\ \odot\ \oplus\ \otimes\ \oslash\ \circledcirc\ \boxdot\ \bigtriangleup
-\]</span></p>
-
-<p><span  class="math">\[
-\bigtriangledown\ \dagger\ \diamond\ \star\ \triangleleft\ \triangleright\ \angle\ \infty\ \prime\ \triangle
-\]</span></p>
-
-<h2 id="calculus">Calculus</h2>
-
-<p><span  class="math">\[
-\int u \frac{dv}{dx}\,dx=uv-\int \frac{du}{dx}v\,dx
-\]</span></p>
-
-<p><span  class="math">\[
-f(x) = \int_{-\infty}^\infty \hat f(\xi)\,e^{2 \pi i \xi x}
-\]</span></p>
-
-<p><span  class="math">\[
-\oint \vec{F} \cdot d\vec{s}=0
-\]</span></p>
-
-<h2 id="lorenz-equations">Lorenz Equations</h2>
-
-<p><span  class="math">\[
-\begin{aligned} \dot{x} & = \sigma(y-x) \\ \dot{y} & = \rho x - y - xz \\ \dot{z} & = -\beta z + xy \end{aligned}
-\]</span></p>
-
-<h2 id="cross-product">Cross Product</h2>
-
-<p>This works in KaTeX, but the separation of fractions in this environment is not so good.</p>
-
-<p><span  class="math">\[
-\mathbf{V}_1 \times \mathbf{V}_2 = \begin{vmatrix} \mathbf{i} & \mathbf{j} & \mathbf{k} \\ \frac{\partial X}{\partial u} & \frac{\partial Y}{\partial u} & 0 \\ \frac{\partial X}{\partial v} & \frac{\partial Y}{\partial v} & 0 \end{vmatrix}
-\]</span></p>
-
-<p>Here's a workaround: make the fractions smaller with an extra class that targets the spans with &quot;mfrac&quot; class (makes no difference in the MathJax case):</p>
-
-<p><span  class="math">\[
-\mathbf{V}_1 \times \mathbf{V}_2 = \begin{vmatrix} \mathbf{i} & \mathbf{j} & \mathbf{k} \\ \frac{\partial X}{\partial u} & \frac{\partial Y}{\partial u} & 0 \\ \frac{\partial X}{\partial v} & \frac{\partial Y}{\partial v} & 0 \end{vmatrix}
-\]</span></p>
-
-<h2 id="accents">Accents</h2>
-
-<p><span  class="math">\[
-\hat{x}\ \vec{x}\ \ddot{x}
-\]</span></p>
-
-<h2 id="stretchy-brackets">Stretchy brackets</h2>
-
-<p><span  class="math">\[
-\left(\frac{x^2}{y^3}\right)
-\]</span></p>
-
-<h2 id="evaluation-at-limits">Evaluation at limits</h2>
-
-<p><span  class="math">\[
-\left.\frac{x^3}{3}\right|_0^1
-\]</span></p>
-
-<h2 id="case-definitions">Case definitions</h2>
-
-<p><span  class="math">\[
-f(n) = \begin{cases} \frac{n}{2}, & \text{if } n\text{ is even} \\ 3n+1, & \text{if } n\text{ is odd} \end{cases}
-\]</span></p>
-
-<h2 id="maxwells-equations">Maxwell's Equations</h2>
-
-<p><span  class="math">\[
-\begin{aligned} \nabla \times \vec{\mathbf{B}} -\, \frac1c\, \frac{\partial\vec{\mathbf{E}}}{\partial t} & = \frac{4\pi}{c}\vec{\mathbf{j}} \\ \nabla \cdot \vec{\mathbf{E}} & = 4 \pi \rho \\ \nabla \times \vec{\mathbf{E}}\, +\, \frac1c\, \frac{\partial\vec{\mathbf{B}}}{\partial t} & = \vec{\mathbf{0}} \\ \nabla \cdot \vec{\mathbf{B}} & = 0 \end{aligned}
-\]</span></p>
-
-<p>These equations are quite cramped. We can add vertical spacing using (for example) [1em] after each line break (\). as you can see here:</p>
-
-<p><span  class="math">\[
-\begin{aligned} \nabla \times \vec{\mathbf{B}} -\, \frac1c\, \frac{\partial\vec{\mathbf{E}}}{\partial t} & = \frac{4\pi}{c}\vec{\mathbf{j}} \\[1em] \nabla \cdot \vec{\mathbf{E}} & = 4 \pi \rho \\[0.5em] \nabla \times \vec{\mathbf{E}}\, +\, \frac1c\, \frac{\partial\vec{\mathbf{B}}}{\partial t} & = \vec{\mathbf{0}} \\[1em] \nabla \cdot \vec{\mathbf{B}} & = 0 \end{aligned}
-\]</span></p>
-
-<h2 id="statistics">Statistics</h2>
-
-<p>Definition of combination:</p>
-
-<p><span  class="math">\[
-\frac{n!}{k!(n-k)!} = {^n}C_k
-{n \choose k}
-\]</span></p>
-
-<h2 id="fractions-on-fractions">Fractions on fractions</h2>
-
-<p><span  class="math">\[
-\frac{\frac{1}{x}+\frac{1}{y}}{y-z}
-\]</span></p>
-
-<h2 id="nth-root">n-th root</h2>
-
-<p><span  class="math">\[
-\sqrt[n]{1+x+x^2+x^3+\ldots}
-\]</span></p>
-
-<h2 id="matrices">Matrices</h2>
-
-<p><span  class="math">\[
-\begin{pmatrix} a_{11} & a_{12} & a_{13}\\ a_{21} & a_{22} & a_{23}\\ a_{31} & a_{32} & a_{33} \end{pmatrix}
-\begin{bmatrix} 0 & \cdots & 0 \\ \vdots & \ddots & \vdots \\ 0 & \cdots & 0 \end{bmatrix}
-\]</span></p>
-
-<h2 id="punctuation">Punctuation</h2>
-
-<p><span  class="math">\[
-f(x) = \sqrt{1+x} \quad (x \ge -1)
-f(x) \sim x^2 \quad (x\to\infty)
-\]</span></p>
-
-<p>Now with punctuation:</p>
-
-<p><span  class="math">\[
-f(x) = \sqrt{1+x}, \quad x \ge -1
-f(x) \sim x^2, \quad x\to\infty
-\]</span></p>
-    </div>
-    
-  </div>
-</article>
-
-  
-    <article class="post bg-white">
-  <header class="post-header">
-    <h1 class="post-title">
-      
-      <a class="post-link" href="/post/docs/shortcodes-preview/">Shortcodes Preview</a>
-    </h1>
-    
-    <div class="post-meta">
-      <time datetime="2018-03-04" class="post-time">
-        4039-09-04
+      <time datetime="2018-03-03" class="post-time">
+        2018-03-03
       </time>
       <div class="post-category">
           <a href="https://hisaige.github.io/categories/docs/"> docs </a>
@@ -1646,7 +375,140 @@ f(x) \sim x^2, \quad x\to\infty
           <a href="https://hisaige.github.io/categories/index/"> index </a>
           
         </div>
-      <span class="more-meta"> 405 words </span>
+      <span class="more-meta"> 86 words </span>
+      <span class="more-meta"> 1 min read </span>
+      
+      
+      
+    </div>
+  </header>
+  
+  <div class="post-content">
+    
+    <div class="post-summary">
+      
+
+<h2 id="normal-use">normal use</h2>
+
+<p><code>Note</code> example:</p>
+
+<pre><code class="language-shortcode">{{% notice note %}}
+A notice disclaimer
+{{% /notice %}}
+</code></pre>
+
+<p><strong>Result:</strong>
+<div class="shortcode-notice note">
+  <div class="shortcode-notice-title note"></p>
+
+<pre><code>  note
+</code></pre>
+
+<p></div></p>
+
+<p>A notice disclaimer</p>
+
+<p></div></p>
+
+<p>You could <strong>custom title</strong> :</p>
+
+<pre><code class="language-shortcode">{{% notice note 笔记 %}}
+A notice disclaimer
+{{% /notice %}}
+</code></pre>
+
+<div class="shortcode-notice note">
+  <div class="shortcode-notice-title note">
+    
+      笔记
+    
+  </div>
+  
+
+<p>A notice disclaimer</p>
+
+<p></div></p>
+
+<h2 id="tip">tip</h2>
+
+<pre><code class="language-shortcode">{{% notice tip %}}
+A tip disclaimer
+{{% /tip %}}
+</code></pre>
+
+<div class="shortcode-notice tip">
+  <div class="shortcode-notice-title tip">
+    
+      tip
+    
+  </div>
+  
+
+<p>A tip disclaimer</p>
+
+<p></div></p>
+
+<h2 id="info">info</h2>
+
+<pre><code class="language-shortcode">{{% notice info %}}
+A info disclaimer
+{{% /notice %}}
+</code></pre>
+
+<div class="shortcode-notice info">
+  <div class="shortcode-notice-title info">
+    
+      info
+    
+  </div>
+  
+
+<p>An information disclaimer</p>
+
+<p></div></p>
+
+<h2 id="warning">warning</h2>
+
+<pre><code class="language-shortcode">{{% notice warning %}}
+A warning disclaimer
+{{% /notice %}}
+</code></pre>
+
+<div class="shortcode-notice warning">
+  <div class="shortcode-notice-title warning">
+    
+      warning
+    
+  </div>
+  
+
+<p>An warning disclaimer</p>
+
+<p></div></p>
+
+    </div>
+    
+  </div>
+</article>
+
+  
+    <article class="post bg-white">
+  <header class="post-header">
+    <h1 class="post-title">
+      
+      <a class="post-link" href="/post/docs/doc-footnote-preview/">Jane-Theme Footnote Preview</a>
+    </h1>
+    
+    <div class="post-meta">
+      <time datetime="2018-03-01" class="post-time">
+        2018-03-01
+      </time>
+      <div class="post-category">
+          <a href="https://hisaige.github.io/categories/docs/"> docs </a>
+          <a href="https://hisaige.github.io/categories/index/"> index </a>
+          
+        </div>
+      <span class="more-meta"> 268 words </span>
       <span class="more-meta"> 2 min read </span>
       
       
@@ -1657,415 +519,2379 @@ f(x) \sim x^2, \quad x\to\infty
   <div class="post-content">
     
     <div class="post-summary">
-      <h2 id="what-a-shortcode-is">What a Shortcode is</h2>
+      <p>Hugo-theme-jane optimized for footnote. When you mouse hover the footnote<sup class="footnote-ref" id="fnref:example"><a href="#fn:example">1</a></sup> , footnote content will be displayed.</p>
 
-<p>Hugo loves Markdown because of its simple content format, but there are times when Markdown falls short. Often, content authors are forced to add raw HTML (e.g., video <code>&lt;iframes&gt;</code>) to Markdown content. We think this contradicts the beautiful simplicity of Markdown&rsquo;s syntax.</p>
+<h2 id="footnote-1">Footnote-1</h2>
 
-<p>Hugo created <strong>shortcodes</strong> to circumvent these limitations.</p>
+<pre><code class="language-markdown">You can create footnotes like this[^footnote].
 
-<p>A shortcode is a simple snippet inside a content file that Hugo will render using a predefined template. Note that shortcodes will not work in template files. If you need the type of drop-in functionality that shortcodes provide but in a template, you most likely want a [partial template][partials] instead.</p>
-
-<p>In addition to cleaner Markdown, shortcodes can be updated any time to reflect new classes, techniques, or standards. At the point of site generation, Hugo shortcodes will easily merge in your changes. You avoid a possibly complicated search and replace operation.</p>
-
-<p>More details: <a href="https://gohugo.io/content-management/shortcodes/">https://gohugo.io/content-management/shortcodes/</a></p>
-
-<h2 id="blockquotes">blockquotes</h2>
-
-<p>Normal quote:
-
-
-
-
-
-
-
-
-
-
-
-  
-
-
-
-
-
-  
-
-
-<blockquote>
-  <p>This is a simple quote.</p>
-  <footer>
-    <strong></strong>
-    
-      
-        
-      
-    
-  </footer>
-</blockquote>
-</p>
-
-<p>Quote with author:
-
-
-
-
-
-
-
-
-
-
-
-  
-  
-  
-  
-
-
-
-
-
-  
-
-
-<blockquote>
-  <p>This is a quote with only an Author named Author2.</p>
-  <footer>
-    <strong>Author2</strong>
-    
-      
-        
-      
-    
-  </footer>
-</blockquote>
-</p>
-
-<p>Quote with author and source:
-
-
-
-
-
-
-
-
-
-
-
-  
-  
-  
-  
-
-
-
-
-
-  
-
-
-<blockquote>
-  <p>This is a quote from Author3 and source &ldquo;source.&rdquo;</p>
-  <footer>
-    <strong>Author3</strong>
-    
-      <cite>Source</cite>
-    
-  </footer>
-</blockquote>
-</p>
-
-<p>Quote with author and link:
-
-
-
-
-
-
-
-
-
-
-
-  
-  
-  
-  
-
-
-
-
-
-      
-      
-      
-    
-     
-      
-    
-    
-
-    
-    
-  
-
-
-<blockquote>
-  <p>This is a quote from Author4 and links to <a href="https://www.google.com">https://www.google.com</a>.</p>
-  <footer>
-    <strong>Author4</strong>
-    
-      
-        <cite>
-          <a href="https://www.google.com" title="https://www.google.com">google.com</a> 
-        </cite>
-      
-    
-  </footer>
-</blockquote>
-</p>
-
-<p>Quote with author, link and title:
-
-
-
-
-
-
-
-
-
-
-
-  
-  
-  
-  
-
-
-
-
-
-  
-
-
-<blockquote>
-  <p>This is a quote from Author5 and links to <a href="https://www.google.com">https://www.google.com</a> with title &ldquo;Google.&rdquo;</p>
-  <footer>
-    <strong>Author5</strong>
-    
-      
-        <cite>
-          <a href="https://www.google.com" title="https://www.google.com">Google</a> 
-        </cite>
-      
-    
-  </footer>
-</blockquote>
-</p>
-
-<p>Quote with author and a link longer than 32 characters, string is first cut at 32 characters then everything after the last forward slash is removed
-
-
-
-
-
-
-
-
-
-
-
-  
-  
-  
-  
-
-
-
-
-
-      
-      
-      
-    
-     
-      
-    
-    
-
-    
-    
-         
-         
-         
-
-         
-        
-        
-        
-        
-      
-      
-    
-  
-
-
-<blockquote>
-  <p>This is a quote from Author5 and links to <a href="https://twitter.com/CryptoGangsta/status/716427930126196737">https://twitter.com/CryptoGangsta/status/716427930126196737</a> which is longer than 32 characters.
-  <br>And this is a new line in the quote with the HTML br tag.</p>
-  <footer>
-    <strong>Author6</strong>
-    
-      
-        <cite>
-          <a href="https://twitter.com/CryptoGangsta/status/716427930126196737" title="https://twitter.com/CryptoGangsta/status/716427930126196737">twitter.com/CryptoGangsta/...</a> 
-        </cite>
-      
-    
-  </footer>
-</blockquote>
-</p>
-
-<p>Test from the Octopress blockquote page at: <a href="http://octopress.org/docs/plugins/blockquote/">http://octopress.org/docs/plugins/blockquote/</a>
-
-
-
-
-
-
-
-
-
-
-
-  
-  
-  
-  
-
-
-
-
-
-      
-      
-      
-    
-     
-      
-    
-    
-
-    
-    
-         
-         
-         
-
-         
-        
-        
-        
-        
-        
-        
-      
-      
-    
-  
-
-
-<blockquote>
-  <p>Over the past 24 hours I&rsquo;ve been reflecting on my life &amp; I&rsquo;ve realized only one thing. I need a medieval battle axe.</p>
-  <footer>
-    <strong>@allanbranch</strong>
-    
-      
-        <cite>
-          <a href="https://twitter.com/allanbranch/status/90766146063712256" title="https://twitter.com/allanbranch/status/90766146063712256">twitter.com/allanbranch/status/...</a> 
-        </cite>
-      
-    
-  </footer>
-</blockquote>
-</p>
-
-<h2 id="music">music</h2>
-
-<p><iframe style="max-width: 100%"
-      class="music163"
-      frameborder="no"
-      border="0"
-      marginwidth="0"
-      marginheight="0"
-      width="330"
-      height="86"
-      src="//music.163.com/outchain/player?type=2&id=3950552&auto=0&height=66">
-    </iframe></p>
-
-<h2 id="gist">gist</h2>
-
-<p>We can embed the gist in our content via username and gist ID pulled from the URL:</p>
-
-<pre><code>{{&lt; gist spf13 7896402 &gt;}}
+[^footnote]: Here is the *text* of the **footnote**.
 </code></pre>
 
-<p>Display:</p>
+<p>will produce:</p>
 
-<script type="application/javascript" src="https://gist.github.com/spf13/7896402.js"></script>
+<p>You can create footnotes like this<sup class="footnote-ref" id="fnref:footnote1"><a href="#fn:footnote1">2</a></sup>.</p>
 
+<p>Mouse on the ‘footnote’ superscript to see content of the footnote.</p>
 
-<h2 id="expand">expand</h2>
+<h2 id="footnote-2">Footnote-2</h2>
 
-<p>The Expand shortcode displays an expandable/collapsible section of text on your page. Here is an example</p>
+<pre><code class="language-markdown">You can create footnotes like this[^footnote2].
 
-<details>
-  <summary style="background-color:#f5f5f5;border:1px solid #ccc;padding:5px;">
-    Is this learn theme rocks ?
-    
-  </summary>
-  
-Yes !.
-
-</details>
-
-
-<h3 id="usage">Usage</h3>
-
-<p>this shortcode takes exactly one optional parameter to define the text that appears next to the expand/collapse icon. (default is “Click to expand”)</p>
-
-<pre><code>{{&lt; expand &quot;Is this learn theme rocks ?&quot; &gt;}}
-Yes !.
-{{&lt; /expand &gt;}}
+[^footnote2]: Here is the *text* of the **footnote**.
 </code></pre>
 
-<h2 id="youtube">youtube</h2>
+<p>will produce:</p>
 
+<p>You can create footnotes like this<sup class="footnote-ref" id="fnref:footnote"><a href="#fn:footnote">3</a></sup>.</p>
 
-<div style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden;">
-  <iframe src="//www.youtube.com/embed/w7Ft2ymGmfc" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border:0;" allowfullscreen title="YouTube Video"></iframe>
+<p>Mouse on the ‘footnote’ superscript to see content of the footnote.</p>
+
+<h2 id="footnote-3">Footnote-3</h2>
+
+<pre><code class="language-markdown">You can create footnotes like this[^footnote].
+
+[^footnote]: Here is the *text* of the **footnote**.
+</code></pre>
+
+<p>will produce:</p>
+
+<p>You can create footnotes like this<sup class="footnote-ref" id="fnref:footnote3"><a href="#fn:footnote3">4</a></sup>.</p>
+
+<p>Mouse on the ‘footnote’ superscript to see content of the footnote.</p>
+
+<h2 id="footnote-4">Footnote-4</h2>
+
+<pre><code class="language-markdown">You can create footnotes like this[^footnote].
+
+[^footnote]: Here is the *text* of the **footnote**.
+</code></pre>
+
+<p>will produce:</p>
+
+<p>You can create footnotes like this<sup class="footnote-ref" id="fnref:footnote4"><a href="#fn:footnote4">5</a></sup>.</p>
+
+<p>Mouse on the ‘footnote’ superscript to see content of the footnote.</p>
+
+<h2 id="footnote-5">Footnote-5</h2>
+
+<pre><code class="language-markdown">You can create footnotes like this[^footnote].
+
+[^footnote]: Here is the *text* of the **footnote**.
+</code></pre>
+
+<p>will produce dddddddddddddddddddddddddddddddddddddddddddddd:</p>
+
+<p>You can create footnotes like this<sup class="footnote-ref" id="fnref:footnote5"><a href="#fn:footnote5">6</a></sup>.</p>
+
+<p>Mouse on the ‘footnote’ superscript to see content of the footnote.</p>
+<div class="footnotes">
+
+<hr />
+
+<ol>
+<li id="fn:example">example footnote show.
+ <a class="footnote-return" href="#fnref:example"><sup>[return]</sup></a></li>
+<li id="fn:footnote1">Here is the <em>text</em> of the <strong>footnote-1</strong>.
+ <a class="footnote-return" href="#fnref:footnote1"><sup>[return]</sup></a></li>
+<li id="fn:footnote">Here is the <em>text</em> of the <strong>footnote-2</strong>. Here is the text of the footnote-2. Here is the text of the footnote-2. Here is the text of the footnote-2. Here is the text of the footnote-2.  <a href="https://gohugo.io/">The world’s fastest framework for building websites | Hugo</a>
+ <a class="footnote-return" href="#fnref:footnote"><sup>[return]</sup></a></li>
+<li id="fn:footnote3">Here is the <em>text</em> of the <strong>footnote-3</strong>.
+ <a class="footnote-return" href="#fnref:footnote3"><sup>[return]</sup></a></li>
+<li id="fn:footnote4">Here is the <em>text</em> of the <strong>footnote-4</strong>.
+ <a class="footnote-return" href="#fnref:footnote4"><sup>[return]</sup></a></li>
+<li id="fn:footnote5">Here is the <em>text</em> of the <strong>footnote-5</strong>.
+ <a class="footnote-return" href="#fnref:footnote5"><sup>[return]</sup></a></li>
+</ol>
 </div>
+    </div>
+    
+  </div>
+</article>
 
+  
+    <article class="post bg-white">
+  <header class="post-header">
+    <h1 class="post-title">
+      
+      <a class="post-link" href="/post/docs/english-preview/">English Creating a New Theme</a>
+    </h1>
+    
+    <div class="post-meta">
+      <time datetime="2017-08-31" class="post-time">
+        2017-08-31
+      </time>
+      <div class="post-category">
+          <a href="https://hisaige.github.io/categories/english/"> English </a>
+          <a href="https://hisaige.github.io/categories/index/"> index </a>
+          
+        </div>
+      <span class="more-meta"> 7232 words </span>
+      <span class="more-meta"> 34 min read </span>
+      
+      
+      
+    </div>
+  </header>
+  
+  <div class="post-content">
+    
+    <div class="post-summary">
+      <h2 id="introduction">Introduction</h2>
 
-<h2 id="vimeo">vimeo</h2>
+<p>This tutorial will show you how to create a simple theme in Hugo. I assume that you are familiar with HTML, the bash command line, and that you are comfortable using Markdown to format content. I&rsquo;ll explain how Hugo uses templates and how you can organize your templates to create a theme. I won&rsquo;t cover using CSS to style your theme.</p>
 
+<p>We&rsquo;ll start with creating a new site with a very basic template. Then we&rsquo;ll add in a few pages and posts. With small variations on that, you will be able to create many different types of web sites.</p>
 
-<div style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden;">
-  <iframe src="//player.vimeo.com/video/146022717" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border:0;" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
- </div>
+<p>In this tutorial, commands that you enter will start with the &ldquo;$&rdquo; prompt. The output will follow. Lines that start with &ldquo;#&rdquo; are comments that I&rsquo;ve added to explain a point. When I show updates to a file, the &ldquo;:wq&rdquo; on the last line means to save the file.</p>
 
+<p>Here&rsquo;s an example:</p>
 
-<h2 id="youku">youku</h2>
+<pre><code>## this is a comment
+$ echo this is a command
+this is a command
 
+## edit the file
+$vi foo.md
++++
+date = &quot;2014-09-28&quot;
+title = &quot;creating a new theme&quot;
++++
 
+bah and humbug
+:wq
 
-<div style="position: relative; padding-bottom: 56.25%; padding-top: 30px; height: 0; overflow: hidden;">
-    <iframe src="https://player.youku.com/embed/XMzQ0ODUxMjM2NA?autoplay=0" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;" allowfullscreen frameborder="0" title="YouKu Video">
-    </iframe>
-</div>
+## show it
+$ cat foo.md
++++
+date = &quot;2014-09-28&quot;
+title = &quot;creating a new theme&quot;
++++
+
+bah and humbug
+$
+</code></pre>
+
+<h2 id="some-definitions">Some Definitions</h2>
+
+<p>There are a few concepts that you need to understand before creating a theme.</p>
+
+<h3 id="skins">Skins</h3>
+
+<p>Skins are the files responsible for the look and feel of your site. It’s the CSS that controls colors and fonts, it’s the Javascript that determines actions and reactions. It’s also the rules that Hugo uses to transform your content into the HTML that the site will serve to visitors.</p>
+
+<p>You have two ways to create a skin. The simplest way is to create it in the <code>layouts/</code> directory. If you do, then you don’t have to worry about configuring Hugo to recognize it. The first place that Hugo will look for rules and files is in the <code>layouts/</code> directory so it will always find the skin.</p>
+
+<p>Your second choice is to create it in a sub-directory of the <code>themes/</code> directory. If you do, then you must always tell Hugo where to search for the skin. It’s extra work, though, so why bother with it?</p>
+
+<p>The difference between creating a skin in <code>layouts/</code> and creating it in <code>themes/</code> is very subtle. A skin in <code>layouts/</code> can’t be customized without updating the templates and static files that it is built from. A skin created in <code>themes/</code>, on the other hand, can be and that makes it easier for other people to use it.</p>
+
+<p>The rest of this tutorial will call a skin created in the <code>themes/</code> directory a theme.</p>
+
+<p>Note that you can use this tutorial to create a skin in the <code>layouts/</code> directory if you wish to. The main difference will be that you won’t need to update the site’s configuration file to use a theme.</p>
+
+<h3 id="the-home-page">The Home Page</h3>
+
+<p>The home page, or landing page, is the first page that many visitors to a site see. It is the index.html file in the root directory of the web site. Since Hugo writes files to the public/ directory, our home page is public/index.html.</p>
+
+<h3 id="site-configuration-file">Site Configuration File</h3>
+
+<p>When Hugo runs, it looks for a configuration file that contains settings that override default values for the entire site. The file can use TOML, YAML, or JSON. I prefer to use TOML for my configuration files. If you prefer to use JSON or YAML, you’ll need to translate my examples. You’ll also need to change the name of the file since Hugo uses the extension to determine how to process it.</p>
+
+<p>Hugo translates Markdown files into HTML. By default, Hugo expects to find Markdown files in your <code>content/</code> directory and template files in your <code>themes/</code> directory. It will create HTML files in your <code>public/</code> directory. You can change this by specifying alternate locations in the configuration file.</p>
+
+<h3 id="content">Content</h3>
+
+<p>Content is stored in text files that contain two sections. The first section is the “front matter,” which is the meta-information on the content. The second section contains Markdown that will be converted to HTML.</p>
+
+<h4 id="front-matter">Front Matter</h4>
+
+<p>The front matter is information about the content. Like the configuration file, it can be written in TOML, YAML, or JSON. Unlike the configuration file, Hugo doesn’t use the file’s extension to know the format. It looks for markers to signal the type. TOML is surrounded by “<code>+++</code>”, YAML by “<code>---</code>”, and JSON is enclosed in curly braces. I prefer to use TOML, so you’ll need to translate my examples if you prefer YAML or JSON.</p>
+
+<p>The information in the front matter is passed into the template before the content is rendered into HTML.</p>
+
+<h4 id="markdown">Markdown</h4>
+
+<p>Content is written in Markdown which makes it easier to create the content. Hugo runs the content through a Markdown engine to create the HTML which will be written to the output file.</p>
+
+<h3 id="template-files">Template Files</h3>
+
+<p>Hugo uses template files to render content into HTML. Template files are a bridge between the content and presentation. Rules in the template define what content is published, where it&rsquo;s published to, and how it will rendered to the HTML file. The template guides the presentation by specifying the style to use.</p>
+
+<p>There are three types of templates: single, list, and partial. Each type takes a bit of content as input and transforms it based on the commands in the template.</p>
+
+<p>Hugo uses its knowledge of the content to find the template file used to render the content. If it can’t find a template that is an exact match for the content, it will shift up a level and search from there. It will continue to do so until it finds a matching template or runs out of templates to try. If it can’t find a template, it will use the default template for the site.</p>
+
+<p>Please note that you can use the front matter to influence Hugo’s choice of templates.</p>
+
+<h4 id="single-template">Single Template</h4>
+
+<p>A single template is used to render a single piece of content. For example, an article or post would be a single piece of content and use a single template.</p>
+
+<h4 id="list-template">List Template</h4>
+
+<p>A list template renders a group of related content. That could be a summary of recent postings or all articles in a category. List templates can contain multiple groups.</p>
+
+<p>The homepage template is a special type of list template. Hugo assumes that the home page of your site will act as the portal for the rest of the content in the site.</p>
+
+<h4 id="partial-template">Partial Template</h4>
+
+<p>A partial template is a template that can be included in other templates. Partial templates must be called using the “partial” template command. They are very handy for rolling up common behavior. For example, your site may have a banner that all pages use. Instead of copying the text of the banner into every single and list template, you could create a partial with the banner in it. That way if you decide to change the banner, you only have to change the partial template.</p>
+
+<h2 id="create-a-new-site">Create a New Site</h2>
+
+<p>Let&rsquo;s use Hugo to create a new web site. I&rsquo;m a Mac user, so I&rsquo;ll create mine in my home directory, in the Sites folder. If you&rsquo;re using Linux, you might have to create the folder first.</p>
+
+<p>The &ldquo;new site&rdquo; command will create a skeleton of a site. It will give you the basic directory structure and a useable configuration file.</p>
+
+<pre><code>$ hugo new site ~/Sites/zafta
+$ cd ~/Sites/zafta
+$ ls -l
+total 8
+drwxr-xr-x  7 quoha  staff  238 Sep 29 16:49 .
+drwxr-xr-x  3 quoha  staff  102 Sep 29 16:49 ..
+drwxr-xr-x  2 quoha  staff   68 Sep 29 16:49 archetypes
+-rw-r--r--  1 quoha  staff   82 Sep 29 16:49 config.toml
+drwxr-xr-x  2 quoha  staff   68 Sep 29 16:49 content
+drwxr-xr-x  2 quoha  staff   68 Sep 29 16:49 layouts
+drwxr-xr-x  2 quoha  staff   68 Sep 29 16:49 static
+$
+</code></pre>
+
+<p>Take a look in the content/ directory to confirm that it is empty.</p>
+
+<p>The other directories (archetypes/, layouts/, and static/) are used when customizing a theme. That&rsquo;s a topic for a different tutorial, so please ignore them for now.</p>
+
+<h3 id="generate-the-html-for-the-new-site">Generate the HTML For the New Site</h3>
+
+<p>Running the <code>hugo</code> command with no options will read all the available content and generate the HTML files. It will also copy all static files (that&rsquo;s everything that&rsquo;s not content). Since we have an empty site, it won&rsquo;t do much, but it will do it very quickly.</p>
+
+<pre><code>$ hugo --verbose
+INFO: 2014/09/29 Using config file: config.toml
+INFO: 2014/09/29 syncing from /Users/quoha/Sites/zafta/static/ to /Users/quoha/Sites/zafta/public/
+WARN: 2014/09/29 Unable to locate layout: [index.html _default/list.html _default/single.html]
+WARN: 2014/09/29 Unable to locate layout: [404.html]
+0 draft content
+0 future content
+0 pages created
+0 tags created
+0 categories created
+in 2 ms
+$
+</code></pre>
+
+<p>The &ldquo;<code>--verbose</code>&rdquo; flag gives extra information that will be helpful when we build the template. Every line of the output that starts with &ldquo;INFO:&rdquo; or &ldquo;WARN:&rdquo; is present because we used that flag. The lines that start with &ldquo;WARN:&rdquo; are warning messages. We&rsquo;ll go over them later.</p>
+
+<p>We can verify that the command worked by looking at the directory again.</p>
+
+<pre><code>$ ls -l
+total 8
+drwxr-xr-x  2 quoha  staff   68 Sep 29 16:49 archetypes
+-rw-r--r--  1 quoha  staff   82 Sep 29 16:49 config.toml
+drwxr-xr-x  2 quoha  staff   68 Sep 29 16:49 content
+drwxr-xr-x  2 quoha  staff   68 Sep 29 16:49 layouts
+drwxr-xr-x  4 quoha  staff  136 Sep 29 17:02 public
+drwxr-xr-x  2 quoha  staff   68 Sep 29 16:49 static
+$
+</code></pre>
+
+<p>See that new public/ directory? Hugo placed all generated content there. When you&rsquo;re ready to publish your web site, that&rsquo;s the place to start. For now, though, let&rsquo;s just confirm that we have what we&rsquo;d expect from a site with no content.</p>
+
+<pre><code>$ ls -l public
+total 16
+-rw-r--r--  1 quoha  staff  416 Sep 29 17:02 index.xml
+-rw-r--r--  1 quoha  staff  262 Sep 29 17:02 sitemap.xml
+$
+</code></pre>
+
+<p>Hugo created two XML files, which is standard, but there are no HTML files.</p>
+
+<h3 id="test-the-new-site">Test the New Site</h3>
+
+<p>Verify that you can run the built-in web server. It will dramatically shorten your development cycle if you do. Start it by running the &ldquo;server&rdquo; command. If it is successful, you will see output similar to the following:</p>
+
+<pre><code>$ hugo server --verbose
+INFO: 2014/09/29 Using config file: /Users/quoha/Sites/zafta/config.toml
+INFO: 2014/09/29 syncing from /Users/quoha/Sites/zafta/static/ to /Users/quoha/Sites/zafta/public/
+WARN: 2014/09/29 Unable to locate layout: [index.html _default/list.html _default/single.html]
+WARN: 2014/09/29 Unable to locate layout: [404.html]
+0 draft content
+0 future content
+0 pages created
+0 tags created
+0 categories created
+in 2 ms
+Serving pages from /Users/quoha/Sites/zafta/public
+Web Server is available at http://localhost:1313
+Press Ctrl+C to stop
+</code></pre>
+
+<p>Connect to the listed URL (it&rsquo;s on the line that starts with &ldquo;Web Server&rdquo;). If everything is working correctly, you should get a page that shows the following:</p>
+
+<pre><code>index.xml
+sitemap.xml
+</code></pre>
+
+<p>That&rsquo;s a listing of your public/ directory. Hugo didn&rsquo;t create a home page because our site has no content. When there&rsquo;s no index.html file in a directory, the server lists the files in the directory, which is what you should see in your browser.</p>
+
+<p>Let’s go back and look at those warnings again.</p>
+
+<pre><code>WARN: 2014/09/29 Unable to locate layout: [index.html _default/list.html _default/single.html]
+WARN: 2014/09/29 Unable to locate layout: [404.html]
+</code></pre>
+
+<p>That second warning is easier to explain. We haven’t created a template to be used to generate “page not found errors.” The 404 message is a topic for a separate tutorial.</p>
+
+<p>Now for the first warning. It is for the home page. You can tell because the first layout that it looked for was “index.html.” That’s only used by the home page.</p>
+
+<p>I like that the verbose flag causes Hugo to list the files that it&rsquo;s searching for. For the home page, they are index.html, _default/list.html, and _default/single.html. There are some rules that we&rsquo;ll cover later that explain the names and paths. For now, just remember that Hugo couldn&rsquo;t find a template for the home page and it told you so.</p>
+
+<p>At this point, you&rsquo;ve got a working installation and site that we can build upon. All that’s left is to add some content and a theme to display it.</p>
+
+<h2 id="create-a-new-theme">Create a New Theme</h2>
+
+<p>Hugo doesn&rsquo;t ship with a default theme. There are a few available (I counted a dozen when I first installed Hugo) and Hugo comes with a command to create new themes.</p>
+
+<p>We&rsquo;re going to create a new theme called &ldquo;zafta.&rdquo; Since the goal of this tutorial is to show you how to fill out the files to pull in your content, the theme will not contain any CSS. In other words, ugly but functional.</p>
+
+<p>All themes have opinions on content and layout. For example, Zafta uses &ldquo;post&rdquo; over &ldquo;blog&rdquo;. Strong opinions make for simpler templates but differing opinions make it tougher to use themes. When you build a theme, consider using the terms that other themes do.</p>
+
+<h3 id="create-a-skeleton">Create a Skeleton</h3>
+
+<p>Use the hugo &ldquo;new&rdquo; command to create the skeleton of a theme. This creates the directory structure and places empty files for you to fill out.</p>
+
+<pre><code>$ hugo new theme zafta
+
+$ ls -l
+total 8
+drwxr-xr-x  2 quoha  staff   68 Sep 29 16:49 archetypes
+-rw-r--r--  1 quoha  staff   82 Sep 29 16:49 config.toml
+drwxr-xr-x  2 quoha  staff   68 Sep 29 16:49 content
+drwxr-xr-x  2 quoha  staff   68 Sep 29 16:49 layouts
+drwxr-xr-x  4 quoha  staff  136 Sep 29 17:02 public
+drwxr-xr-x  2 quoha  staff   68 Sep 29 16:49 static
+drwxr-xr-x  3 quoha  staff  102 Sep 29 17:31 themes
+
+$ find themes -type f | xargs ls -l
+-rw-r--r--  1 quoha  staff  1081 Sep 29 17:31 themes/zafta/LICENSE.md
+-rw-r--r--  1 quoha  staff     0 Sep 29 17:31 themes/zafta/archetypes/default.md
+-rw-r--r--  1 quoha  staff     0 Sep 29 17:31 themes/zafta/layouts/_default/list.html
+-rw-r--r--  1 quoha  staff     0 Sep 29 17:31 themes/zafta/layouts/_default/single.html
+-rw-r--r--  1 quoha  staff     0 Sep 29 17:31 themes/zafta/layouts/index.html
+-rw-r--r--  1 quoha  staff     0 Sep 29 17:31 themes/zafta/layouts/partials/footer.html
+-rw-r--r--  1 quoha  staff     0 Sep 29 17:31 themes/zafta/layouts/partials/header.html
+-rw-r--r--  1 quoha  staff    93 Sep 29 17:31 themes/zafta/theme.toml
+$
+</code></pre>
+
+<p>The skeleton includes templates (the files ending in .html), license file, a description of your theme (the theme.toml file), and an empty archetype.</p>
+
+<p>Please take a minute to fill out the theme.toml and LICENSE.md files. They&rsquo;re optional, but if you&rsquo;re going to be distributing your theme, it tells the world who to praise (or blame). It&rsquo;s also nice to declare the license so that people will know how they can use the theme.</p>
+
+<pre><code>$ vi themes/zafta/theme.toml
+author = &quot;michael d henderson&quot;
+description = &quot;a minimal working template&quot;
+license = &quot;MIT&quot;
+name = &quot;zafta&quot;
+source_repo = &quot;&quot;
+tags = [&quot;tags&quot;, &quot;categories&quot;]
+:wq
+
+## also edit themes/zafta/LICENSE.md and change
+## the bit that says &quot;YOUR_NAME_HERE&quot;
+</code></pre>
+
+<p>Note that the the skeleton&rsquo;s template files are empty. Don&rsquo;t worry, we&rsquo;ll be changing that shortly.</p>
+
+<pre><code>$ find themes/zafta -name '*.html' | xargs ls -l
+-rw-r--r--  1 quoha  staff  0 Sep 29 17:31 themes/zafta/layouts/_default/list.html
+-rw-r--r--  1 quoha  staff  0 Sep 29 17:31 themes/zafta/layouts/_default/single.html
+-rw-r--r--  1 quoha  staff  0 Sep 29 17:31 themes/zafta/layouts/index.html
+-rw-r--r--  1 quoha  staff  0 Sep 29 17:31 themes/zafta/layouts/partials/footer.html
+-rw-r--r--  1 quoha  staff  0 Sep 29 17:31 themes/zafta/layouts/partials/header.html
+$
+</code></pre>
+
+<h3 id="update-the-configuration-file-to-use-the-theme">Update the Configuration File to Use the Theme</h3>
+
+<p>Now that we&rsquo;ve got a theme to work with, it&rsquo;s a good idea to add the theme name to the configuration file. This is optional, because you can always add &ldquo;-t zafta&rdquo; on all your commands. I like to put it the configuration file because I like shorter command lines. If you don&rsquo;t put it in the configuration file or specify it on the command line, you won&rsquo;t use the template that you&rsquo;re expecting to.</p>
+
+<p>Edit the file to add the theme, add a title for the site, and specify that all of our content will use the TOML format.</p>
+
+<pre><code>$ vi config.toml
+theme = &quot;zafta&quot;
+baseurl = &quot;&quot;
+languageCode = &quot;en-us&quot;
+title = &quot;zafta - totally refreshing&quot;
+MetaDataFormat = &quot;toml&quot;
+:wq
+
+$
+</code></pre>
+
+<h3 id="generate-the-site">Generate the Site</h3>
+
+<p>Now that we have an empty theme, let&rsquo;s generate the site again.</p>
+
+<pre><code>$ hugo --verbose
+INFO: 2014/09/29 Using config file: /Users/quoha/Sites/zafta/config.toml
+INFO: 2014/09/29 syncing from /Users/quoha/Sites/zafta/themes/zafta/static/ to /Users/quoha/Sites/zafta/public/
+INFO: 2014/09/29 syncing from /Users/quoha/Sites/zafta/static/ to /Users/quoha/Sites/zafta/public/
+WARN: 2014/09/29 Unable to locate layout: [404.html theme/404.html]
+0 draft content
+0 future content
+0 pages created
+0 tags created
+0 categories created
+in 2 ms
+$
+</code></pre>
+
+<p>Did you notice that the output is different? The warning message for the home page has disappeared and we have an additional information line saying that Hugo is syncing from the theme&rsquo;s directory.</p>
+
+<p>Let&rsquo;s check the public/ directory to see what Hugo&rsquo;s created.</p>
+
+<pre><code>$ ls -l public
+total 16
+drwxr-xr-x  2 quoha  staff   68 Sep 29 17:56 css
+-rw-r--r--  1 quoha  staff    0 Sep 29 17:56 index.html
+-rw-r--r--  1 quoha  staff  407 Sep 29 17:56 index.xml
+drwxr-xr-x  2 quoha  staff   68 Sep 29 17:56 js
+-rw-r--r--  1 quoha  staff  243 Sep 29 17:56 sitemap.xml
+$
+</code></pre>
+
+<p>Notice four things:</p>
+
+<ol>
+<li>Hugo created a home page. This is the file public/index.html.</li>
+<li>Hugo created a css/ directory.</li>
+<li>Hugo created a js/ directory.</li>
+<li>Hugo claimed that it created 0 pages. It created a file and copied over static files, but didn&rsquo;t create any pages. That&rsquo;s because it considers a &ldquo;page&rdquo; to be a file created directly from a content file. It doesn&rsquo;t count things like the index.html files that it creates automatically.</li>
+</ol>
+
+<h4 id="the-home-page-1">The Home Page</h4>
+
+<p>Hugo supports many different types of templates. The home page is special because it gets its own type of template and its own template file. The file, layouts/index.html, is used to generate the HTML for the home page. The Hugo documentation says that this is the only required template, but that depends. Hugo&rsquo;s warning message shows that it looks for three different templates:</p>
+
+<pre><code>WARN: 2014/09/29 Unable to locate layout: [index.html _default/list.html _default/single.html]
+</code></pre>
+
+<p>If it can&rsquo;t find any of these, it completely skips creating the home page. We noticed that when we built the site without having a theme installed.</p>
+
+<p>When Hugo created our theme, it created an empty home page template. Now, when we build the site, Hugo finds the template and uses it to generate the HTML for the home page. Since the template file is empty, the HTML file is empty, too. If the template had any rules in it, then Hugo would have used them to generate the home page.</p>
+
+<pre><code>$ find . -name index.html | xargs ls -l
+-rw-r--r--  1 quoha  staff  0 Sep 29 20:21 ./public/index.html
+-rw-r--r--  1 quoha  staff  0 Sep 29 17:31 ./themes/zafta/layouts/index.html
+$
+</code></pre>
+
+<h4 id="the-magic-of-static">The Magic of Static</h4>
+
+<p>Hugo does two things when generating the site. It uses templates to transform content into HTML and it copies static files into the site. Unlike content, static files are not transformed. They are copied exactly as they are.</p>
+
+<p>Hugo assumes that your site will use both CSS and JavaScript, so it creates directories in your theme to hold them. Remember opinions? Well, Hugo&rsquo;s opinion is that you&rsquo;ll store your CSS in a directory named css/ and your JavaScript in a directory named js/. If you don&rsquo;t like that, you can change the directory names in your theme directory or jane delete them completely. Hugo&rsquo;s nice enough to offer its opinion, then behave nicely if you disagree.</p>
+
+<pre><code>$ find themes/zafta -type d | xargs ls -ld
+drwxr-xr-x  7 quoha  staff  238 Sep 29 17:38 themes/zafta
+drwxr-xr-x  3 quoha  staff  102 Sep 29 17:31 themes/zafta/archetypes
+drwxr-xr-x  5 quoha  staff  170 Sep 29 17:31 themes/zafta/layouts
+drwxr-xr-x  4 quoha  staff  136 Sep 29 17:31 themes/zafta/layouts/_default
+drwxr-xr-x  4 quoha  staff  136 Sep 29 17:31 themes/zafta/layouts/partials
+drwxr-xr-x  4 quoha  staff  136 Sep 29 17:31 themes/zafta/static
+drwxr-xr-x  2 quoha  staff   68 Sep 29 17:31 themes/zafta/static/css
+drwxr-xr-x  2 quoha  staff   68 Sep 29 17:31 themes/zafta/static/js
+$
+</code></pre>
+
+<h2 id="the-theme-development-cycle">The Theme Development Cycle</h2>
+
+<p>When you&rsquo;re working on a theme, you will make changes in the theme&rsquo;s directory, rebuild the site, and check your changes in the browser. Hugo makes this very easy:</p>
+
+<ol>
+<li>Purge the public/ directory.</li>
+<li>Run the built in web server in watch mode.</li>
+<li>Open your site in a browser.</li>
+<li>Update the theme.</li>
+<li>Glance at your browser window to see changes.</li>
+<li>Return to step 4.</li>
+</ol>
+
+<p>I’ll throw in one more opinion: never work on a theme on a live site. Always work on a copy of your site. Make changes to your theme, test them, then copy them up to your site. For added safety, use a tool like Git to keep a revision history of your content and your theme. Believe me when I say that it is too easy to lose both your mind and your changes.</p>
+
+<p>Check the main Hugo site for information on using Git with Hugo.</p>
+
+<h3 id="purge-the-public-directory">Purge the public/ Directory</h3>
+
+<p>When generating the site, Hugo will create new files and update existing ones in the <code>public/</code> directory. It will not delete files that are no longer used. For example, files that were created in the wrong directory or with the wrong title will remain. If you leave them, you might get confused by them later. I recommend cleaning out your site prior to generating it.</p>
+
+<p>Note: If you&rsquo;re building on an SSD, you should ignore this. Churning on a SSD can be costly.</p>
+
+<h3 id="hugo-s-watch-option">Hugo&rsquo;s Watch Option</h3>
+
+<p>Hugo&rsquo;s &ldquo;<code>--watch</code>&rdquo; option will monitor the content/ and your theme directories for changes and rebuild the site automatically.</p>
+
+<h3 id="live-reload">Live Reload</h3>
+
+<p>Hugo&rsquo;s built in web server supports live reload. As pages are saved on the server, the browser is told to refresh the page. Usually, this happens faster than you can say, &ldquo;Wow, that&rsquo;s totally amazing.&rdquo;</p>
+
+<h3 id="development-commands">Development Commands</h3>
+
+<p>Use the following commands as the basis for your workflow.</p>
+
+<pre><code>## purge old files. hugo will recreate the public directory.
+##
+$ rm -rf public
+##
+## run hugo in watch mode
+##
+$ hugo server --watch --verbose
+</code></pre>
+
+<p>Here&rsquo;s sample output showing Hugo detecting a change to the template for the home page. Once generated, the web browser automatically reloaded the page. I&rsquo;ve said this before, it&rsquo;s amazing.</p>
+
+<pre><code>$ rm -rf public
+$ hugo server --watch --verbose
+INFO: 2014/09/29 Using config file: /Users/quoha/Sites/zafta/config.toml
+INFO: 2014/09/29 syncing from /Users/quoha/Sites/zafta/themes/zafta/static/ to /Users/quoha/Sites/zafta/public/
+INFO: 2014/09/29 syncing from /Users/quoha/Sites/zafta/static/ to /Users/quoha/Sites/zafta/public/
+WARN: 2014/09/29 Unable to locate layout: [404.html theme/404.html]
+0 draft content
+0 future content
+0 pages created
+0 tags created
+0 categories created
+in 2 ms
+Watching for changes in /Users/quoha/Sites/zafta/content
+Serving pages from /Users/quoha/Sites/zafta/public
+Web Server is available at http://localhost:1313
+Press Ctrl+C to stop
+INFO: 2014/09/29 File System Event: [&quot;/Users/quoha/Sites/zafta/themes/zafta/layouts/index.html&quot;: MODIFY|ATTRIB]
+Change detected, rebuilding site
+
+WARN: 2014/09/29 Unable to locate layout: [404.html theme/404.html]
+0 draft content
+0 future content
+0 pages created
+0 tags created
+0 categories created
+in 1 ms
+</code></pre>
+
+<h2 id="update-the-home-page-template">Update the Home Page Template</h2>
+
+<p>The home page is one of a few special pages that Hugo creates automatically. As mentioned earlier, it looks for one of three files in the theme&rsquo;s layout/ directory:</p>
+
+<ol>
+<li>index.html</li>
+<li>_default/list.html</li>
+<li>_default/single.html</li>
+</ol>
+
+<p>We could update one of the default templates, but a good design decision is to update the most specific template available. That&rsquo;s not a hard and fast rule (in fact, we&rsquo;ll break it a few times in this tutorial), but it is a good generalization.</p>
+
+<h3 id="make-a-static-home-page">Make a Static Home Page</h3>
+
+<p>Right now, that page is empty because we don&rsquo;t have any content and we don&rsquo;t have any logic in the template. Let&rsquo;s change that by adding some text to the template.</p>
+
+<pre><code>$ vi themes/zafta/layouts/index.html
+&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;body&gt;
+  &lt;p&gt;hugo says hello!&lt;/p&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+:wq
+
+$
+</code></pre>
+
+<p>Build the web site and then verify the results.</p>
+
+<pre><code>$ hugo --verbose
+INFO: 2014/09/29 Using config file: /Users/quoha/Sites/zafta/config.toml
+INFO: 2014/09/29 syncing from /Users/quoha/Sites/zafta/themes/zafta/static/ to /Users/quoha/Sites/zafta/public/
+INFO: 2014/09/29 syncing from /Users/quoha/Sites/zafta/static/ to /Users/quoha/Sites/zafta/public/
+WARN: 2014/09/29 Unable to locate layout: [404.html theme/404.html]
+0 draft content
+0 future content
+0 pages created
+0 tags created
+0 categories created
+in 2 ms
+
+$ find public -type f -name '*.html' | xargs ls -l
+-rw-r--r--  1 quoha  staff  78 Sep 29 21:26 public/index.html
+
+$ cat public/index.html
+&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;body&gt;
+  &lt;p&gt;hugo says hello!&lt;/p&gt;
+&lt;/html&gt;
+</code></pre>
+
+<h4 id="live-reload-1">Live Reload</h4>
+
+<p>Note: If you&rsquo;re running the server with the <code>--watch</code> option, you&rsquo;ll see different content in the file:</p>
+
+<pre><code>$ cat public/index.html
+&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;body&gt;
+  &lt;p&gt;hugo says hello!&lt;/p&gt;
+&lt;script&gt;document.write('&lt;script src=&quot;http://'
+        + (location.host || 'localhost').split(':')[0]
+    + ':1313/livereload.js?mindelay=10&quot;&gt;&lt;/'
+        + 'script&gt;')&lt;/script&gt;&lt;/body&gt;
+&lt;/html&gt;
+</code></pre>
+
+<p>When you use <code>--watch</code>, the Live Reload script is added by Hugo. Look for live reload in the documentation to see what it does and how to disable it.</p>
+
+<h3 id="build-a-dynamic-home-page">Build a &ldquo;Dynamic&rdquo; Home Page</h3>
+
+<p>&ldquo;Dynamic home page?&rdquo; Hugo&rsquo;s a static web site generator, so this seems an odd thing to say. I mean let&rsquo;s have the home page automatically reflect the content in the site every time Hugo builds it. We&rsquo;ll use iteration in the template to do that.</p>
+
+<h4 id="create-new-posts">Create New Posts</h4>
+
+<p>Now that we have the home page generating static content, let&rsquo;s add some content to the site. We&rsquo;ll display these posts as a list on the home page and on their own page, too.</p>
+
+<p>Hugo has a command to generate a skeleton post, just like it does for sites and themes.</p>
+
+<pre><code>$ hugo --verbose new post/first.md
+INFO: 2014/09/29 Using config file: /Users/quoha/Sites/zafta/config.toml
+INFO: 2014/09/29 attempting to create  post/first.md of post
+INFO: 2014/09/29 curpath: /Users/quoha/Sites/zafta/themes/zafta/archetypes/default.md
+ERROR: 2014/09/29 Unable to Cast &lt;nil&gt; to map[string]interface{}
+
+$
+</code></pre>
+
+<p>That wasn&rsquo;t very nice, was it?</p>
+
+<p>The &ldquo;new&rdquo; command uses an archetype to create the post file. Hugo created an empty default archetype file, but that causes an error when there&rsquo;s a theme. For me, the workaround was to create an archetypes file specifically for the post type.</p>
+
+<pre><code>$ vi themes/zafta/archetypes/post.md
++++
+Description = &quot;&quot;
+Tags = []
+Categories = []
++++
+:wq
+
+$ find themes/zafta/archetypes -type f | xargs ls -l
+-rw-r--r--  1 quoha  staff   0 Sep 29 21:53 themes/zafta/archetypes/default.md
+-rw-r--r--  1 quoha  staff  51 Sep 29 21:54 themes/zafta/archetypes/post.md
+
+$ hugo --verbose new post/first.md
+INFO: 2014/09/29 Using config file: /Users/quoha/Sites/zafta/config.toml
+INFO: 2014/09/29 attempting to create  post/first.md of post
+INFO: 2014/09/29 curpath: /Users/quoha/Sites/zafta/themes/zafta/archetypes/post.md
+INFO: 2014/09/29 creating /Users/quoha/Sites/zafta/content/post/first.md
+/Users/quoha/Sites/zafta/content/post/first.md created
+
+$ hugo --verbose new post/second.md
+INFO: 2014/09/29 Using config file: /Users/quoha/Sites/zafta/config.toml
+INFO: 2014/09/29 attempting to create  post/second.md of post
+INFO: 2014/09/29 curpath: /Users/quoha/Sites/zafta/themes/zafta/archetypes/post.md
+INFO: 2014/09/29 creating /Users/quoha/Sites/zafta/content/post/second.md
+/Users/quoha/Sites/zafta/content/post/second.md created
+
+$ ls -l content/post
+total 16
+-rw-r--r--  1 quoha  staff  104 Sep 29 21:54 first.md
+-rw-r--r--  1 quoha  staff  105 Sep 29 21:57 second.md
+
+$ cat content/post/first.md
++++
+Categories = []
+Description = &quot;&quot;
+Tags = []
+date = &quot;2014-09-29T21:54:53-05:00&quot;
+title = &quot;first&quot;
+
++++
+my first post
+
+$ cat content/post/second.md
++++
+Categories = []
+Description = &quot;&quot;
+Tags = []
+date = &quot;2014-09-29T21:57:09-05:00&quot;
+title = &quot;second&quot;
+
++++
+my second post
+
+$
+</code></pre>
+
+<p>Build the web site and then verify the results.</p>
+
+<pre><code>$ rm -rf public
+$ hugo --verbose
+INFO: 2014/09/29 Using config file: /Users/quoha/Sites/zafta/config.toml
+INFO: 2014/09/29 syncing from /Users/quoha/Sites/zafta/themes/zafta/static/ to /Users/quoha/Sites/zafta/public/
+INFO: 2014/09/29 syncing from /Users/quoha/Sites/zafta/static/ to /Users/quoha/Sites/zafta/public/
+INFO: 2014/09/29 found taxonomies: map[string]string{&quot;category&quot;:&quot;categories&quot;, &quot;tag&quot;:&quot;tags&quot;}
+WARN: 2014/09/29 Unable to locate layout: [404.html theme/404.html]
+0 draft content
+0 future content
+2 pages created
+0 tags created
+0 categories created
+in 4 ms
+$
+</code></pre>
+
+<p>The output says that it created 2 pages. Those are our new posts:</p>
+
+<pre><code>$ find public -type f -name '*.html' | xargs ls -l
+-rw-r--r--  1 quoha  staff  78 Sep 29 22:13 public/index.html
+-rw-r--r--  1 quoha  staff   0 Sep 29 22:13 public/post/first/index.html
+-rw-r--r--  1 quoha  staff   0 Sep 29 22:13 public/post/index.html
+-rw-r--r--  1 quoha  staff   0 Sep 29 22:13 public/post/second/index.html
+$
+</code></pre>
+
+<p>The new files are empty because because the templates used to generate the content are empty. The homepage doesn&rsquo;t show the new content, either. We have to update the templates to add the posts.</p>
+
+<h3 id="list-and-single-templates">List and Single Templates</h3>
+
+<p>In Hugo, we have three major kinds of templates. There&rsquo;s the home page template that we updated previously. It is used only by the home page. We also have &ldquo;single&rdquo; templates which are used to generate output for a single content file. We also have &ldquo;list&rdquo; templates that are used to group multiple pieces of content before generating output.</p>
+
+<p>Generally speaking, list templates are named &ldquo;list.html&rdquo; and single templates are named &ldquo;single.html.&rdquo;</p>
+
+<p>There are three other types of templates: partials, content views, and terms. We will not go into much detail on these.</p>
+
+<h3 id="add-content-to-the-homepage">Add Content to the Homepage</h3>
+
+<p>The home page will contain a list of posts. Let&rsquo;s update its template to add the posts that we just created. The logic in the template will run every time we build the site.</p>
+
+<pre><code>$ vi themes/zafta/layouts/index.html
+&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;body&gt;
+  {{ range first 10 .Data.Pages }}
+    &lt;h1&gt;{{ .Title }}&lt;/h1&gt;
+  {{ end }}
+&lt;/body&gt;
+&lt;/html&gt;
+:wq
+
+$
+</code></pre>
+
+<p>Hugo uses the Go template engine. That engine scans the template files for commands which are enclosed between &ldquo;{{&rdquo; and &ldquo;}}&rdquo;. In our template, the commands are:</p>
+
+<ol>
+<li>range</li>
+<li>.Title</li>
+<li>end</li>
+</ol>
+
+<p>The &ldquo;range&rdquo; command is an iterator. We&rsquo;re going to use it to go through the first ten pages. Every HTML file that Hugo creates is treated as a page, so looping through the list of pages will look at every file that will be created.</p>
+
+<p>The &ldquo;.Title&rdquo; command prints the value of the &ldquo;title&rdquo; variable. Hugo pulls it from the front matter in the Markdown file.</p>
+
+<p>The &ldquo;end&rdquo; command signals the end of the range iterator. The engine loops back to the top of the iteration when it finds &ldquo;end.&rdquo; Everything between the &ldquo;range&rdquo; and &ldquo;end&rdquo; is evaluated every time the engine goes through the iteration. In this file, that would cause the title from the first ten pages to be output as heading level one.</p>
+
+<p>It&rsquo;s helpful to remember that some variables, like .Data, are created before any output files. Hugo loads every content file into the variable and then gives the template a chance to process before creating the HTML files.</p>
+
+<p>Build the web site and then verify the results.</p>
+
+<pre><code>$ rm -rf public
+$ hugo --verbose
+INFO: 2014/09/29 Using config file: /Users/quoha/Sites/zafta/config.toml
+INFO: 2014/09/29 syncing from /Users/quoha/Sites/zafta/themes/zafta/static/ to /Users/quoha/Sites/zafta/public/
+INFO: 2014/09/29 syncing from /Users/quoha/Sites/zafta/static/ to /Users/quoha/Sites/zafta/public/
+INFO: 2014/09/29 found taxonomies: map[string]string{&quot;tag&quot;:&quot;tags&quot;, &quot;category&quot;:&quot;categories&quot;}
+WARN: 2014/09/29 Unable to locate layout: [404.html theme/404.html]
+0 draft content
+0 future content
+2 pages created
+0 tags created
+0 categories created
+in 4 ms
+$ find public -type f -name '*.html' | xargs ls -l
+-rw-r--r--  1 quoha  staff  94 Sep 29 22:23 public/index.html
+-rw-r--r--  1 quoha  staff   0 Sep 29 22:23 public/post/first/index.html
+-rw-r--r--  1 quoha  staff   0 Sep 29 22:23 public/post/index.html
+-rw-r--r--  1 quoha  staff   0 Sep 29 22:23 public/post/second/index.html
+$ cat public/index.html
+&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;body&gt;
+ 
+    &lt;h1&gt;second&lt;/h1&gt;
+ 
+    &lt;h1&gt;first&lt;/h1&gt;
+ 
+&lt;/body&gt;
+&lt;/html&gt;
+$
+</code></pre>
+
+<p>Congratulations, the home page shows the title of the two posts. The posts themselves are still empty, but let&rsquo;s take a moment to appreciate what we&rsquo;ve done. Your template now generates output dynamically. Believe it or not, by inserting the range command inside of those curly braces, you&rsquo;ve learned everything you need to know to build a theme. All that&rsquo;s really left is understanding which template will be used to generate each content file and becoming familiar with the commands for the template engine.</p>
+
+<p>And, if that were entirely true, this tutorial would be much shorter. There are a few things to know that will make creating a new template much easier. Don&rsquo;t worry, though, that&rsquo;s all to come.</p>
+
+<h3 id="add-content-to-the-posts">Add Content to the Posts</h3>
+
+<p>We&rsquo;re working with posts, which are in the content/post/ directory. That means that their section is &ldquo;post&rdquo; (and if we don&rsquo;t do something weird, their type is also &ldquo;post&rdquo;).</p>
+
+<p>Hugo uses the section and type to find the template file for every piece of content. Hugo will first look for a template file that matches the section or type name. If it can&rsquo;t find one, then it will look in the _default/ directory. There are some twists that we&rsquo;ll cover when we get to categories and tags, but for now we can assume that Hugo will try post/single.html, then _default/single.html.</p>
+
+<p>Now that we know the search rule, let&rsquo;s see what we actually have available:</p>
+
+<pre><code>$ find themes/zafta -name single.html | xargs ls -l
+-rw-r--r--  1 quoha  staff  132 Sep 29 17:31 themes/zafta/layouts/_default/single.html
+</code></pre>
+
+<p>We could create a new template, post/single.html, or change the default. Since we don&rsquo;t know of any other content types, let&rsquo;s start with updating the default.</p>
+
+<p>Remember, any content that we haven&rsquo;t created a template for will end up using this template. That can be good or bad. Bad because I know that we&rsquo;re going to be adding different types of content and we&rsquo;re going to end up undoing some of the changes we&rsquo;ve made. It&rsquo;s good because we&rsquo;ll be able to see immediate results. It&rsquo;s also good to start here because we can start to build the basic layout for the site. As we add more content types, we&rsquo;ll refactor this file and move logic around. Hugo makes that fairly painless, so we&rsquo;ll accept the cost and proceed.</p>
+
+<p>Please see the Hugo documentation on template rendering for all the details on determining which template to use. And, as the docs mention, if you&rsquo;re building a single page application (SPA) web site, you can delete all of the other templates and work with just the default single page. That&rsquo;s a refreshing amount of joy right there.</p>
+
+<h4 id="update-the-template-file">Update the Template File</h4>
+
+<pre><code>$ vi themes/zafta/layouts/_default/single.html
+&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+  &lt;title&gt;{{ .Title }}&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  &lt;h1&gt;{{ .Title }}&lt;/h1&gt;
+  {{ .Content }}
+&lt;/body&gt;
+&lt;/html&gt;
+:wq
+
+$
+</code></pre>
+
+<p>Build the web site and verify the results.</p>
+
+<pre><code>$ rm -rf public
+$ hugo --verbose
+INFO: 2014/09/29 Using config file: /Users/quoha/Sites/zafta/config.toml
+INFO: 2014/09/29 syncing from /Users/quoha/Sites/zafta/themes/zafta/static/ to /Users/quoha/Sites/zafta/public/
+INFO: 2014/09/29 syncing from /Users/quoha/Sites/zafta/static/ to /Users/quoha/Sites/zafta/public/
+INFO: 2014/09/29 found taxonomies: map[string]string{&quot;tag&quot;:&quot;tags&quot;, &quot;category&quot;:&quot;categories&quot;}
+WARN: 2014/09/29 Unable to locate layout: [404.html theme/404.html]
+0 draft content
+0 future content
+2 pages created
+0 tags created
+0 categories created
+in 4 ms
+
+$ find public -type f -name '*.html' | xargs ls -l
+-rw-r--r--  1 quoha  staff   94 Sep 29 22:40 public/index.html
+-rw-r--r--  1 quoha  staff  125 Sep 29 22:40 public/post/first/index.html
+-rw-r--r--  1 quoha  staff    0 Sep 29 22:40 public/post/index.html
+-rw-r--r--  1 quoha  staff  128 Sep 29 22:40 public/post/second/index.html
+
+$ cat public/post/first/index.html
+&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+  &lt;title&gt;first&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  &lt;h1&gt;first&lt;/h1&gt;
+  &lt;p&gt;my first post&lt;/p&gt;
+
+&lt;/body&gt;
+&lt;/html&gt;
+
+$ cat public/post/second/index.html
+&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+  &lt;title&gt;second&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  &lt;h1&gt;second&lt;/h1&gt;
+  &lt;p&gt;my second post&lt;/p&gt;
+
+&lt;/body&gt;
+&lt;/html&gt;
+$
+</code></pre>
+
+<p>Notice that the posts now have content. You can go to localhost:1313/post/first to verify.</p>
+
+<h3 id="linking-to-content">Linking to Content</h3>
+
+<p>The posts are on the home page. Let&rsquo;s add a link from there to the post. Since this is the home page, we&rsquo;ll update its template.</p>
+
+<pre><code>$ vi themes/zafta/layouts/index.html
+&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;body&gt;
+  {{ range first 10 .Data.Pages }}
+    &lt;h1&gt;&lt;a href=&quot;{{ .Permalink }}&quot;&gt;{{ .Title }}&lt;/a&gt;&lt;/h1&gt;
+  {{ end }}
+&lt;/body&gt;
+&lt;/html&gt;
+</code></pre>
+
+<p>Build the web site and verify the results.</p>
+
+<pre><code>$ rm -rf public
+$ hugo --verbose
+INFO: 2014/09/29 Using config file: /Users/quoha/Sites/zafta/config.toml
+INFO: 2014/09/29 syncing from /Users/quoha/Sites/zafta/themes/zafta/static/ to /Users/quoha/Sites/zafta/public/
+INFO: 2014/09/29 syncing from /Users/quoha/Sites/zafta/static/ to /Users/quoha/Sites/zafta/public/
+INFO: 2014/09/29 found taxonomies: map[string]string{&quot;tag&quot;:&quot;tags&quot;, &quot;category&quot;:&quot;categories&quot;}
+WARN: 2014/09/29 Unable to locate layout: [404.html theme/404.html]
+0 draft content
+0 future content
+2 pages created
+0 tags created
+0 categories created
+in 4 ms
+
+$ find public -type f -name '*.html' | xargs ls -l
+-rw-r--r--  1 quoha  staff  149 Sep 29 22:44 public/index.html
+-rw-r--r--  1 quoha  staff  125 Sep 29 22:44 public/post/first/index.html
+-rw-r--r--  1 quoha  staff    0 Sep 29 22:44 public/post/index.html
+-rw-r--r--  1 quoha  staff  128 Sep 29 22:44 public/post/second/index.html
+
+$ cat public/index.html
+&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;body&gt;
+ 
+    &lt;h1&gt;&lt;a href=&quot;/post/second/&quot;&gt;second&lt;/a&gt;&lt;/h1&gt;
+ 
+    &lt;h1&gt;&lt;a href=&quot;/post/first/&quot;&gt;first&lt;/a&gt;&lt;/h1&gt;
+ 
+&lt;/body&gt;
+&lt;/html&gt;
+
+$
+</code></pre>
+
+<h3 id="create-a-post-listing">Create a Post Listing</h3>
+
+<p>We have the posts displaying on the home page and on their own page. We also have a file public/post/index.html that is empty. Let&rsquo;s make it show a list of all posts (not just the first ten).</p>
+
+<p>We need to decide which template to update. This will be a listing, so it should be a list template. Let&rsquo;s take a quick look and see which list templates are available.</p>
+
+<pre><code>$ find themes/zafta -name list.html | xargs ls -l
+-rw-r--r--  1 quoha  staff  0 Sep 29 17:31 themes/zafta/layouts/_default/list.html
+</code></pre>
+
+<p>As with the single post, we have to decide to update _default/list.html or create post/list.html. We still don&rsquo;t have multiple content types, so let&rsquo;s stay consistent and update the default list template.</p>
+
+<h2 id="creating-top-level-pages">Creating Top Level Pages</h2>
+
+<p>Let&rsquo;s add an &ldquo;about&rdquo; page and display it at the top level (as opposed to a sub-level like we did with posts).</p>
+
+<p>The default in Hugo is to use the directory structure of the content/ directory to guide the location of the generated html in the public/ directory. Let&rsquo;s verify that by creating an &ldquo;about&rdquo; page at the top level:</p>
+
+<pre><code>$ vi content/about.md
++++
+title = &quot;about&quot;
+description = &quot;about this site&quot;
+date = &quot;2014-09-27&quot;
+slug = &quot;about time&quot;
++++
+
+## about us
+
+i'm speechless
+:wq
+</code></pre>
+
+<p>Generate the web site and verify the results.</p>
+
+<pre><code>$ find public -name '*.html' | xargs ls -l
+-rw-rw-r--  1 mdhender  staff   334 Sep 27 15:08 public/about-time/index.html
+-rw-rw-r--  1 mdhender  staff   527 Sep 27 15:08 public/index.html
+-rw-rw-r--  1 mdhender  staff   358 Sep 27 15:08 public/post/first-post/index.html
+-rw-rw-r--  1 mdhender  staff     0 Sep 27 15:08 public/post/index.html
+-rw-rw-r--  1 mdhender  staff   342 Sep 27 15:08 public/post/second-post/index.html
+</code></pre>
+
+<p>Notice that the page wasn&rsquo;t created at the top level. It was created in a sub-directory named &lsquo;about-time/&rsquo;. That name came from our slug. Hugo will use the slug to name the generated content. It&rsquo;s a reasonable default, by the way, but we can learn a few things by fighting it for this file.</p>
+
+<p>One other thing. Take a look at the home page.</p>
+
+<pre><code>$ cat public/index.html
+&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;body&gt;
+    &lt;h1&gt;&lt;a href=&quot;http://localhost:1313/post/theme/&quot;&gt;creating a new theme&lt;/a&gt;&lt;/h1&gt;
+    &lt;h1&gt;&lt;a href=&quot;http://localhost:1313/about-time/&quot;&gt;about&lt;/a&gt;&lt;/h1&gt;
+    &lt;h1&gt;&lt;a href=&quot;http://localhost:1313/post/second-post/&quot;&gt;second&lt;/a&gt;&lt;/h1&gt;
+    &lt;h1&gt;&lt;a href=&quot;http://localhost:1313/post/first-post/&quot;&gt;first&lt;/a&gt;&lt;/h1&gt;
+&lt;script&gt;document.write('&lt;script src=&quot;http://'
+        + (location.host || 'localhost').split(':')[0]
+		+ ':1313/livereload.js?mindelay=10&quot;&gt;&lt;/'
+        + 'script&gt;')&lt;/script&gt;&lt;/body&gt;
+&lt;/html&gt;
+</code></pre>
+
+<p>Notice that the &ldquo;about&rdquo; link is listed with the posts? That&rsquo;s not desirable, so let&rsquo;s change that first.</p>
+
+<pre><code>$ vi themes/zafta/layouts/index.html
+&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;body&gt;
+  &lt;h1&gt;posts&lt;/h1&gt;
+  {{ range first 10 .Data.Pages }}
+    {{ if eq .Type &quot;post&quot;}}
+      &lt;h2&gt;&lt;a href=&quot;{{ .Permalink }}&quot;&gt;{{ .Title }}&lt;/a&gt;&lt;/h2&gt;
+    {{ end }}
+  {{ end }}
+
+  &lt;h1&gt;pages&lt;/h1&gt;
+  {{ range .Data.Pages }}
+    {{ if eq .Type &quot;page&quot; }}
+      &lt;h2&gt;&lt;a href=&quot;{{ .Permalink }}&quot;&gt;{{ .Title }}&lt;/a&gt;&lt;/h2&gt;
+    {{ end }}
+  {{ end }}
+&lt;/body&gt;
+&lt;/html&gt;
+:wq
+</code></pre>
+
+<p>Generate the web site and verify the results. The home page has two sections, posts and pages, and each section has the right set of headings and links in it.</p>
+
+<p>But, that about page still renders to about-time/index.html.</p>
+
+<pre><code>$ find public -name '*.html' | xargs ls -l
+-rw-rw-r--  1 mdhender  staff    334 Sep 27 15:33 public/about-time/index.html
+-rw-rw-r--  1 mdhender  staff    645 Sep 27 15:33 public/index.html
+-rw-rw-r--  1 mdhender  staff    358 Sep 27 15:33 public/post/first-post/index.html
+-rw-rw-r--  1 mdhender  staff      0 Sep 27 15:33 public/post/index.html
+-rw-rw-r--  1 mdhender  staff    342 Sep 27 15:33 public/post/second-post/index.html
+</code></pre>
+
+<p>Knowing that hugo is using the slug to generate the file name, the simplest solution is to change the slug. Let&rsquo;s do it the hard way and change the permalink in the configuration file.</p>
+
+<pre><code>$ vi config.toml
+[permalinks]
+	page = &quot;/:title/&quot;
+	about = &quot;/:filename/&quot;
+</code></pre>
+
+<p>Generate the web site and verify that this didn&rsquo;t work. Hugo lets &ldquo;slug&rdquo; or &ldquo;URL&rdquo; override the permalinks setting in the configuration file. Go ahead and comment out the slug in content/about.md, then generate the web site to get it to be created in the right place.</p>
+
+<h2 id="sharing-templates">Sharing Templates</h2>
+
+<p>If you&rsquo;ve been following along, you probably noticed that posts have titles in the browser and the home page doesn&rsquo;t. That&rsquo;s because we didn&rsquo;t put the title in the home page&rsquo;s template (layouts/index.html). That&rsquo;s an easy thing to do, but let&rsquo;s look at a different option.</p>
+
+<p>We can put the common bits into a shared template that&rsquo;s stored in the themes/zafta/layouts/partials/ directory.</p>
+
+<h3 id="create-the-header-and-footer-partials">Create the Header and Footer Partials</h3>
+
+<p>In Hugo, a partial is a sugar-coated template. Normally a template reference has a path specified. Partials are different. Hugo searches for them along a TODO defined search path. This makes it easier for end-users to override the theme&rsquo;s presentation.</p>
+
+<pre><code>$ vi themes/zafta/layouts/partials/header.html
+&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+	&lt;title&gt;{{ .Title }}&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+:wq
+
+$ vi themes/zafta/layouts/partials/footer.html
+&lt;/body&gt;
+&lt;/html&gt;
+:wq
+</code></pre>
+
+<h3 id="update-the-home-page-template-to-use-the-partials">Update the Home Page Template to Use the Partials</h3>
+
+<p>The most noticeable difference between a template call and a partials call is the lack of path:</p>
+
+<pre><code>{{ template &quot;theme/partials/header.html&quot; . }}
+</code></pre>
+
+<p>versus</p>
+
+<pre><code>{{ partial &quot;header.html&quot; . }}
+</code></pre>
+
+<p>Both pass in the context.</p>
+
+<p>Let&rsquo;s change the home page template to use these new partials.</p>
+
+<pre><code>$ vi themes/zafta/layouts/index.html
+{{ partial &quot;header.html&quot; . }}
+
+  &lt;h1&gt;posts&lt;/h1&gt;
+  {{ range first 10 .Data.Pages }}
+    {{ if eq .Type &quot;post&quot;}}
+      &lt;h2&gt;&lt;a href=&quot;{{ .Permalink }}&quot;&gt;{{ .Title }}&lt;/a&gt;&lt;/h2&gt;
+    {{ end }}
+  {{ end }}
+
+  &lt;h1&gt;pages&lt;/h1&gt;
+  {{ range .Data.Pages }}
+    {{ if or (eq .Type &quot;page&quot;) (eq .Type &quot;about&quot;) }}
+      &lt;h2&gt;&lt;a href=&quot;{{ .Permalink }}&quot;&gt;{{ .Type }} - {{ .Title }} - {{ .RelPermalink }}&lt;/a&gt;&lt;/h2&gt;
+    {{ end }}
+  {{ end }}
+
+{{ partial &quot;footer.html&quot; . }}
+:wq
+</code></pre>
+
+<p>Generate the web site and verify the results. The title on the home page is now &ldquo;your title here&rdquo;, which comes from the &ldquo;title&rdquo; variable in the config.toml file.</p>
+
+<h3 id="update-the-default-single-template-to-use-the-partials">Update the Default Single Template to Use the Partials</h3>
+
+<pre><code>$ vi themes/zafta/layouts/_default/single.html
+{{ partial &quot;header.html&quot; . }}
+
+  &lt;h1&gt;{{ .Title }}&lt;/h1&gt;
+  {{ .Content }}
+
+{{ partial &quot;footer.html&quot; . }}
+:wq
+</code></pre>
+
+<p>Generate the web site and verify the results. The title on the posts and the about page should both reflect the value in the markdown file.</p>
+
+<h2 id="add-date-published-to-posts">Add “Date Published” to Posts</h2>
+
+<p>It&rsquo;s common to have posts display the date that they were written or published, so let&rsquo;s add that. The front matter of our posts has a variable named &ldquo;date.&rdquo; It&rsquo;s usually the date the content was created, but let&rsquo;s pretend that&rsquo;s the value we want to display.</p>
+
+<h3 id="add-date-published-to-the-template">Add “Date Published” to the Template</h3>
+
+<p>We&rsquo;ll start by updating the template used to render the posts. The template code will look like:</p>
+
+<pre><code>{{ .Date.Format &quot;Mon, Jan 2, 2006&quot; }}
+</code></pre>
+
+<p>Posts use the default single template, so we&rsquo;ll change that file.</p>
+
+<pre><code>$ vi themes/zafta/layouts/_default/single.html
+{{ partial &quot;header.html&quot; . }}
+
+  &lt;h1&gt;{{ .Title }}&lt;/h1&gt;
+  &lt;h2&gt;{{ .Date.Format &quot;Mon, Jan 2, 2006&quot; }}&lt;/h2&gt;
+  {{ .Content }}
+
+{{ partial &quot;footer.html&quot; . }}
+:wq
+</code></pre>
+
+<p>Generate the web site and verify the results. The posts now have the date displayed in them. There&rsquo;s a problem, though. The &ldquo;about&rdquo; page also has the date displayed.</p>
+
+<p>As usual, there are a couple of ways to make the date display only on posts. We could do an &ldquo;if&rdquo; statement like we did on the home page. Another way would be to create a separate template for posts.</p>
+
+<p>The &ldquo;if&rdquo; solution works for sites that have just a couple of content types. It aligns with the principle of &ldquo;code for today,&rdquo; too.</p>
+
+<p>Let&rsquo;s assume, though, that we&rsquo;ve made our site so complex that we feel we have to create a new template type. In Hugo-speak, we&rsquo;re going to create a section template.</p>
+
+<p>Let&rsquo;s restore the default single template before we forget.</p>
+
+<pre><code>$ mkdir themes/zafta/layouts/post
+$ vi themes/zafta/layouts/_default/single.html
+{{ partial &quot;header.html&quot; . }}
+
+  &lt;h1&gt;{{ .Title }}&lt;/h1&gt;
+  {{ .Content }}
+
+{{ partial &quot;footer.html&quot; . }}
+:wq
+</code></pre>
+
+<p>Now we&rsquo;ll update the post&rsquo;s version of the single template. If you remember Hugo&rsquo;s rules, the template engine will use this version over the default.</p>
+
+<pre><code>$ vi themes/zafta/layouts/post/single.html
+{{ partial &quot;header.html&quot; . }}
+
+  &lt;h1&gt;{{ .Title }}&lt;/h1&gt;
+  &lt;h2&gt;{{ .Date.Format &quot;Mon, Jan 2, 2006&quot; }}&lt;/h2&gt;
+  {{ .Content }}
+
+{{ partial &quot;footer.html&quot; . }}
+:wq
+
+</code></pre>
+
+<p>Note that we removed the date logic from the default template and put it in the post template. Generate the web site and verify the results. Posts have dates and the about page doesn&rsquo;t.</p>
+
+<h3 id="don-t-repeat-yourself">Don&rsquo;t Repeat Yourself</h3>
+
+<p>DRY is a good design goal and Hugo does a great job supporting it. Part of the art of a good template is knowing when to add a new template and when to update an existing one. While you&rsquo;re figuring that out, accept that you&rsquo;ll be doing some refactoring. Hugo makes that easy and fast, so it&rsquo;s okay to delay splitting up a template.</p>
+    </div>
+    
+  </div>
+</article>
+
+  
+    <article class="post bg-white">
+  <header class="post-header">
+    <h1 class="post-title">
+      
+      <a class="post-link" href="/post/docs/this-is-a-very-long-title/">This is a very long title This is a very long title This is a very long title This is a very long title This is a very long title</a>
+    </h1>
+    
+    <div class="post-meta">
+      <time datetime="2017-08-30" class="post-time">
+        2017-08-30
+      </time>
+      <div class="post-category">
+          <a href="https://hisaige.github.io/categories/english/"> English </a>
+          <a href="https://hisaige.github.io/categories/index/"> index </a>
+          <a href="https://hisaige.github.io/categories/test/"> test </a>
+          
+        </div>
+      <span class="more-meta"> 246 words </span>
+      <span class="more-meta"> 2 min read </span>
+      
+      
+      
+    </div>
+  </header>
+  
+  <div class="post-content">
+    
+    <div class="post-summary">
+      <p>This is a very long titleThis is a very long titleThis is a very long titleThis is a very long titleThis is a very long titleThis is a very long titleThis is a very long titleThis is a very long titleThis is a very long titleThis is a very long titleThis is a very long titleThis is a very long titleThis is a very long titleThis is a very long titleThis is a very long titleThis is a very long titleThis is a very long titleThis is a very long titleThis is a very long titleThis is a very long titleThis is a very long titleThis is a very long titleThis is a very long titleThis is a very long titleThis is a very long titleThis is a very long titleThis is a very long titleThis is a very long titleThis is a very long titleThis is a very long titleThis is a very long titleThis is a very long titleThis is a very long titleThis is a very long titleThis is a very long titleThis is a very long titleThis is a very long titleThis is a very long titleThis is a very long titleThis is a very long titleThis is a very long titleThis is a very long titleThis is a very long titleThis is a very long titleThis is a very long titleThis is a very long titleThis is a very long titleThis is a very long titleThis is a very long title</p>
+
+    </div>
+    
+  </div>
+</article>
+
+  
+    <article class="post bg-white">
+  <header class="post-header">
+    <h1 class="post-title">
+      
+      <a class="post-link" href="/post/docs/creating-a-new-theme/">Creating a New Theme</a>
+    </h1>
+    
+    <div class="post-meta">
+      <time datetime="2014-09-28" class="post-time">
+        2014-09-28
+      </time>
+      <div class="post-category">
+          <a href="https://hisaige.github.io/categories/development/"> Development </a>
+          <a href="https://hisaige.github.io/categories/golang/"> golang </a>
+          <a href="https://hisaige.github.io/categories/index/"> index </a>
+          
+        </div>
+      <span class="more-meta"> 7232 words </span>
+      <span class="more-meta"> 34 min read </span>
+      
+      
+      
+    </div>
+  </header>
+  
+  <div class="post-content">
+    
+    <div class="post-summary">
+      
+
+<h2 id="introduction">Introduction</h2>
+
+<p>This tutorial will show you how to create a simple theme in Hugo. I assume that you are familiar with HTML, the bash command line, and that you are comfortable using Markdown to format content. I&rsquo;ll explain how Hugo uses templates and how you can organize your templates to create a theme. I won&rsquo;t cover using CSS to style your theme.</p>
+
+<p>We&rsquo;ll start with creating a new site with a very basic template. Then we&rsquo;ll add in a few pages and posts. With small variations on that, you will be able to create many different types of web sites.</p>
+
+<p>In this tutorial, commands that you enter will start with the &ldquo;$&rdquo; prompt. The output will follow. Lines that start with &ldquo;#&rdquo; are comments that I&rsquo;ve added to explain a point. When I show updates to a file, the &ldquo;:wq&rdquo; on the last line means to save the file.</p>
+
+<p>Here&rsquo;s an example:</p>
+
+<pre><code>## this is a comment
+$ echo this is a command
+this is a command
+
+## edit the file
+$vi foo.md
++++
+date = &quot;2014-09-28&quot;
+title = &quot;creating a new theme&quot;
++++
+
+bah and humbug
+:wq
+
+## show it
+$ cat foo.md
++++
+date = &quot;2014-09-28&quot;
+title = &quot;creating a new theme&quot;
++++
+
+bah and humbug
+$
+</code></pre>
+
+<h2 id="some-definitions">Some Definitions</h2>
+
+<p>There are a few concepts that you need to understand before creating a theme.</p>
+
+<h3 id="skins">Skins</h3>
+
+<p>Skins are the files responsible for the look and feel of your site. It’s the CSS that controls colors and fonts, it’s the Javascript that determines actions and reactions. It’s also the rules that Hugo uses to transform your content into the HTML that the site will serve to visitors.</p>
+
+<p>You have two ways to create a skin. The simplest way is to create it in the <code>layouts/</code> directory. If you do, then you don’t have to worry about configuring Hugo to recognize it. The first place that Hugo will look for rules and files is in the <code>layouts/</code> directory so it will always find the skin.</p>
+
+<p>Your second choice is to create it in a sub-directory of the <code>themes/</code> directory. If you do, then you must always tell Hugo where to search for the skin. It’s extra work, though, so why bother with it?</p>
+
+<p>The difference between creating a skin in <code>layouts/</code> and creating it in <code>themes/</code> is very subtle. A skin in <code>layouts/</code> can’t be customized without updating the templates and static files that it is built from. A skin created in <code>themes/</code>, on the other hand, can be and that makes it easier for other people to use it.</p>
+
+<p>The rest of this tutorial will call a skin created in the <code>themes/</code> directory a theme.</p>
+
+<p>Note that you can use this tutorial to create a skin in the <code>layouts/</code> directory if you wish to. The main difference will be that you won’t need to update the site’s configuration file to use a theme.</p>
+
+<h3 id="the-home-page">The Home Page</h3>
+
+<p>The home page, or landing page, is the first page that many visitors to a site see. It is the index.html file in the root directory of the web site. Since Hugo writes files to the public/ directory, our home page is public/index.html.</p>
+
+<h3 id="site-configuration-file">Site Configuration File</h3>
+
+<p>When Hugo runs, it looks for a configuration file that contains settings that override default values for the entire site. The file can use TOML, YAML, or JSON. I prefer to use TOML for my configuration files. If you prefer to use JSON or YAML, you’ll need to translate my examples. You’ll also need to change the name of the file since Hugo uses the extension to determine how to process it.</p>
+
+<p>Hugo translates Markdown files into HTML. By default, Hugo expects to find Markdown files in your <code>content/</code> directory and template files in your <code>themes/</code> directory. It will create HTML files in your <code>public/</code> directory. You can change this by specifying alternate locations in the configuration file.</p>
+
+<h3 id="content">Content</h3>
+
+<p>Content is stored in text files that contain two sections. The first section is the “front matter,” which is the meta-information on the content. The second section contains Markdown that will be converted to HTML.</p>
+
+<h4 id="front-matter">Front Matter</h4>
+
+<p>The front matter is information about the content. Like the configuration file, it can be written in TOML, YAML, or JSON. Unlike the configuration file, Hugo doesn’t use the file’s extension to know the format. It looks for markers to signal the type. TOML is surrounded by “<code>+++</code>”, YAML by “<code>---</code>”, and JSON is enclosed in curly braces. I prefer to use TOML, so you’ll need to translate my examples if you prefer YAML or JSON.</p>
+
+<p>The information in the front matter is passed into the template before the content is rendered into HTML.</p>
+
+<h4 id="markdown">Markdown</h4>
+
+<p>Content is written in Markdown which makes it easier to create the content. Hugo runs the content through a Markdown engine to create the HTML which will be written to the output file.</p>
+
+<h3 id="template-files">Template Files</h3>
+
+<p>Hugo uses template files to render content into HTML. Template files are a bridge between the content and presentation. Rules in the template define what content is published, where it&rsquo;s published to, and how it will rendered to the HTML file. The template guides the presentation by specifying the style to use.</p>
+
+<p>There are three types of templates: single, list, and partial. Each type takes a bit of content as input and transforms it based on the commands in the template.</p>
+
+<p>Hugo uses its knowledge of the content to find the template file used to render the content. If it can’t find a template that is an exact match for the content, it will shift up a level and search from there. It will continue to do so until it finds a matching template or runs out of templates to try. If it can’t find a template, it will use the default template for the site.</p>
+
+<p>Please note that you can use the front matter to influence Hugo’s choice of templates.</p>
+
+<h4 id="single-template">Single Template</h4>
+
+<p>A single template is used to render a single piece of content. For example, an article or post would be a single piece of content and use a single template.</p>
+
+<h4 id="list-template">List Template</h4>
+
+<p>A list template renders a group of related content. That could be a summary of recent postings or all articles in a category. List templates can contain multiple groups.</p>
+
+<p>The homepage template is a special type of list template. Hugo assumes that the home page of your site will act as the portal for the rest of the content in the site.</p>
+
+<h4 id="partial-template">Partial Template</h4>
+
+<p>A partial template is a template that can be included in other templates. Partial templates must be called using the “partial” template command. They are very handy for rolling up common behavior. For example, your site may have a banner that all pages use. Instead of copying the text of the banner into every single and list template, you could create a partial with the banner in it. That way if you decide to change the banner, you only have to change the partial template.</p>
+
+<h2 id="create-a-new-site">Create a New Site</h2>
+
+<p>Let&rsquo;s use Hugo to create a new web site. I&rsquo;m a Mac user, so I&rsquo;ll create mine in my home directory, in the Sites folder. If you&rsquo;re using Linux, you might have to create the folder first.</p>
+
+<p>The &ldquo;new site&rdquo; command will create a skeleton of a site. It will give you the basic directory structure and a useable configuration file.</p>
+
+<pre><code>$ hugo new site ~/Sites/zafta
+$ cd ~/Sites/zafta
+$ ls -l
+total 8
+drwxr-xr-x  7 quoha  staff  238 Sep 29 16:49 .
+drwxr-xr-x  3 quoha  staff  102 Sep 29 16:49 ..
+drwxr-xr-x  2 quoha  staff   68 Sep 29 16:49 archetypes
+-rw-r--r--  1 quoha  staff   82 Sep 29 16:49 config.toml
+drwxr-xr-x  2 quoha  staff   68 Sep 29 16:49 content
+drwxr-xr-x  2 quoha  staff   68 Sep 29 16:49 layouts
+drwxr-xr-x  2 quoha  staff   68 Sep 29 16:49 static
+$
+</code></pre>
+
+<p>Take a look in the content/ directory to confirm that it is empty.</p>
+
+<p>The other directories (archetypes/, layouts/, and static/) are used when customizing a theme. That&rsquo;s a topic for a different tutorial, so please ignore them for now.</p>
+
+<h3 id="generate-the-html-for-the-new-site">Generate the HTML For the New Site</h3>
+
+<p>Running the <code>hugo</code> command with no options will read all the available content and generate the HTML files. It will also copy all static files (that&rsquo;s everything that&rsquo;s not content). Since we have an empty site, it won&rsquo;t do much, but it will do it very quickly.</p>
+
+<pre><code>$ hugo --verbose
+INFO: 2014/09/29 Using config file: config.toml
+INFO: 2014/09/29 syncing from /Users/quoha/Sites/zafta/static/ to /Users/quoha/Sites/zafta/public/
+WARN: 2014/09/29 Unable to locate layout: [index.html _default/list.html _default/single.html]
+WARN: 2014/09/29 Unable to locate layout: [404.html]
+0 draft content
+0 future content
+0 pages created
+0 tags created
+0 categories created
+in 2 ms
+$
+</code></pre>
+
+<p>The &ldquo;<code>--verbose</code>&rdquo; flag gives extra information that will be helpful when we build the template. Every line of the output that starts with &ldquo;INFO:&rdquo; or &ldquo;WARN:&rdquo; is present because we used that flag. The lines that start with &ldquo;WARN:&rdquo; are warning messages. We&rsquo;ll go over them later.</p>
+
+<p>We can verify that the command worked by looking at the directory again.</p>
+
+<pre><code>$ ls -l
+total 8
+drwxr-xr-x  2 quoha  staff   68 Sep 29 16:49 archetypes
+-rw-r--r--  1 quoha  staff   82 Sep 29 16:49 config.toml
+drwxr-xr-x  2 quoha  staff   68 Sep 29 16:49 content
+drwxr-xr-x  2 quoha  staff   68 Sep 29 16:49 layouts
+drwxr-xr-x  4 quoha  staff  136 Sep 29 17:02 public
+drwxr-xr-x  2 quoha  staff   68 Sep 29 16:49 static
+$
+</code></pre>
+
+<p>See that new public/ directory? Hugo placed all generated content there. When you&rsquo;re ready to publish your web site, that&rsquo;s the place to start. For now, though, let&rsquo;s just confirm that we have what we&rsquo;d expect from a site with no content.</p>
+
+<pre><code>$ ls -l public
+total 16
+-rw-r--r--  1 quoha  staff  416 Sep 29 17:02 index.xml
+-rw-r--r--  1 quoha  staff  262 Sep 29 17:02 sitemap.xml
+$
+</code></pre>
+
+<p>Hugo created two XML files, which is standard, but there are no HTML files.</p>
+
+<h3 id="test-the-new-site">Test the New Site</h3>
+
+<p>Verify that you can run the built-in web server. It will dramatically shorten your development cycle if you do. Start it by running the &ldquo;server&rdquo; command. If it is successful, you will see output similar to the following:</p>
+
+<pre><code>$ hugo server --verbose
+INFO: 2014/09/29 Using config file: /Users/quoha/Sites/zafta/config.toml
+INFO: 2014/09/29 syncing from /Users/quoha/Sites/zafta/static/ to /Users/quoha/Sites/zafta/public/
+WARN: 2014/09/29 Unable to locate layout: [index.html _default/list.html _default/single.html]
+WARN: 2014/09/29 Unable to locate layout: [404.html]
+0 draft content
+0 future content
+0 pages created
+0 tags created
+0 categories created
+in 2 ms
+Serving pages from /Users/quoha/Sites/zafta/public
+Web Server is available at http://localhost:1313
+Press Ctrl+C to stop
+</code></pre>
+
+<p>Connect to the listed URL (it&rsquo;s on the line that starts with &ldquo;Web Server&rdquo;). If everything is working correctly, you should get a page that shows the following:</p>
+
+<pre><code>index.xml
+sitemap.xml
+</code></pre>
+
+<p>That&rsquo;s a listing of your public/ directory. Hugo didn&rsquo;t create a home page because our site has no content. When there&rsquo;s no index.html file in a directory, the server lists the files in the directory, which is what you should see in your browser.</p>
+
+<p>Let’s go back and look at those warnings again.</p>
+
+<pre><code>WARN: 2014/09/29 Unable to locate layout: [index.html _default/list.html _default/single.html]
+WARN: 2014/09/29 Unable to locate layout: [404.html]
+</code></pre>
+
+<p>That second warning is easier to explain. We haven’t created a template to be used to generate “page not found errors.” The 404 message is a topic for a separate tutorial.</p>
+
+<p>Now for the first warning. It is for the home page. You can tell because the first layout that it looked for was “index.html.” That’s only used by the home page.</p>
+
+<p>I like that the verbose flag causes Hugo to list the files that it&rsquo;s searching for. For the home page, they are index.html, _default/list.html, and _default/single.html. There are some rules that we&rsquo;ll cover later that explain the names and paths. For now, just remember that Hugo couldn&rsquo;t find a template for the home page and it told you so.</p>
+
+<p>At this point, you&rsquo;ve got a working installation and site that we can build upon. All that’s left is to add some content and a theme to display it.</p>
+
+<h2 id="create-a-new-theme">Create a New Theme</h2>
+
+<p>Hugo doesn&rsquo;t ship with a default theme. There are a few available (I counted a dozen when I first installed Hugo) and Hugo comes with a command to create new themes.</p>
+
+<p>We&rsquo;re going to create a new theme called &ldquo;zafta.&rdquo; Since the goal of this tutorial is to show you how to fill out the files to pull in your content, the theme will not contain any CSS. In other words, ugly but functional.</p>
+
+<p>All themes have opinions on content and layout. For example, Zafta uses &ldquo;post&rdquo; over &ldquo;blog&rdquo;. Strong opinions make for simpler templates but differing opinions make it tougher to use themes. When you build a theme, consider using the terms that other themes do.</p>
+
+<h3 id="create-a-skeleton">Create a Skeleton</h3>
+
+<p>Use the hugo &ldquo;new&rdquo; command to create the skeleton of a theme. This creates the directory structure and places empty files for you to fill out.</p>
+
+<pre><code>$ hugo new theme zafta
+
+$ ls -l
+total 8
+drwxr-xr-x  2 quoha  staff   68 Sep 29 16:49 archetypes
+-rw-r--r--  1 quoha  staff   82 Sep 29 16:49 config.toml
+drwxr-xr-x  2 quoha  staff   68 Sep 29 16:49 content
+drwxr-xr-x  2 quoha  staff   68 Sep 29 16:49 layouts
+drwxr-xr-x  4 quoha  staff  136 Sep 29 17:02 public
+drwxr-xr-x  2 quoha  staff   68 Sep 29 16:49 static
+drwxr-xr-x  3 quoha  staff  102 Sep 29 17:31 themes
+
+$ find themes -type f | xargs ls -l
+-rw-r--r--  1 quoha  staff  1081 Sep 29 17:31 themes/zafta/LICENSE.md
+-rw-r--r--  1 quoha  staff     0 Sep 29 17:31 themes/zafta/archetypes/default.md
+-rw-r--r--  1 quoha  staff     0 Sep 29 17:31 themes/zafta/layouts/_default/list.html
+-rw-r--r--  1 quoha  staff     0 Sep 29 17:31 themes/zafta/layouts/_default/single.html
+-rw-r--r--  1 quoha  staff     0 Sep 29 17:31 themes/zafta/layouts/index.html
+-rw-r--r--  1 quoha  staff     0 Sep 29 17:31 themes/zafta/layouts/partials/footer.html
+-rw-r--r--  1 quoha  staff     0 Sep 29 17:31 themes/zafta/layouts/partials/header.html
+-rw-r--r--  1 quoha  staff    93 Sep 29 17:31 themes/zafta/theme.toml
+$
+</code></pre>
+
+<p>The skeleton includes templates (the files ending in .html), license file, a description of your theme (the theme.toml file), and an empty archetype.</p>
+
+<p>Please take a minute to fill out the theme.toml and LICENSE.md files. They&rsquo;re optional, but if you&rsquo;re going to be distributing your theme, it tells the world who to praise (or blame). It&rsquo;s also nice to declare the license so that people will know how they can use the theme.</p>
+
+<pre><code>$ vi themes/zafta/theme.toml
+author = &quot;michael d henderson&quot;
+description = &quot;a minimal working template&quot;
+license = &quot;MIT&quot;
+name = &quot;zafta&quot;
+source_repo = &quot;&quot;
+tags = [&quot;tags&quot;, &quot;categories&quot;]
+:wq
+
+## also edit themes/zafta/LICENSE.md and change
+## the bit that says &quot;YOUR_NAME_HERE&quot;
+</code></pre>
+
+<p>Note that the the skeleton&rsquo;s template files are empty. Don&rsquo;t worry, we&rsquo;ll be changing that shortly.</p>
+
+<pre><code>$ find themes/zafta -name '*.html' | xargs ls -l
+-rw-r--r--  1 quoha  staff  0 Sep 29 17:31 themes/zafta/layouts/_default/list.html
+-rw-r--r--  1 quoha  staff  0 Sep 29 17:31 themes/zafta/layouts/_default/single.html
+-rw-r--r--  1 quoha  staff  0 Sep 29 17:31 themes/zafta/layouts/index.html
+-rw-r--r--  1 quoha  staff  0 Sep 29 17:31 themes/zafta/layouts/partials/footer.html
+-rw-r--r--  1 quoha  staff  0 Sep 29 17:31 themes/zafta/layouts/partials/header.html
+$
+</code></pre>
+
+<h3 id="update-the-configuration-file-to-use-the-theme">Update the Configuration File to Use the Theme</h3>
+
+<p>Now that we&rsquo;ve got a theme to work with, it&rsquo;s a good idea to add the theme name to the configuration file. This is optional, because you can always add &ldquo;-t zafta&rdquo; on all your commands. I like to put it the configuration file because I like shorter command lines. If you don&rsquo;t put it in the configuration file or specify it on the command line, you won&rsquo;t use the template that you&rsquo;re expecting to.</p>
+
+<p>Edit the file to add the theme, add a title for the site, and specify that all of our content will use the TOML format.</p>
+
+<pre><code>$ vi config.toml
+theme = &quot;zafta&quot;
+baseurl = &quot;&quot;
+languageCode = &quot;en-us&quot;
+title = &quot;zafta - totally refreshing&quot;
+MetaDataFormat = &quot;toml&quot;
+:wq
+
+$
+</code></pre>
+
+<h3 id="generate-the-site">Generate the Site</h3>
+
+<p>Now that we have an empty theme, let&rsquo;s generate the site again.</p>
+
+<pre><code>$ hugo --verbose
+INFO: 2014/09/29 Using config file: /Users/quoha/Sites/zafta/config.toml
+INFO: 2014/09/29 syncing from /Users/quoha/Sites/zafta/themes/zafta/static/ to /Users/quoha/Sites/zafta/public/
+INFO: 2014/09/29 syncing from /Users/quoha/Sites/zafta/static/ to /Users/quoha/Sites/zafta/public/
+WARN: 2014/09/29 Unable to locate layout: [404.html theme/404.html]
+0 draft content
+0 future content
+0 pages created
+0 tags created
+0 categories created
+in 2 ms
+$
+</code></pre>
+
+<p>Did you notice that the output is different? The warning message for the home page has disappeared and we have an additional information line saying that Hugo is syncing from the theme&rsquo;s directory.</p>
+
+<p>Let&rsquo;s check the public/ directory to see what Hugo&rsquo;s created.</p>
+
+<pre><code>$ ls -l public
+total 16
+drwxr-xr-x  2 quoha  staff   68 Sep 29 17:56 css
+-rw-r--r--  1 quoha  staff    0 Sep 29 17:56 index.html
+-rw-r--r--  1 quoha  staff  407 Sep 29 17:56 index.xml
+drwxr-xr-x  2 quoha  staff   68 Sep 29 17:56 js
+-rw-r--r--  1 quoha  staff  243 Sep 29 17:56 sitemap.xml
+$
+</code></pre>
+
+<p>Notice four things:</p>
+
+<ol>
+<li>Hugo created a home page. This is the file public/index.html.</li>
+<li>Hugo created a css/ directory.</li>
+<li>Hugo created a js/ directory.</li>
+<li>Hugo claimed that it created 0 pages. It created a file and copied over static files, but didn&rsquo;t create any pages. That&rsquo;s because it considers a &ldquo;page&rdquo; to be a file created directly from a content file. It doesn&rsquo;t count things like the index.html files that it creates automatically.</li>
+</ol>
+
+<h4 id="the-home-page-1">The Home Page</h4>
+
+<p>Hugo supports many different types of templates. The home page is special because it gets its own type of template and its own template file. The file, layouts/index.html, is used to generate the HTML for the home page. The Hugo documentation says that this is the only required template, but that depends. Hugo&rsquo;s warning message shows that it looks for three different templates:</p>
+
+<pre><code>WARN: 2014/09/29 Unable to locate layout: [index.html _default/list.html _default/single.html]
+</code></pre>
+
+<p>If it can&rsquo;t find any of these, it completely skips creating the home page. We noticed that when we built the site without having a theme installed.</p>
+
+<p>When Hugo created our theme, it created an empty home page template. Now, when we build the site, Hugo finds the template and uses it to generate the HTML for the home page. Since the template file is empty, the HTML file is empty, too. If the template had any rules in it, then Hugo would have used them to generate the home page.</p>
+
+<pre><code>$ find . -name index.html | xargs ls -l
+-rw-r--r--  1 quoha  staff  0 Sep 29 20:21 ./public/index.html
+-rw-r--r--  1 quoha  staff  0 Sep 29 17:31 ./themes/zafta/layouts/index.html
+$
+</code></pre>
+
+<h4 id="the-magic-of-static">The Magic of Static</h4>
+
+<p>Hugo does two things when generating the site. It uses templates to transform content into HTML and it copies static files into the site. Unlike content, static files are not transformed. They are copied exactly as they are.</p>
+
+<p>Hugo assumes that your site will use both CSS and JavaScript, so it creates directories in your theme to hold them. Remember opinions? Well, Hugo&rsquo;s opinion is that you&rsquo;ll store your CSS in a directory named css/ and your JavaScript in a directory named js/. If you don&rsquo;t like that, you can change the directory names in your theme directory or even delete them completely. Hugo&rsquo;s nice enough to offer its opinion, then behave nicely if you disagree.</p>
+
+<pre><code>$ find themes/zafta -type d | xargs ls -ld
+drwxr-xr-x  7 quoha  staff  238 Sep 29 17:38 themes/zafta
+drwxr-xr-x  3 quoha  staff  102 Sep 29 17:31 themes/zafta/archetypes
+drwxr-xr-x  5 quoha  staff  170 Sep 29 17:31 themes/zafta/layouts
+drwxr-xr-x  4 quoha  staff  136 Sep 29 17:31 themes/zafta/layouts/_default
+drwxr-xr-x  4 quoha  staff  136 Sep 29 17:31 themes/zafta/layouts/partials
+drwxr-xr-x  4 quoha  staff  136 Sep 29 17:31 themes/zafta/static
+drwxr-xr-x  2 quoha  staff   68 Sep 29 17:31 themes/zafta/static/css
+drwxr-xr-x  2 quoha  staff   68 Sep 29 17:31 themes/zafta/static/js
+$
+</code></pre>
+
+<h2 id="the-theme-development-cycle">The Theme Development Cycle</h2>
+
+<p>When you&rsquo;re working on a theme, you will make changes in the theme&rsquo;s directory, rebuild the site, and check your changes in the browser. Hugo makes this very easy:</p>
+
+<ol>
+<li>Purge the public/ directory.</li>
+<li>Run the built in web server in watch mode.</li>
+<li>Open your site in a browser.</li>
+<li>Update the theme.</li>
+<li>Glance at your browser window to see changes.</li>
+<li>Return to step 4.</li>
+</ol>
+
+<p>I’ll throw in one more opinion: never work on a theme on a live site. Always work on a copy of your site. Make changes to your theme, test them, then copy them up to your site. For added safety, use a tool like Git to keep a revision history of your content and your theme. Believe me when I say that it is too easy to lose both your mind and your changes.</p>
+
+<p>Check the main Hugo site for information on using Git with Hugo.</p>
+
+<h3 id="purge-the-public-directory">Purge the public/ Directory</h3>
+
+<p>When generating the site, Hugo will create new files and update existing ones in the <code>public/</code> directory. It will not delete files that are no longer used. For example, files that were created in the wrong directory or with the wrong title will remain. If you leave them, you might get confused by them later. I recommend cleaning out your site prior to generating it.</p>
+
+<p>Note: If you&rsquo;re building on an SSD, you should ignore this. Churning on a SSD can be costly.</p>
+
+<h3 id="hugo-s-watch-option">Hugo&rsquo;s Watch Option</h3>
+
+<p>Hugo&rsquo;s &ldquo;<code>--watch</code>&rdquo; option will monitor the content/ and your theme directories for changes and rebuild the site automatically.</p>
+
+<h3 id="live-reload">Live Reload</h3>
+
+<p>Hugo&rsquo;s built in web server supports live reload. As pages are saved on the server, the browser is told to refresh the page. Usually, this happens faster than you can say, &ldquo;Wow, that&rsquo;s totally amazing.&rdquo;</p>
+
+<h3 id="development-commands">Development Commands</h3>
+
+<p>Use the following commands as the basis for your workflow.</p>
+
+<pre><code>## purge old files. hugo will recreate the public directory.
+##
+$ rm -rf public
+##
+## run hugo in watch mode
+##
+$ hugo server --watch --verbose
+</code></pre>
+
+<p>Here&rsquo;s sample output showing Hugo detecting a change to the template for the home page. Once generated, the web browser automatically reloaded the page. I&rsquo;ve said this before, it&rsquo;s amazing.</p>
+
+<pre><code>$ rm -rf public
+$ hugo server --watch --verbose
+INFO: 2014/09/29 Using config file: /Users/quoha/Sites/zafta/config.toml
+INFO: 2014/09/29 syncing from /Users/quoha/Sites/zafta/themes/zafta/static/ to /Users/quoha/Sites/zafta/public/
+INFO: 2014/09/29 syncing from /Users/quoha/Sites/zafta/static/ to /Users/quoha/Sites/zafta/public/
+WARN: 2014/09/29 Unable to locate layout: [404.html theme/404.html]
+0 draft content
+0 future content
+0 pages created
+0 tags created
+0 categories created
+in 2 ms
+Watching for changes in /Users/quoha/Sites/zafta/content
+Serving pages from /Users/quoha/Sites/zafta/public
+Web Server is available at http://localhost:1313
+Press Ctrl+C to stop
+INFO: 2014/09/29 File System Event: [&quot;/Users/quoha/Sites/zafta/themes/zafta/layouts/index.html&quot;: MODIFY|ATTRIB]
+Change detected, rebuilding site
+
+WARN: 2014/09/29 Unable to locate layout: [404.html theme/404.html]
+0 draft content
+0 future content
+0 pages created
+0 tags created
+0 categories created
+in 1 ms
+</code></pre>
+
+<h2 id="update-the-home-page-template">Update the Home Page Template</h2>
+
+<p>The home page is one of a few special pages that Hugo creates automatically. As mentioned earlier, it looks for one of three files in the theme&rsquo;s layout/ directory:</p>
+
+<ol>
+<li>index.html</li>
+<li>_default/list.html</li>
+<li>_default/single.html</li>
+</ol>
+
+<p>We could update one of the default templates, but a good design decision is to update the most specific template available. That&rsquo;s not a hard and fast rule (in fact, we&rsquo;ll break it a few times in this tutorial), but it is a good generalization.</p>
+
+<h3 id="make-a-static-home-page">Make a Static Home Page</h3>
+
+<p>Right now, that page is empty because we don&rsquo;t have any content and we don&rsquo;t have any logic in the template. Let&rsquo;s change that by adding some text to the template.</p>
+
+<pre><code>$ vi themes/zafta/layouts/index.html
+&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;body&gt;
+  &lt;p&gt;hugo says hello!&lt;/p&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+:wq
+
+$
+</code></pre>
+
+<p>Build the web site and then verify the results.</p>
+
+<pre><code>$ hugo --verbose
+INFO: 2014/09/29 Using config file: /Users/quoha/Sites/zafta/config.toml
+INFO: 2014/09/29 syncing from /Users/quoha/Sites/zafta/themes/zafta/static/ to /Users/quoha/Sites/zafta/public/
+INFO: 2014/09/29 syncing from /Users/quoha/Sites/zafta/static/ to /Users/quoha/Sites/zafta/public/
+WARN: 2014/09/29 Unable to locate layout: [404.html theme/404.html]
+0 draft content
+0 future content
+0 pages created
+0 tags created
+0 categories created
+in 2 ms
+
+$ find public -type f -name '*.html' | xargs ls -l
+-rw-r--r--  1 quoha  staff  78 Sep 29 21:26 public/index.html
+
+$ cat public/index.html
+&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;body&gt;
+  &lt;p&gt;hugo says hello!&lt;/p&gt;
+&lt;/html&gt;
+</code></pre>
+
+<h4 id="live-reload-1">Live Reload</h4>
+
+<p>Note: If you&rsquo;re running the server with the <code>--watch</code> option, you&rsquo;ll see different content in the file:</p>
+
+<pre><code>$ cat public/index.html
+&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;body&gt;
+  &lt;p&gt;hugo says hello!&lt;/p&gt;
+&lt;script&gt;document.write('&lt;script src=&quot;http://'
+        + (location.host || 'localhost').split(':')[0]
+    + ':1313/livereload.js?mindelay=10&quot;&gt;&lt;/'
+        + 'script&gt;')&lt;/script&gt;&lt;/body&gt;
+&lt;/html&gt;
+</code></pre>
+
+<p>When you use <code>--watch</code>, the Live Reload script is added by Hugo. Look for live reload in the documentation to see what it does and how to disable it.</p>
+
+<h3 id="build-a-dynamic-home-page">Build a &ldquo;Dynamic&rdquo; Home Page</h3>
+
+<p>&ldquo;Dynamic home page?&rdquo; Hugo&rsquo;s a static web site generator, so this seems an odd thing to say. I mean let&rsquo;s have the home page automatically reflect the content in the site every time Hugo builds it. We&rsquo;ll use iteration in the template to do that.</p>
+
+<h4 id="create-new-posts">Create New Posts</h4>
+
+<p>Now that we have the home page generating static content, let&rsquo;s add some content to the site. We&rsquo;ll display these posts as a list on the home page and on their own page, too.</p>
+
+<p>Hugo has a command to generate a skeleton post, just like it does for sites and themes.</p>
+
+<pre><code>$ hugo --verbose new post/first.md
+INFO: 2014/09/29 Using config file: /Users/quoha/Sites/zafta/config.toml
+INFO: 2014/09/29 attempting to create  post/first.md of post
+INFO: 2014/09/29 curpath: /Users/quoha/Sites/zafta/themes/zafta/archetypes/default.md
+ERROR: 2014/09/29 Unable to Cast &lt;nil&gt; to map[string]interface{}
+
+$
+</code></pre>
+
+<p>That wasn&rsquo;t very nice, was it?</p>
+
+<p>The &ldquo;new&rdquo; command uses an archetype to create the post file. Hugo created an empty default archetype file, but that causes an error when there&rsquo;s a theme. For me, the workaround was to create an archetypes file specifically for the post type.</p>
+
+<pre><code>$ vi themes/zafta/archetypes/post.md
++++
+Description = &quot;&quot;
+Tags = []
+Categories = []
++++
+:wq
+
+$ find themes/zafta/archetypes -type f | xargs ls -l
+-rw-r--r--  1 quoha  staff   0 Sep 29 21:53 themes/zafta/archetypes/default.md
+-rw-r--r--  1 quoha  staff  51 Sep 29 21:54 themes/zafta/archetypes/post.md
+
+$ hugo --verbose new post/first.md
+INFO: 2014/09/29 Using config file: /Users/quoha/Sites/zafta/config.toml
+INFO: 2014/09/29 attempting to create  post/first.md of post
+INFO: 2014/09/29 curpath: /Users/quoha/Sites/zafta/themes/zafta/archetypes/post.md
+INFO: 2014/09/29 creating /Users/quoha/Sites/zafta/content/post/first.md
+/Users/quoha/Sites/zafta/content/post/first.md created
+
+$ hugo --verbose new post/second.md
+INFO: 2014/09/29 Using config file: /Users/quoha/Sites/zafta/config.toml
+INFO: 2014/09/29 attempting to create  post/second.md of post
+INFO: 2014/09/29 curpath: /Users/quoha/Sites/zafta/themes/zafta/archetypes/post.md
+INFO: 2014/09/29 creating /Users/quoha/Sites/zafta/content/post/second.md
+/Users/quoha/Sites/zafta/content/post/second.md created
+
+$ ls -l content/post
+total 16
+-rw-r--r--  1 quoha  staff  104 Sep 29 21:54 first.md
+-rw-r--r--  1 quoha  staff  105 Sep 29 21:57 second.md
+
+$ cat content/post/first.md
++++
+Categories = []
+Description = &quot;&quot;
+Tags = []
+date = &quot;2014-09-29T21:54:53-05:00&quot;
+title = &quot;first&quot;
+
++++
+my first post
+
+$ cat content/post/second.md
++++
+Categories = []
+Description = &quot;&quot;
+Tags = []
+date = &quot;2014-09-29T21:57:09-05:00&quot;
+title = &quot;second&quot;
+
++++
+my second post
+
+$
+</code></pre>
+
+<p>Build the web site and then verify the results.</p>
+
+<pre><code>$ rm -rf public
+$ hugo --verbose
+INFO: 2014/09/29 Using config file: /Users/quoha/Sites/zafta/config.toml
+INFO: 2014/09/29 syncing from /Users/quoha/Sites/zafta/themes/zafta/static/ to /Users/quoha/Sites/zafta/public/
+INFO: 2014/09/29 syncing from /Users/quoha/Sites/zafta/static/ to /Users/quoha/Sites/zafta/public/
+INFO: 2014/09/29 found taxonomies: map[string]string{&quot;category&quot;:&quot;categories&quot;, &quot;tag&quot;:&quot;tags&quot;}
+WARN: 2014/09/29 Unable to locate layout: [404.html theme/404.html]
+0 draft content
+0 future content
+2 pages created
+0 tags created
+0 categories created
+in 4 ms
+$
+</code></pre>
+
+<p>The output says that it created 2 pages. Those are our new posts:</p>
+
+<pre><code>$ find public -type f -name '*.html' | xargs ls -l
+-rw-r--r--  1 quoha  staff  78 Sep 29 22:13 public/index.html
+-rw-r--r--  1 quoha  staff   0 Sep 29 22:13 public/post/first/index.html
+-rw-r--r--  1 quoha  staff   0 Sep 29 22:13 public/post/index.html
+-rw-r--r--  1 quoha  staff   0 Sep 29 22:13 public/post/second/index.html
+$
+</code></pre>
+
+<p>The new files are empty because because the templates used to generate the content are empty. The homepage doesn&rsquo;t show the new content, either. We have to update the templates to add the posts.</p>
+
+<h3 id="list-and-single-templates">List and Single Templates</h3>
+
+<p>In Hugo, we have three major kinds of templates. There&rsquo;s the home page template that we updated previously. It is used only by the home page. We also have &ldquo;single&rdquo; templates which are used to generate output for a single content file. We also have &ldquo;list&rdquo; templates that are used to group multiple pieces of content before generating output.</p>
+
+<p>Generally speaking, list templates are named &ldquo;list.html&rdquo; and single templates are named &ldquo;single.html.&rdquo;</p>
+
+<p>There are three other types of templates: partials, content views, and terms. We will not go into much detail on these.</p>
+
+<h3 id="add-content-to-the-homepage">Add Content to the Homepage</h3>
+
+<p>The home page will contain a list of posts. Let&rsquo;s update its template to add the posts that we just created. The logic in the template will run every time we build the site.</p>
+
+<pre><code>$ vi themes/zafta/layouts/index.html
+&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;body&gt;
+  {{ range first 10 .Data.Pages }}
+    &lt;h1&gt;{{ .Title }}&lt;/h1&gt;
+  {{ end }}
+&lt;/body&gt;
+&lt;/html&gt;
+:wq
+
+$
+</code></pre>
+
+<p>Hugo uses the Go template engine. That engine scans the template files for commands which are enclosed between &ldquo;{{&rdquo; and &ldquo;}}&rdquo;. In our template, the commands are:</p>
+
+<ol>
+<li>range</li>
+<li>.Title</li>
+<li>end</li>
+</ol>
+
+<p>The &ldquo;range&rdquo; command is an iterator. We&rsquo;re going to use it to go through the first ten pages. Every HTML file that Hugo creates is treated as a page, so looping through the list of pages will look at every file that will be created.</p>
+
+<p>The &ldquo;.Title&rdquo; command prints the value of the &ldquo;title&rdquo; variable. Hugo pulls it from the front matter in the Markdown file.</p>
+
+<p>The &ldquo;end&rdquo; command signals the end of the range iterator. The engine loops back to the top of the iteration when it finds &ldquo;end.&rdquo; Everything between the &ldquo;range&rdquo; and &ldquo;end&rdquo; is evaluated every time the engine goes through the iteration. In this file, that would cause the title from the first ten pages to be output as heading level one.</p>
+
+<p>It&rsquo;s helpful to remember that some variables, like .Data, are created before any output files. Hugo loads every content file into the variable and then gives the template a chance to process before creating the HTML files.</p>
+
+<p>Build the web site and then verify the results.</p>
+
+<pre><code>$ rm -rf public
+$ hugo --verbose
+INFO: 2014/09/29 Using config file: /Users/quoha/Sites/zafta/config.toml
+INFO: 2014/09/29 syncing from /Users/quoha/Sites/zafta/themes/zafta/static/ to /Users/quoha/Sites/zafta/public/
+INFO: 2014/09/29 syncing from /Users/quoha/Sites/zafta/static/ to /Users/quoha/Sites/zafta/public/
+INFO: 2014/09/29 found taxonomies: map[string]string{&quot;tag&quot;:&quot;tags&quot;, &quot;category&quot;:&quot;categories&quot;}
+WARN: 2014/09/29 Unable to locate layout: [404.html theme/404.html]
+0 draft content
+0 future content
+2 pages created
+0 tags created
+0 categories created
+in 4 ms
+$ find public -type f -name '*.html' | xargs ls -l
+-rw-r--r--  1 quoha  staff  94 Sep 29 22:23 public/index.html
+-rw-r--r--  1 quoha  staff   0 Sep 29 22:23 public/post/first/index.html
+-rw-r--r--  1 quoha  staff   0 Sep 29 22:23 public/post/index.html
+-rw-r--r--  1 quoha  staff   0 Sep 29 22:23 public/post/second/index.html
+$ cat public/index.html
+&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;body&gt;
+
+    &lt;h1&gt;second&lt;/h1&gt;
+
+    &lt;h1&gt;first&lt;/h1&gt;
+
+&lt;/body&gt;
+&lt;/html&gt;
+$
+</code></pre>
+
+<p>Congratulations, the home page shows the title of the two posts. The posts themselves are still empty, but let&rsquo;s take a moment to appreciate what we&rsquo;ve done. Your template now generates output dynamically. Believe it or not, by inserting the range command inside of those curly braces, you&rsquo;ve learned everything you need to know to build a theme. All that&rsquo;s really left is understanding which template will be used to generate each content file and becoming familiar with the commands for the template engine.</p>
+
+<p>And, if that were entirely true, this tutorial would be much shorter. There are a few things to know that will make creating a new template much easier. Don&rsquo;t worry, though, that&rsquo;s all to come.</p>
+
+<h3 id="add-content-to-the-posts">Add Content to the Posts</h3>
+
+<p>We&rsquo;re working with posts, which are in the content/post/ directory. That means that their section is &ldquo;post&rdquo; (and if we don&rsquo;t do something weird, their type is also &ldquo;post&rdquo;).</p>
+
+<p>Hugo uses the section and type to find the template file for every piece of content. Hugo will first look for a template file that matches the section or type name. If it can&rsquo;t find one, then it will look in the _default/ directory. There are some twists that we&rsquo;ll cover when we get to categories and tags, but for now we can assume that Hugo will try post/single.html, then _default/single.html.</p>
+
+<p>Now that we know the search rule, let&rsquo;s see what we actually have available:</p>
+
+<pre><code>$ find themes/zafta -name single.html | xargs ls -l
+-rw-r--r--  1 quoha  staff  132 Sep 29 17:31 themes/zafta/layouts/_default/single.html
+</code></pre>
+
+<p>We could create a new template, post/single.html, or change the default. Since we don&rsquo;t know of any other content types, let&rsquo;s start with updating the default.</p>
+
+<p>Remember, any content that we haven&rsquo;t created a template for will end up using this template. That can be good or bad. Bad because I know that we&rsquo;re going to be adding different types of content and we&rsquo;re going to end up undoing some of the changes we&rsquo;ve made. It&rsquo;s good because we&rsquo;ll be able to see immediate results. It&rsquo;s also good to start here because we can start to build the basic layout for the site. As we add more content types, we&rsquo;ll refactor this file and move logic around. Hugo makes that fairly painless, so we&rsquo;ll accept the cost and proceed.</p>
+
+<p>Please see the Hugo documentation on template rendering for all the details on determining which template to use. And, as the docs mention, if you&rsquo;re building a single page application (SPA) web site, you can delete all of the other templates and work with just the default single page. That&rsquo;s a refreshing amount of joy right there.</p>
+
+<h4 id="update-the-template-file">Update the Template File</h4>
+
+<pre><code>$ vi themes/zafta/layouts/_default/single.html
+&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+  &lt;title&gt;{{ .Title }}&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  &lt;h1&gt;{{ .Title }}&lt;/h1&gt;
+  {{ .Content }}
+&lt;/body&gt;
+&lt;/html&gt;
+:wq
+
+$
+</code></pre>
+
+<p>Build the web site and verify the results.</p>
+
+<pre><code>$ rm -rf public
+$ hugo --verbose
+INFO: 2014/09/29 Using config file: /Users/quoha/Sites/zafta/config.toml
+INFO: 2014/09/29 syncing from /Users/quoha/Sites/zafta/themes/zafta/static/ to /Users/quoha/Sites/zafta/public/
+INFO: 2014/09/29 syncing from /Users/quoha/Sites/zafta/static/ to /Users/quoha/Sites/zafta/public/
+INFO: 2014/09/29 found taxonomies: map[string]string{&quot;tag&quot;:&quot;tags&quot;, &quot;category&quot;:&quot;categories&quot;}
+WARN: 2014/09/29 Unable to locate layout: [404.html theme/404.html]
+0 draft content
+0 future content
+2 pages created
+0 tags created
+0 categories created
+in 4 ms
+
+$ find public -type f -name '*.html' | xargs ls -l
+-rw-r--r--  1 quoha  staff   94 Sep 29 22:40 public/index.html
+-rw-r--r--  1 quoha  staff  125 Sep 29 22:40 public/post/first/index.html
+-rw-r--r--  1 quoha  staff    0 Sep 29 22:40 public/post/index.html
+-rw-r--r--  1 quoha  staff  128 Sep 29 22:40 public/post/second/index.html
+
+$ cat public/post/first/index.html
+&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+  &lt;title&gt;first&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  &lt;h1&gt;first&lt;/h1&gt;
+  &lt;p&gt;my first post&lt;/p&gt;
+
+&lt;/body&gt;
+&lt;/html&gt;
+
+$ cat public/post/second/index.html
+&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+  &lt;title&gt;second&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  &lt;h1&gt;second&lt;/h1&gt;
+  &lt;p&gt;my second post&lt;/p&gt;
+
+&lt;/body&gt;
+&lt;/html&gt;
+$
+</code></pre>
+
+<p>Notice that the posts now have content. You can go to localhost:1313/post/first to verify.</p>
+
+<h3 id="linking-to-content">Linking to Content</h3>
+
+<p>The posts are on the home page. Let&rsquo;s add a link from there to the post. Since this is the home page, we&rsquo;ll update its template.</p>
+
+<pre><code>$ vi themes/zafta/layouts/index.html
+&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;body&gt;
+  {{ range first 10 .Data.Pages }}
+    &lt;h1&gt;&lt;a href=&quot;{{ .Permalink }}&quot;&gt;{{ .Title }}&lt;/a&gt;&lt;/h1&gt;
+  {{ end }}
+&lt;/body&gt;
+&lt;/html&gt;
+</code></pre>
+
+<p>Build the web site and verify the results.</p>
+
+<pre><code>$ rm -rf public
+$ hugo --verbose
+INFO: 2014/09/29 Using config file: /Users/quoha/Sites/zafta/config.toml
+INFO: 2014/09/29 syncing from /Users/quoha/Sites/zafta/themes/zafta/static/ to /Users/quoha/Sites/zafta/public/
+INFO: 2014/09/29 syncing from /Users/quoha/Sites/zafta/static/ to /Users/quoha/Sites/zafta/public/
+INFO: 2014/09/29 found taxonomies: map[string]string{&quot;tag&quot;:&quot;tags&quot;, &quot;category&quot;:&quot;categories&quot;}
+WARN: 2014/09/29 Unable to locate layout: [404.html theme/404.html]
+0 draft content
+0 future content
+2 pages created
+0 tags created
+0 categories created
+in 4 ms
+
+$ find public -type f -name '*.html' | xargs ls -l
+-rw-r--r--  1 quoha  staff  149 Sep 29 22:44 public/index.html
+-rw-r--r--  1 quoha  staff  125 Sep 29 22:44 public/post/first/index.html
+-rw-r--r--  1 quoha  staff    0 Sep 29 22:44 public/post/index.html
+-rw-r--r--  1 quoha  staff  128 Sep 29 22:44 public/post/second/index.html
+
+$ cat public/index.html
+&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;body&gt;
+
+    &lt;h1&gt;&lt;a href=&quot;/post/second/&quot;&gt;second&lt;/a&gt;&lt;/h1&gt;
+
+    &lt;h1&gt;&lt;a href=&quot;/post/first/&quot;&gt;first&lt;/a&gt;&lt;/h1&gt;
+
+&lt;/body&gt;
+&lt;/html&gt;
+
+$
+</code></pre>
+
+<h3 id="create-a-post-listing">Create a Post Listing</h3>
+
+<p>We have the posts displaying on the home page and on their own page. We also have a file public/post/index.html that is empty. Let&rsquo;s make it show a list of all posts (not just the first ten).</p>
+
+<p>We need to decide which template to update. This will be a listing, so it should be a list template. Let&rsquo;s take a quick look and see which list templates are available.</p>
+
+<pre><code>$ find themes/zafta -name list.html | xargs ls -l
+-rw-r--r--  1 quoha  staff  0 Sep 29 17:31 themes/zafta/layouts/_default/list.html
+</code></pre>
+
+<p>As with the single post, we have to decide to update _default/list.html or create post/list.html. We still don&rsquo;t have multiple content types, so let&rsquo;s stay consistent and update the default list template.</p>
+
+<h2 id="creating-top-level-pages">Creating Top Level Pages</h2>
+
+<p>Let&rsquo;s add an &ldquo;about&rdquo; page and display it at the top level (as opposed to a sub-level like we did with posts).</p>
+
+<p>The default in Hugo is to use the directory structure of the content/ directory to guide the location of the generated html in the public/ directory. Let&rsquo;s verify that by creating an &ldquo;about&rdquo; page at the top level:</p>
+
+<pre><code>$ vi content/about.md
++++
+title = &quot;about&quot;
+description = &quot;about this site&quot;
+date = &quot;2014-09-27&quot;
+slug = &quot;about time&quot;
++++
+
+## about us
+
+i'm speechless
+:wq
+</code></pre>
+
+<p>Generate the web site and verify the results.</p>
+
+<pre><code>$ find public -name '*.html' | xargs ls -l
+-rw-rw-r--  1 mdhender  staff   334 Sep 27 15:08 public/about-time/index.html
+-rw-rw-r--  1 mdhender  staff   527 Sep 27 15:08 public/index.html
+-rw-rw-r--  1 mdhender  staff   358 Sep 27 15:08 public/post/first-post/index.html
+-rw-rw-r--  1 mdhender  staff     0 Sep 27 15:08 public/post/index.html
+-rw-rw-r--  1 mdhender  staff   342 Sep 27 15:08 public/post/second-post/index.html
+</code></pre>
+
+<p>Notice that the page wasn&rsquo;t created at the top level. It was created in a sub-directory named &lsquo;about-time/&rsquo;. That name came from our slug. Hugo will use the slug to name the generated content. It&rsquo;s a reasonable default, by the way, but we can learn a few things by fighting it for this file.</p>
+
+<p>One other thing. Take a look at the home page.</p>
+
+<pre><code>$ cat public/index.html
+&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;body&gt;
+    &lt;h1&gt;&lt;a href=&quot;http://localhost:1313/post/theme/&quot;&gt;creating a new theme&lt;/a&gt;&lt;/h1&gt;
+    &lt;h1&gt;&lt;a href=&quot;http://localhost:1313/about-time/&quot;&gt;about&lt;/a&gt;&lt;/h1&gt;
+    &lt;h1&gt;&lt;a href=&quot;http://localhost:1313/post/second-post/&quot;&gt;second&lt;/a&gt;&lt;/h1&gt;
+    &lt;h1&gt;&lt;a href=&quot;http://localhost:1313/post/first-post/&quot;&gt;first&lt;/a&gt;&lt;/h1&gt;
+&lt;script&gt;document.write('&lt;script src=&quot;http://'
+        + (location.host || 'localhost').split(':')[0]
+		+ ':1313/livereload.js?mindelay=10&quot;&gt;&lt;/'
+        + 'script&gt;')&lt;/script&gt;&lt;/body&gt;
+&lt;/html&gt;
+</code></pre>
+
+<p>Notice that the &ldquo;about&rdquo; link is listed with the posts? That&rsquo;s not desirable, so let&rsquo;s change that first.</p>
+
+<pre><code>$ vi themes/zafta/layouts/index.html
+&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;body&gt;
+  &lt;h1&gt;posts&lt;/h1&gt;
+  {{ range first 10 .Data.Pages }}
+    {{ if eq .Type &quot;post&quot;}}
+      &lt;h2&gt;&lt;a href=&quot;{{ .Permalink }}&quot;&gt;{{ .Title }}&lt;/a&gt;&lt;/h2&gt;
+    {{ end }}
+  {{ end }}
+
+  &lt;h1&gt;pages&lt;/h1&gt;
+  {{ range .Data.Pages }}
+    {{ if eq .Type &quot;page&quot; }}
+      &lt;h2&gt;&lt;a href=&quot;{{ .Permalink }}&quot;&gt;{{ .Title }}&lt;/a&gt;&lt;/h2&gt;
+    {{ end }}
+  {{ end }}
+&lt;/body&gt;
+&lt;/html&gt;
+:wq
+</code></pre>
+
+<p>Generate the web site and verify the results. The home page has two sections, posts and pages, and each section has the right set of headings and links in it.</p>
+
+<p>But, that about page still renders to about-time/index.html.</p>
+
+<pre><code>$ find public -name '*.html' | xargs ls -l
+-rw-rw-r--  1 mdhender  staff    334 Sep 27 15:33 public/about-time/index.html
+-rw-rw-r--  1 mdhender  staff    645 Sep 27 15:33 public/index.html
+-rw-rw-r--  1 mdhender  staff    358 Sep 27 15:33 public/post/first-post/index.html
+-rw-rw-r--  1 mdhender  staff      0 Sep 27 15:33 public/post/index.html
+-rw-rw-r--  1 mdhender  staff    342 Sep 27 15:33 public/post/second-post/index.html
+</code></pre>
+
+<p>Knowing that hugo is using the slug to generate the file name, the simplest solution is to change the slug. Let&rsquo;s do it the hard way and change the permalink in the configuration file.</p>
+
+<pre><code>$ vi config.toml
+[permalinks]
+	page = &quot;/:title/&quot;
+	about = &quot;/:filename/&quot;
+</code></pre>
+
+<p>Generate the web site and verify that this didn&rsquo;t work. Hugo lets &ldquo;slug&rdquo; or &ldquo;URL&rdquo; override the permalinks setting in the configuration file. Go ahead and comment out the slug in content/about.md, then generate the web site to get it to be created in the right place.</p>
+
+<h2 id="sharing-templates">Sharing Templates</h2>
+
+<p>If you&rsquo;ve been following along, you probably noticed that posts have titles in the browser and the home page doesn&rsquo;t. That&rsquo;s because we didn&rsquo;t put the title in the home page&rsquo;s template (layouts/index.html). That&rsquo;s an easy thing to do, but let&rsquo;s look at a different option.</p>
+
+<p>We can put the common bits into a shared template that&rsquo;s stored in the themes/zafta/layouts/partials/ directory.</p>
+
+<h3 id="create-the-header-and-footer-partials">Create the Header and Footer Partials</h3>
+
+<p>In Hugo, a partial is a sugar-coated template. Normally a template reference has a path specified. Partials are different. Hugo searches for them along a TODO defined search path. This makes it easier for end-users to override the theme&rsquo;s presentation.</p>
+
+<pre><code>$ vi themes/zafta/layouts/partials/header.html
+&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+	&lt;title&gt;{{ .Title }}&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+:wq
+
+$ vi themes/zafta/layouts/partials/footer.html
+&lt;/body&gt;
+&lt;/html&gt;
+:wq
+</code></pre>
+
+<h3 id="update-the-home-page-template-to-use-the-partials">Update the Home Page Template to Use the Partials</h3>
+
+<p>The most noticeable difference between a template call and a partials call is the lack of path:</p>
+
+<pre><code>{{ template &quot;theme/partials/header.html&quot; . }}
+</code></pre>
+
+<p>versus</p>
+
+<pre><code>{{ partial &quot;header.html&quot; . }}
+</code></pre>
+
+<p>Both pass in the context.</p>
+
+<p>Let&rsquo;s change the home page template to use these new partials.</p>
+
+<pre><code>$ vi themes/zafta/layouts/index.html
+{{ partial &quot;header.html&quot; . }}
+
+  &lt;h1&gt;posts&lt;/h1&gt;
+  {{ range first 10 .Data.Pages }}
+    {{ if eq .Type &quot;post&quot;}}
+      &lt;h2&gt;&lt;a href=&quot;{{ .Permalink }}&quot;&gt;{{ .Title }}&lt;/a&gt;&lt;/h2&gt;
+    {{ end }}
+  {{ end }}
+
+  &lt;h1&gt;pages&lt;/h1&gt;
+  {{ range .Data.Pages }}
+    {{ if or (eq .Type &quot;page&quot;) (eq .Type &quot;about&quot;) }}
+      &lt;h2&gt;&lt;a href=&quot;{{ .Permalink }}&quot;&gt;{{ .Type }} - {{ .Title }} - {{ .RelPermalink }}&lt;/a&gt;&lt;/h2&gt;
+    {{ end }}
+  {{ end }}
+
+{{ partial &quot;footer.html&quot; . }}
+:wq
+</code></pre>
+
+<p>Generate the web site and verify the results. The title on the home page is now &ldquo;your title here&rdquo;, which comes from the &ldquo;title&rdquo; variable in the config.toml file.</p>
+
+<h3 id="update-the-default-single-template-to-use-the-partials">Update the Default Single Template to Use the Partials</h3>
+
+<pre><code>$ vi themes/zafta/layouts/_default/single.html
+{{ partial &quot;header.html&quot; . }}
+
+  &lt;h1&gt;{{ .Title }}&lt;/h1&gt;
+  {{ .Content }}
+
+{{ partial &quot;footer.html&quot; . }}
+:wq
+</code></pre>
+
+<p>Generate the web site and verify the results. The title on the posts and the about page should both reflect the value in the markdown file.</p>
+
+<h2 id="add-date-published-to-posts">Add “Date Published” to Posts</h2>
+
+<p>It&rsquo;s common to have posts display the date that they were written or published, so let&rsquo;s add that. The front matter of our posts has a variable named &ldquo;date.&rdquo; It&rsquo;s usually the date the content was created, but let&rsquo;s pretend that&rsquo;s the value we want to display.</p>
+
+<h3 id="add-date-published-to-the-template">Add “Date Published” to the Template</h3>
+
+<p>We&rsquo;ll start by updating the template used to render the posts. The template code will look like:</p>
+
+<pre><code>{{ .Date.Format &quot;Mon, Jan 2, 2006&quot; }}
+</code></pre>
+
+<p>Posts use the default single template, so we&rsquo;ll change that file.</p>
+
+<pre><code>$ vi themes/zafta/layouts/_default/single.html
+{{ partial &quot;header.html&quot; . }}
+
+  &lt;h1&gt;{{ .Title }}&lt;/h1&gt;
+  &lt;h2&gt;{{ .Date.Format &quot;Mon, Jan 2, 2006&quot; }}&lt;/h2&gt;
+  {{ .Content }}
+
+{{ partial &quot;footer.html&quot; . }}
+:wq
+</code></pre>
+
+<p>Generate the web site and verify the results. The posts now have the date displayed in them. There&rsquo;s a problem, though. The &ldquo;about&rdquo; page also has the date displayed.</p>
+
+<p>As usual, there are a couple of ways to make the date display only on posts. We could do an &ldquo;if&rdquo; statement like we did on the home page. Another way would be to create a separate template for posts.</p>
+
+<p>The &ldquo;if&rdquo; solution works for sites that have just a couple of content types. It aligns with the principle of &ldquo;code for today,&rdquo; too.</p>
+
+<p>Let&rsquo;s assume, though, that we&rsquo;ve made our site so complex that we feel we have to create a new template type. In Hugo-speak, we&rsquo;re going to create a section template.</p>
+
+<p>Let&rsquo;s restore the default single template before we forget.</p>
+
+<pre><code>$ mkdir themes/zafta/layouts/post
+$ vi themes/zafta/layouts/_default/single.html
+{{ partial &quot;header.html&quot; . }}
+
+  &lt;h1&gt;{{ .Title }}&lt;/h1&gt;
+  {{ .Content }}
+
+{{ partial &quot;footer.html&quot; . }}
+:wq
+</code></pre>
+
+<p>Now we&rsquo;ll update the post&rsquo;s version of the single template. If you remember Hugo&rsquo;s rules, the template engine will use this version over the default.</p>
+
+<pre><code>$ vi themes/zafta/layouts/post/single.html
+{{ partial &quot;header.html&quot; . }}
+
+  &lt;h1&gt;{{ .Title }}&lt;/h1&gt;
+  &lt;h2&gt;{{ .Date.Format &quot;Mon, Jan 2, 2006&quot; }}&lt;/h2&gt;
+  {{ .Content }}
+
+{{ partial &quot;footer.html&quot; . }}
+:wq
+
+</code></pre>
+
+<p>Note that we removed the date logic from the default template and put it in the post template. Generate the web site and verify the results. Posts have dates and the about page doesn&rsquo;t.</p>
+
+<h3 id="don-t-repeat-yourself">Don&rsquo;t Repeat Yourself</h3>
+
+<p>DRY is a good design goal and Hugo does a great job supporting it. Part of the art of a good template is knowing when to add a new template and when to update an existing one. While you&rsquo;re figuring that out, accept that you&rsquo;ll be doing some refactoring. Hugo makes that easy and fast, so it&rsquo;s okay to delay splitting up a template.</p>
+
     </div>
     
   </div>
@@ -2115,18 +2941,6 @@ Yes !.
       
       <li >
         <a href="/page/5/">5</a>
-      </li>
-      
-      <li >
-        <a href="/page/6/">6</a>
-      </li>
-      
-      <li >
-        <a href="/page/7/">7</a>
-      </li>
-      
-      <li >
-        <a href="/page/8/">8</a>
       </li>
       
     </ul>
@@ -2199,10 +3013,6 @@ Yes !.
       </span></span>
 
   
-  
-    <span id="busuanzi_container">
-      访客数/访问量：<span id="busuanzi_value_site_uv"></span>/<span id="busuanzi_value_site_pv"></span>
-    </span>
   
 
   
@@ -2281,8 +3091,6 @@ Yes !.
 
 
 
-
-  <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
 
 
 

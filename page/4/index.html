@@ -362,295 +362,18 @@
   <header class="post-header">
     <h1 class="post-title">
       
-      <a class="post-link" href="/post/docs/image-preview/">Image Preview</a>
+      <a class="post-link" href="/post/docs/linux%E4%B8%8Bgitnodejsnpm%E5%AE%89%E8%A3%85/">linux下git&amp;nodejs&amp;npm安装</a>
     </h1>
     
     <div class="post-meta">
-      <time datetime="2018-03-03" class="post-time">
-        3039-09-03
+      <time datetime="2014-09-28" class="post-time">
+        2014-09-28
       </time>
       <div class="post-category">
-          <a href="https://hisaige.github.io/categories/docs/"> docs </a>
-          <a href="https://hisaige.github.io/categories/shortcodes/"> shortcodes </a>
-          <a href="https://hisaige.github.io/categories/index/"> index </a>
+          <a href="https://hisaige.github.io/categories/development/"> Development </a>
           
         </div>
-      <span class="more-meta"> 527 words </span>
-      <span class="more-meta"> 3 min read </span>
-      
-      
-      
-    </div>
-  </header>
-  
-  <div class="post-content">
-    
-    <div class="post-summary">
-      <p>Thanks for <a href="https://github.com/liwenyip/hugo-easy-gallery">liwenyip/hugo-easy-gallery</a> &amp; <a href="https://github.com/xianmin/hugo-theme-jane/pull/48">Zebradil · Pull Request #48</a> .</p>
-
-<p>Now, we could use <code>{{&lt; gallery &gt;}}</code> shortcode in hugo-theme-jane.</p>
-
-<h2 id="normal-image">Normal Image</h2>
-
-<p>This is an image in <code>static/image</code> folder.</p>
-
-<pre><code class="language-markdown">![This is an image in `static/image` folder.](/image/example.jpg)
-</code></pre>
-
-<h2 id="figure-shortcode"><code>{{&lt; figure &gt;}}</code> shortcode</h2>
-
-<h3 id="figure-image-with-title">figure image with title</h3>
-
-<pre><code>{{&lt; figure src=&quot;/image/example.jpg&quot; title=&quot;figure image with title&quot; &gt;}}
-</code></pre>
-
-<h3 id="figure-image-with-caption">figure image with caption</h3>
-
-<pre><code>{{&lt; figure src=&quot;/image/example.jpg&quot; caption=&quot;figure image with caption figure image with caption figure image with caption figure image with caption figure image with caption&quot; &gt;}}
-</code></pre>
-
-<h3 id="more-figure-shortcode-usage">more <code>{{&lt; figure &gt;}}</code> shortcode usage</h3>
-
-<p>Specifying your image files:</p>
-
-<ul>
-<li><code>{{&lt; figure src=&quot;thumb.jpg&quot; link=&quot;image.jpg&quot; &gt;}}</code> will use <code>thumb.jpg</code> for thumbnail and <code>image.jpg</code> for lightbox</li>
-<li><code>{{&lt; figure src=&quot;image.jpg&quot; &gt;}}</code> or <code>{{&lt; figure link=&quot;image.jpg&quot; &gt;}}</code> will use <code>image.jpg</code> for both thumbnail and lightbox</li>
-<li><code>{{&lt; figure link=&quot;image.jpg&quot; thumb=&quot;-small&quot; &gt;}}</code> will use <code>image-small.jpg</code> for thumbnail and <code>image.jpg</code> for lightbox</li>
-</ul>
-
-<p>Optional parameters:</p>
-
-<ul>
-<li>All the <a href="https://gohugo.io/extras/shortcodes">features/parameters</a> of Hugo&rsquo;s built-in <code>figure</code> shortcode work as normal, i.e. src, link, title, caption, class, attr (attribution), attrlink, alt</li>
-<li><code>size</code> (e.g. <code>size=&quot;1024x768&quot;</code>) pre-defines the image size for PhotoSwipe. Use this option if you don&rsquo;t want to pre-load the linked image to determine its size.</li>
-<li><code>class</code> allows you to set any custom classes you want on the <code>&lt;figure&gt;</code> tag.</li>
-</ul>
-
-<p>Optional parameters for standalone <code>{{&lt; figure &gt;}}</code> shortcodes only (i.e. don&rsquo;t use on <code>{{&lt; figure &gt;}}</code> inside <code>{{&lt; gallery &gt;}}</code> - strange things may happen if you do):</p>
-
-<ul>
-<li><code>caption-position</code> and <code>caption-effect</code> work the same as for the <code>{{&lt; gallery &gt;}}</code> shortcode (see below).</li>
-<li><code>width</code> defines the <a href="https://www.w3schools.com/cssref/pr_dim_max-width.asp"><code>max-width</code></a> of the image displayed on the page. If using a thumbnail for a standalone figure, set this equal to your thumbnail&rsquo;s native width to make the captions behave properly (or feel free to come up with a better solution and submit a pull request :-)). Also use this option if you don&rsquo;t have a thumbnail and you don&rsquo;t want the hi-res image to take up the entire width of the screen/container.</li>
-<li><code>class=&quot;no-photoswipe&quot;</code> prevents a <code>&lt;figure&gt;</code> from being loaded into PhotoSwipe. If you click on the figure you&rsquo;ll instead a good ol&rsquo; fashioned hyperlink to a bigger image (or - if you haven&rsquo;t specified a bigger image - the same one).</li>
-</ul>
-
-<h2 id="gallery-shortcode"><code>{{&lt; gallery &gt;}}</code> shortcode</h2>
-
-<h3 id="simple-gallery">simple gallery</h3>
-
-<p>To specify a directory of image files:</p>
-
-<pre><code>{{&lt; gallery dir=&quot;/img/your-directory-of-images/&quot; &gt;}}
-</code></pre>
-
-<ul>
-<li>The images are automatically captioned with the file name.</li>
-<li><code>[image].jpg</code> is used for the hi-res image, and <code>[image]-thumb.jpg</code> is used for the thumbnails.</li>
-<li>If <code>[image]-thumb.jpg</code> doesn&rsquo;t exist, then <code>[image].jpg</code> will be used for both hi-res and thumbnail images.</li>
-<li>The default thumbnail suffix is <code>-thumb</code>, but you can specify a different one e.g. <code>thumb=&quot;-small&quot;</code> or <code>thumb=&quot;_150x150&quot;</code>.</li>
-</ul>
-
-<h3 id="to-specify-individual-image-files">To specify individual image files</h3>
-
-<pre><code>{{&lt; gallery &gt;}}
-  {{&lt; figure src=&quot;image1.jpg&quot; &gt;}}
-  {{&lt; figure src=&quot;image2.jpg&quot; &gt;}}
-  {{&lt; figure src=&quot;image3.jpg&quot; &gt;}}
-{{&lt; /gallery &gt;}}
-</code></pre>
-
-<p><strong>Optional parameters:</strong></p>
-
-<ul>
-<li><code>caption-position</code> - determines the captions&rsquo; position over the image. Options:
-
-<ul>
-<li><code>bottom</code> (default)</li>
-<li><code>center</code></li>
-<li><code>none</code> hides captions on the page (they will only show in PhotoSwipe)</li>
-</ul></li>
-<li><code>caption-effect</code> - determines if/how captions appear upon hover. Options:
-
-<ul>
-<li><code>slide</code> (default)</li>
-<li><code>fade</code></li>
-<li><code>none</code> (captions always visible)</li>
-</ul></li>
-<li><code>hover-effect</code> - determines if/how images change upon hover. Options:
-
-<ul>
-<li><code>zoom</code> (default)</li>
-<li><code>grow</code></li>
-<li><code>shrink</code></li>
-<li><code>slideup</code></li>
-<li><code>slidedown</code></li>
-<li><code>none</code></li>
-</ul></li>
-<li><code>hover-transition</code> - determines if/how images change upon hover. Options:
-
-<ul>
-<li>not set - smooth transition (default)</li>
-<li><code>none</code> - hard transition</li>
-</ul></li>
-</ul>
-    </div>
-    
-  </div>
-</article>
-
-  
-    <article class="post bg-white">
-  <header class="post-header">
-    <h1 class="post-title">
-      
-      <a class="post-link" href="/post/docs/shortcode-notice/">Shortcodes Notice Preview</a>
-    </h1>
-    
-    <div class="post-meta">
-      <time datetime="2018-03-03" class="post-time">
-        3039-09-03
-      </time>
-      <div class="post-category">
-          <a href="https://hisaige.github.io/categories/docs/"> docs </a>
-          <a href="https://hisaige.github.io/categories/shortcodes/"> shortcodes </a>
-          <a href="https://hisaige.github.io/categories/index/"> index </a>
-          
-        </div>
-      <span class="more-meta"> 86 words </span>
-      <span class="more-meta"> 1 min read </span>
-      
-      
-      
-    </div>
-  </header>
-  
-  <div class="post-content">
-    
-    <div class="post-summary">
-      
-
-<h2 id="normal-use">normal use</h2>
-
-<p><code>Note</code> example:</p>
-
-<pre><code class="language-shortcode">{{% notice note %}}
-A notice disclaimer
-{{% /notice %}}
-</code></pre>
-
-<p><strong>Result:</strong>
-<div class="shortcode-notice note">
-  <div class="shortcode-notice-title note"></p>
-
-<pre><code>  note
-</code></pre>
-
-<p></div></p>
-
-<p>A notice disclaimer</p>
-
-<p></div></p>
-
-<p>You could <strong>custom title</strong> :</p>
-
-<pre><code class="language-shortcode">{{% notice note 笔记 %}}
-A notice disclaimer
-{{% /notice %}}
-</code></pre>
-
-<div class="shortcode-notice note">
-  <div class="shortcode-notice-title note">
-    
-      笔记
-    
-  </div>
-  
-
-<p>A notice disclaimer</p>
-
-<p></div></p>
-
-<h2 id="tip">tip</h2>
-
-<pre><code class="language-shortcode">{{% notice tip %}}
-A tip disclaimer
-{{% /tip %}}
-</code></pre>
-
-<div class="shortcode-notice tip">
-  <div class="shortcode-notice-title tip">
-    
-      tip
-    
-  </div>
-  
-
-<p>A tip disclaimer</p>
-
-<p></div></p>
-
-<h2 id="info">info</h2>
-
-<pre><code class="language-shortcode">{{% notice info %}}
-A info disclaimer
-{{% /notice %}}
-</code></pre>
-
-<div class="shortcode-notice info">
-  <div class="shortcode-notice-title info">
-    
-      info
-    
-  </div>
-  
-
-<p>An information disclaimer</p>
-
-<p></div></p>
-
-<h2 id="warning">warning</h2>
-
-<pre><code class="language-shortcode">{{% notice warning %}}
-A warning disclaimer
-{{% /notice %}}
-</code></pre>
-
-<div class="shortcode-notice warning">
-  <div class="shortcode-notice-title warning">
-    
-      warning
-    
-  </div>
-  
-
-<p>An warning disclaimer</p>
-
-<p></div></p>
-
-    </div>
-    
-  </div>
-</article>
-
-  
-    <article class="post bg-white">
-  <header class="post-header">
-    <h1 class="post-title">
-      
-      <a class="post-link" href="/post/docs/doc-footnote-preview/">Jane-Theme Footnote Preview</a>
-    </h1>
-    
-    <div class="post-meta">
-      <time datetime="2018-03-01" class="post-time">
-        1039-09-01
-      </time>
-      <div class="post-category">
-          <a href="https://hisaige.github.io/categories/docs/"> docs </a>
-          <a href="https://hisaige.github.io/categories/index/"> index </a>
-          
-        </div>
-      <span class="more-meta"> 268 words </span>
+      <span class="more-meta"> 771 words </span>
       <span class="more-meta"> 2 min read </span>
       
       
@@ -661,91 +384,942 @@ A warning disclaimer
   <div class="post-content">
     
     <div class="post-summary">
-      <p>Hugo-theme-jane optimized for footnote. When you mouse hover the footnote<sup class="footnote-ref" id="fnref:example"><a href="#fn:example">1</a></sup> , footnote content will be displayed.</p>
+      
 
-<h2 id="footnote-1">Footnote-1</h2>
+<h1>linux下git&nodeJS&npm安装&hugo部署</h1>
 
-<pre><code class="language-markdown">You can create footnotes like this[^footnote].
+<h2 id="1-git-安装">1. git 安装</h2>
 
-[^footnote]: Here is the *text* of the **footnote**.
+<p>1.安装前检查</p>
+
+<pre><code class="language-shell">#1.查看git版本,如果能出版本号，说明git已经安装，酌情考虑是否需要重新安装
+git --version
+#2.卸载git
+yum remove git
+
 </code></pre>
 
-<p>will produce:</p>
+<p>下载 <a href="https://github.com/git/git/releases/" title="git官方下载地址">git</a> ，然后解压，编译安装，配置。</p>
 
-<p>You can create footnotes like this<sup class="footnote-ref" id="fnref:footnote1"><a href="#fn:footnote1">2</a></sup>.</p>
+<pre><code class="language-shell">#在local下建立git文件夹 查看当前目录 我的控制台打印出 /usr/local/git 
+pwd
 
-<p>Mouse on the ‘footnote’ superscript to see content of the footnote.</p>
+# shell下载
+wget https://github.com/git/git/archive/v2.23.0.tar.gz
 
-<h2 id="footnote-2">Footnote-2</h2>
+# 解压
+tar -xzvf git-2.18.1.tar.gz
 
-<pre><code class="language-markdown">You can create footnotes like this[^footnote2].
+#进入解压目录
+cd git-2.18.1
 
-[^footnote2]: Here is the *text* of the **footnote**.
+#配置git安装路径
+./configure prefix=/usr/local/git/git-2.18.1
+
+#编译安装
+make &amp;&amp; make install
+
+#注意 如果安装失败，则执行以下指令安装依赖包
+yum install curl-devel expat-devel gettext-devel openssl-devel zlib-devel 
+yum install gcc-c++ perl-ExtUtils-MakeMaker
+
+#最后配置环境变量，将git的运行指令添加到环境变量中
+    # 在 /etc/profile 最后一行加入
+    export PATH=$PATH:/usr/local/git/bin
+ #或
+ 	echo &quot;export PATH=$PATH:/usr/git/bin&quot; &gt;&gt; /etc/profile
+
+#使配置生效
+source /etc/profile
+
+# 查看git版本 
+git --version
+
 </code></pre>
 
-<p>will produce:</p>
+<h2 id="2-nodejs-npm">2. nodejs&amp;npm</h2>
 
-<p>You can create footnotes like this<sup class="footnote-ref" id="fnref:footnote"><a href="#fn:footnote">3</a></sup>.</p>
+<p>根据需要下载 <a href="https://nodejs.org/en/download/current/" title="node官方下载地址">nodeJs</a> ，解压。以我的运行环境为例。</p>
 
-<p>Mouse on the ‘footnote’ superscript to see content of the footnote.</p>
-
-<h2 id="footnote-3">Footnote-3</h2>
-
-<pre><code class="language-markdown">You can create footnotes like this[^footnote].
-
-[^footnote]: Here is the *text* of the **footnote**.
+<pre><code class="language-shell">[root@localhost node]# ls
+node-v12.9.1-linux-x64  node-v12.9.1-linux-x64.tar.xz
+[root@localhost node]# cd node-v12.9.1-linux-x64/
+[root@localhost node-v12.9.1-linux-x64]# ls
+bin  CHANGELOG.md  include  lib  LICENSE  README.md  share
+[root@localhost node-v12.9.1-linux-x64]# cd bin
+[root@localhost bin]# ls
+node  npm  npx
 </code></pre>
 
-<p>will produce:</p>
+<p>配置软连接</p>
 
-<p>You can create footnotes like this<sup class="footnote-ref" id="fnref:footnote3"><a href="#fn:footnote3">4</a></sup>.</p>
-
-<p>Mouse on the ‘footnote’ superscript to see content of the footnote.</p>
-
-<h2 id="footnote-4">Footnote-4</h2>
-
-<pre><code class="language-markdown">You can create footnotes like this[^footnote].
-
-[^footnote]: Here is the *text* of the **footnote**.
+<pre><code class="language-shell">[root@localhost bin]# ln -s /usr/local/node/node-v12.9.1-linux-x64/bin/npm   /usr/local/bin/
+[root@localhost bin]# ln -s /usr/local/node/node-v12.9.1-linux-x64/bin/npm   /usr/local/bin/
 </code></pre>
 
-<p>will produce:</p>
+<p>安装成功，查看版本</p>
 
-<p>You can create footnotes like this<sup class="footnote-ref" id="fnref:footnote4"><a href="#fn:footnote4">5</a></sup>.</p>
-
-<p>Mouse on the ‘footnote’ superscript to see content of the footnote.</p>
-
-<h2 id="footnote-5">Footnote-5</h2>
-
-<pre><code class="language-markdown">You can create footnotes like this[^footnote].
-
-[^footnote]: Here is the *text* of the **footnote**.
+<pre><code class="language-shell">[root@localhost bin]# node -v
+v12.9.1
+[root@localhost bin]# npm -v
+6.10.2
 </code></pre>
 
-<p>will produce dddddddddddddddddddddddddddddddddddddddddddddd:</p>
+<h2 id="3-hugo安装及github部署">3. hugo安装及github部署</h2>
 
-<p>You can create footnotes like this<sup class="footnote-ref" id="fnref:footnote5"><a href="#fn:footnote5">6</a></sup>.</p>
+<p>到 <a href="https://github.com/spf13/hugo/releases">Hugo Releases</a> 下载 <code>*Linux-64bit.tar.gz</code> 压缩包放置到 <code>/usr/local/hugo</code>下解压，生成一个名为 <code>hugo</code>的可执行文件。主题本人使用的是 <a href="https://github.com/xianmin/hugo-theme-jane">hugo-theme-jane</a> ，hugo网站创建的具体步骤可参考github上jane的教程说明。在这里主要讲的是github部署。</p>
 
-<p>Mouse on the ‘footnote’ superscript to see content of the footnote.</p>
-<div class="footnotes">
+<p>首先在github上创建一个名为 <code>xxx.github.io</code>的仓库，其中 <code>xxx</code> 为你的github用户名。然后将你hugo目录下的public文件夹通过git上传到github上即可。可参考如下过程:</p>
 
-<hr />
+<pre><code class="language-shell">$ mkdir /usr/blog/git
+$ git clone '刚你创建的空仓库'
+$ cd /usr/local/hugo/myblog/public
+$ cp -r . /usr/blog/git
+$ cd /usr/blog/git/
+$ git add .
+$ git commit -m &quot;初始化hugo&quot;
+$ git push origin master
+</code></pre>
+
+<p>在启动hugo生成站点时，需要注意 一般的启动方式<code>hugo server</code>并不适用于远程部署。</p>
+
+<p>如果要部署到github，可参考如下编译方式：</p>
+
+<pre><code class="language-shell"># jane 是主题名，记住 .io/ 中的 / 不能缺少
+hugo --theme=jane --baseUrl=https://xxx.github.io/
+
+# 如果hugo指令不能用，可以配置环境变量或者软连接
+[root@localhost bin]# ln -s /usr/local/hugo/hugo /usr/local/bin/
+</code></pre>
+
+    </div>
+    
+  </div>
+</article>
+
+  
+    <article class="post bg-white">
+  <header class="post-header">
+    <h1 class="post-title">
+      
+      <a class="post-link" href="/post/tool/linux%E4%B8%8Bgitnodejsnpm%E5%AE%89%E8%A3%85/">linux下git&amp;nodejs&amp;npm安装</a>
+    </h1>
+    
+    <div class="post-meta">
+      <time datetime="2014-09-28" class="post-time">
+        2014-09-28
+      </time>
+      <div class="post-category">
+          <a href="https://hisaige.github.io/categories/tool/"> Tool </a>
+          
+        </div>
+      <span class="more-meta"> 771 words </span>
+      <span class="more-meta"> 2 min read </span>
+      
+      
+      
+    </div>
+  </header>
+  
+  <div class="post-content">
+    
+    <div class="post-summary">
+      
+
+<h1>linux下git&nodeJS&npm安装&hugo部署</h1>
+
+<h2 id="1-git-安装">1. git 安装</h2>
+
+<p>1.安装前检查</p>
+
+<pre><code class="language-shell">#1.查看git版本,如果能出版本号，说明git已经安装，酌情考虑是否需要重新安装
+git --version
+#2.卸载git
+yum remove git
+
+</code></pre>
+
+<p>下载 <a href="https://github.com/git/git/releases/" title="git官方下载地址">git</a> ，然后解压，编译安装，配置。</p>
+
+<pre><code class="language-shell">#在local下建立git文件夹 查看当前目录 我的控制台打印出 /usr/local/git 
+pwd
+
+# shell下载
+wget https://github.com/git/git/archive/v2.23.0.tar.gz
+
+# 解压
+tar -xzvf git-2.18.1.tar.gz
+
+#进入解压目录
+cd git-2.18.1
+
+#配置git安装路径
+./configure prefix=/usr/local/git/git-2.18.1
+
+#编译安装
+make &amp;&amp; make install
+
+#注意 如果安装失败，则执行以下指令安装依赖包
+yum install curl-devel expat-devel gettext-devel openssl-devel zlib-devel 
+yum install gcc-c++ perl-ExtUtils-MakeMaker
+
+#最后配置环境变量，将git的运行指令添加到环境变量中
+    # 在 /etc/profile 最后一行加入
+    export PATH=$PATH:/usr/local/git/bin
+ #或
+ 	echo &quot;export PATH=$PATH:/usr/git/bin&quot; &gt;&gt; /etc/profile
+
+#使配置生效
+source /etc/profile
+
+# 查看git版本 
+git --version
+
+</code></pre>
+
+<h2 id="2-nodejs-npm">2. nodejs&amp;npm</h2>
+
+<p>根据需要下载 <a href="https://nodejs.org/en/download/current/" title="node官方下载地址">nodeJs</a> ，解压。以我的运行环境为例。</p>
+
+<pre><code class="language-shell">[root@localhost node]# ls
+node-v12.9.1-linux-x64  node-v12.9.1-linux-x64.tar.xz
+[root@localhost node]# cd node-v12.9.1-linux-x64/
+[root@localhost node-v12.9.1-linux-x64]# ls
+bin  CHANGELOG.md  include  lib  LICENSE  README.md  share
+[root@localhost node-v12.9.1-linux-x64]# cd bin
+[root@localhost bin]# ls
+node  npm  npx
+</code></pre>
+
+<p>配置软连接</p>
+
+<pre><code class="language-shell">[root@localhost bin]# ln -s /usr/local/node/node-v12.9.1-linux-x64/bin/npm   /usr/local/bin/
+[root@localhost bin]# ln -s /usr/local/node/node-v12.9.1-linux-x64/bin/npm   /usr/local/bin/
+</code></pre>
+
+<p>安装成功，查看版本</p>
+
+<pre><code class="language-shell">[root@localhost bin]# node -v
+v12.9.1
+[root@localhost bin]# npm -v
+6.10.2
+</code></pre>
+
+<h2 id="3-hugo安装及github部署">3. hugo安装及github部署</h2>
+
+<p>到 <a href="https://github.com/spf13/hugo/releases">Hugo Releases</a> 下载 <code>*Linux-64bit.tar.gz</code> 压缩包放置到 <code>/usr/local/hugo</code>下解压，生成一个名为 <code>hugo</code>的可执行文件。主题本人使用的是 <a href="https://github.com/xianmin/hugo-theme-jane">hugo-theme-jane</a> ，hugo网站创建的具体步骤可参考github上jane的教程说明。在这里主要讲的是github部署。</p>
+
+<p>首先在github上创建一个名为 <code>xxx.github.io</code>的仓库，其中 <code>xxx</code> 为你的github用户名。然后将你hugo目录下的public文件夹通过git上传到github上即可。可参考如下过程:</p>
+
+<pre><code class="language-shell">$ mkdir /usr/blog/git
+$ git clone '刚你创建的空仓库'
+$ cd /usr/local/hugo/myblog/public
+$ cp -r . /usr/blog/git
+$ cd /usr/blog/git/
+$ git add .
+$ git commit -m &quot;初始化hugo&quot;
+$ git push origin master
+</code></pre>
+
+<p>在启动hugo生成站点时，需要注意 一般的启动方式<code>hugo server</code>并不适用于远程部署。</p>
+
+<p>如果要部署到github，可参考如下编译方式：</p>
+
+<pre><code class="language-shell"># jane 是主题名，记住 .io/ 中的 / 不能缺少
+hugo --theme=jane --baseUrl=https://xxx.github.io/
+
+# 如果hugo指令不能用，可以配置环境变量或者软连接
+[root@localhost bin]# ln -s /usr/local/hugo/hugo /usr/local/bin/
+</code></pre>
+
+    </div>
+    
+  </div>
+</article>
+
+  
+    <article class="post bg-white">
+  <header class="post-header">
+    <h1 class="post-title">
+      
+      <a class="post-link" href="/post/docs/goisforlovers/">(Hu)go Template Primer</a>
+    </h1>
+    
+    <div class="post-meta">
+      <time datetime="2014-04-02" class="post-time">
+        2014-04-02
+      </time>
+      <div class="post-category">
+          <a href="https://hisaige.github.io/categories/development/"> Development </a>
+          <a href="https://hisaige.github.io/categories/golang/"> golang </a>
+          <a href="https://hisaige.github.io/categories/index/"> index </a>
+          
+        </div>
+      <span class="more-meta"> 1488 words </span>
+      <span class="more-meta"> 7 min read </span>
+      
+      
+      
+    </div>
+  </header>
+  
+  <div class="post-content">
+    
+    <div class="post-summary">
+      
+
+<p>Hugo uses the excellent <a href="http://golang.org/&gt;">go</a> <a href="http://golang.org/pkg/html/template/&gt;">html/template</a> library for
+its template engine. It is an extremely lightweight engine that provides a very
+small amount of logic. In our experience that it is just the right amount of
+logic to be able to create a good static website. If you have used other
+template systems from different languages or frameworks you will find a lot of
+similarities in go templates.</p>
+
+<p>This document is a brief primer on using go templates. The <a href="http://golang.org/pkg/html/template/&gt;">go docs</a>
+provide more details.</p>
+
+<h2 id="introduction-to-go-templates">Introduction to Go Templates</h2>
+
+<p>Go templates provide an extremely simple template language. It adheres to the
+belief that only the most basic of logic belongs in the template or view layer.
+One consequence of this simplicity is that go templates parse very quickly.</p>
+
+<p>A unique characteristic of go templates is they are content aware. Variables and
+content will be sanitized depending on the context of where they are used. More
+details can be found in the <a href="http://golang.org/pkg/html/template/&gt;">go docs</a>.</p>
+
+<h2 id="basic-syntax">Basic Syntax</h2>
+
+<p>Go lang templates are html files with the addition of variables and
+functions.</p>
+
+<p><strong>Go variables and functions are accessible within {{ }}</strong></p>
+
+<p>Accessing a predefined variable &ldquo;foo&rdquo;:</p>
+
+<pre><code>{{ foo }}
+</code></pre>
+
+<p><strong>Parameters are separated using spaces</strong></p>
+
+<p>Calling the add function with input of 1, 2:</p>
+
+<pre><code>{{ add 1 2 }}
+</code></pre>
+
+<p><strong>Methods and fields are accessed via dot notation</strong></p>
+
+<p>Accessing the Page Parameter &ldquo;bar&rdquo;</p>
+
+<pre><code>{{ .Params.bar }}
+</code></pre>
+
+<p><strong>Parentheses can be used to group items together</strong></p>
+
+<pre><code>{{ if or (isset .Params &quot;alt&quot;) (isset .Params &quot;caption&quot;) }} Caption {{ end }}
+</code></pre>
+
+<h2 id="variables">Variables</h2>
+
+<p>Each go template has a struct (object) made available to it. In hugo each
+template is passed either a page or a node struct depending on which type of
+page you are rendering. More details are available on the
+<a href="/layout/variables">variables</a> page.</p>
+
+<p>A variable is accessed by referencing the variable name.</p>
+
+<pre><code>&lt;title&gt;{{ .Title }}&lt;/title&gt;
+</code></pre>
+
+<p>Variables can also be defined and referenced.</p>
+
+<pre><code>{{ $address := &quot;123 Main St.&quot;}}
+{{ $address }}
+</code></pre>
+
+<h2 id="functions">Functions</h2>
+
+<p>Go template ship with a few functions which provide basic functionality. The go
+template system also provides a mechanism for applications to extend the
+available functions with their own. <a href="/layout/functions">Hugo template
+functions</a> provide some additional functionality we believe
+are useful for building websites. Functions are called by using their name
+followed by the required parameters separated by spaces. Template
+functions cannot be added without recompiling hugo.</p>
+
+<p><strong>Example:</strong></p>
+
+<pre><code>{{ add 1 2 }}
+</code></pre>
+
+<h2 id="includes">Includes</h2>
+
+<p>When including another template you will pass to it the data it will be
+able to access. To pass along the current context please remember to
+include a trailing dot. The templates location will always be starting at
+the /layout/ directory within Hugo.</p>
+
+<p><strong>Example:</strong></p>
+
+<pre><code>{{ template &quot;chrome/header.html&quot; . }}
+</code></pre>
+
+<h2 id="logic">Logic</h2>
+
+<p>Go templates provide the most basic iteration and conditional logic.</p>
+
+<h3 id="iteration">Iteration</h3>
+
+<p>Just like in go, the go templates make heavy use of range to iterate over
+a map, array or slice. The following are different examples of how to use
+range.</p>
+
+<p><strong>Example 1: Using Context</strong></p>
+
+<pre><code>{{ range array }}
+    {{ . }}
+{{ end }}
+</code></pre>
+
+<p><strong>Example 2: Declaring value variable name</strong></p>
+
+<pre><code>{{range $element := array}}
+    {{ $element }}
+{{ end }}
+</code></pre>
+
+<p><strong>Example 2: Declaring key and value variable name</strong></p>
+
+<pre><code>{{range $index, $element := array}}
+    {{ $index }}
+    {{ $element }}
+{{ end }}
+</code></pre>
+
+<h3 id="conditionals">Conditionals</h3>
+
+<p>If, else, with, or, &amp; and provide the framework for handling conditional
+logic in Go Templates. Like range, each statement is closed with <code>end</code>.</p>
+
+<p>Go Templates treat the following values as false:</p>
+
+<ul>
+<li>false</li>
+<li>0</li>
+<li>any array, slice, map, or string of length zero</li>
+</ul>
+
+<p><strong>Example 1: If</strong></p>
+
+<pre><code>{{ if isset .Params &quot;title&quot; }}&lt;h4&gt;{{ index .Params &quot;title&quot; }}&lt;/h4&gt;{{ end }}
+</code></pre>
+
+<p><strong>Example 2: If -&gt; Else</strong></p>
+
+<pre><code>{{ if isset .Params &quot;alt&quot; }}
+    {{ index .Params &quot;alt&quot; }}
+{{else}}
+    {{ index .Params &quot;caption&quot; }}
+{{ end }}
+</code></pre>
+
+<p><strong>Example 3: And &amp; Or</strong></p>
+
+<pre><code>{{ if and (or (isset .Params &quot;title&quot;) (isset .Params &quot;caption&quot;)) (isset .Params &quot;attr&quot;)}}
+</code></pre>
+
+<p><strong>Example 4: With</strong></p>
+
+<p>An alternative way of writing &ldquo;if&rdquo; and then referencing the same value
+is to use &ldquo;with&rdquo; instead. With rebinds the context <code>.</code> within its scope,
+and skips the block if the variable is absent.</p>
+
+<p>The first example above could be simplified as:</p>
+
+<pre><code>{{ with .Params.title }}&lt;h4&gt;{{ . }}&lt;/h4&gt;{{ end }}
+</code></pre>
+
+<p><strong>Example 5: If -&gt; Else If</strong></p>
+
+<pre><code>{{ if isset .Params &quot;alt&quot; }}
+    {{ index .Params &quot;alt&quot; }}
+{{ else if isset .Params &quot;caption&quot; }}
+    {{ index .Params &quot;caption&quot; }}
+{{ end }}
+</code></pre>
+
+<h2 id="pipes">Pipes</h2>
+
+<p>One of the most powerful components of go templates is the ability to
+stack actions one after another. This is done by using pipes. Borrowed
+from unix pipes, the concept is simple, each pipeline&rsquo;s output becomes the
+input of the following pipe.</p>
+
+<p>Because of the very simple syntax of go templates, the pipe is essential
+to being able to chain together function calls. One limitation of the
+pipes is that they only can work with a single value and that value
+becomes the last parameter of the next pipeline.</p>
+
+<p>A few simple examples should help convey how to use the pipe.</p>
+
+<p><strong>Example 1 :</strong></p>
+
+<pre><code>{{ if eq 1 1 }} Same {{ end }}
+</code></pre>
+
+<p>is the same as</p>
+
+<pre><code>{{ eq 1 1 | if }} Same {{ end }}
+</code></pre>
+
+<p>It does look odd to place the if at the end, but it does provide a good
+illustration of how to use the pipes.</p>
+
+<p><strong>Example 2 :</strong></p>
+
+<pre><code>{{ index .Params &quot;disqus_url&quot; | html }}
+</code></pre>
+
+<p>Access the page parameter called &ldquo;disqus_url&rdquo; and escape the HTML.</p>
+
+<p><strong>Example 3 :</strong></p>
+
+<pre><code>{{ if or (or (isset .Params &quot;title&quot;) (isset .Params &quot;caption&quot;)) (isset .Params &quot;attr&quot;)}}
+Stuff Here
+{{ end }}
+</code></pre>
+
+<p>Could be rewritten as</p>
+
+<pre><code>{{  isset .Params &quot;caption&quot; | or isset .Params &quot;title&quot; | or isset .Params &quot;attr&quot; | if }}
+Stuff Here
+{{ end }}
+</code></pre>
+
+<h2 id="context-aka-the-dot">Context (aka. the dot)</h2>
+
+<p>The most easily overlooked concept to understand about go templates is that {{ . }}
+always refers to the current context. In the top level of your template this
+will be the data set made available to it. Inside of a iteration it will have
+the value of the current item. When inside of a loop the context has changed. .
+will no longer refer to the data available to the entire page. If you need to
+access this from within the loop you will likely want to set it to a variable
+instead of depending on the context.</p>
+
+<p><strong>Example:</strong></p>
+
+<pre><code>  {{ $title := .Site.Title }}
+  {{ range .Params.tags }}
+    &lt;li&gt; &lt;a href=&quot;{{ $baseurl }}/tags/{{ . | urlize }}&quot;&gt;{{ . }}&lt;/a&gt; - {{ $title }} &lt;/li&gt;
+  {{ end }}
+</code></pre>
+
+<p>Notice how once we have entered the loop the value of {{ . }} has changed. We
+have defined a variable outside of the loop so we have access to it from within
+the loop.</p>
+
+<h1 id="hugo-parameters">Hugo Parameters</h1>
+
+<p>Hugo provides the option of passing values to the template language
+through the site configuration (for sitewide values), or through the meta
+data of each specific piece of content. You can define any values of any
+type (supported by your front matter/config format) and use them however
+you want to inside of your templates.</p>
+
+<h2 id="using-content-page-parameters">Using Content (page) Parameters</h2>
+
+<p>In each piece of content you can provide variables to be used by the
+templates. This happens in the <a href="/content/front-matter">front matter</a>.</p>
+
+<p>An example of this is used in this documentation site. Most of the pages
+benefit from having the table of contents provided. Sometimes the TOC just
+doesn&rsquo;t make a lot of sense. We&rsquo;ve defined a variable in our front matter
+of some pages to turn off the TOC from being displayed.</p>
+
+<p>Here is the example front matter:</p>
+
+<pre><code>---
+title: &quot;Permalinks&quot;
+date: &quot;2013-11-18&quot;
+aliases:
+  - &quot;/doc/permalinks/&quot;
+groups: [&quot;extras&quot;]
+groups_weight: 30
+notoc: true
+---
+</code></pre>
+
+<p>Here is the corresponding code inside of the template:</p>
+
+<pre><code>  {{ if not .Params.notoc }}
+    &lt;div id=&quot;toc&quot; class=&quot;well col-md-4 col-sm-6&quot;&gt;
+    {{ .TableOfContents }}
+    &lt;/div&gt;
+  {{ end }}
+</code></pre>
+
+<h2 id="using-site-config-parameters">Using Site (config) Parameters</h2>
+
+<p>In your top-level configuration file (eg, <code>config.yaml</code>) you can define site
+parameters, which are values which will be available to you in chrome.</p>
+
+<p>For instance, you might declare:</p>
+
+<pre><code class="language-yaml">params:
+  CopyrightHTML: &quot;Copyright &amp;#xA9; 2013 John Doe. All Rights Reserved.&quot;
+  TwitterUser: &quot;spf13&quot;
+  SidebarRecentLimit: 5
+</code></pre>
+
+<p>Within a footer layout, you might then declare a <code>&lt;footer&gt;</code> which is only
+provided if the <code>CopyrightHTML</code> parameter is provided, and if it is given,
+you would declare it to be HTML-safe, so that the HTML entity is not escaped
+again.  This would let you easily update just your top-level config file each
+January 1st, instead of hunting through your templates.</p>
+
+<pre><code>{{if .Site.Params.CopyrightHTML}}&lt;footer&gt;
+&lt;div class=&quot;text-center&quot;&gt;{{.Site.Params.CopyrightHTML | safeHtml}}&lt;/div&gt;
+&lt;/footer&gt;{{end}}
+</code></pre>
+
+<p>An alternative way of writing the &ldquo;if&rdquo; and then referencing the same value
+is to use &ldquo;with&rdquo; instead. With rebinds the context <code>.</code> within its scope,
+and skips the block if the variable is absent:</p>
+
+<pre><code>{{with .Site.Params.TwitterUser}}&lt;span class=&quot;twitter&quot;&gt;
+&lt;a href=&quot;https://twitter.com/{{.}}&quot; rel=&quot;author&quot;&gt;
+&lt;img src=&quot;/images/twitter.png&quot; width=&quot;48&quot; height=&quot;48&quot; title=&quot;Twitter: {{.}}&quot;
+ alt=&quot;Twitter&quot;&gt;&lt;/a&gt;
+&lt;/span&gt;{{end}}
+</code></pre>
+
+<p>Finally, if you want to pull &ldquo;magic constants&rdquo; out of your layouts, you can do
+so, such as in this example:</p>
+
+<pre><code>&lt;nav class=&quot;recent&quot;&gt;
+  &lt;h1&gt;Recent Posts&lt;/h1&gt;
+  &lt;ul&gt;{{range first .Site.Params.SidebarRecentLimit .Site.Recent}}
+    &lt;li&gt;&lt;a href=&quot;{{.RelPermalink}}&quot;&gt;{{.Title}}&lt;/a&gt;&lt;/li&gt;
+  {{end}}&lt;/ul&gt;
+&lt;/nav&gt;
+</code></pre>
+
+    </div>
+    
+  </div>
+</article>
+
+  
+    <article class="post bg-white">
+  <header class="post-header">
+    <h1 class="post-title">
+      
+      <a class="post-link" href="/post/docs/hugoisforlovers/">Getting Started with Hugo</a>
+    </h1>
+    
+    <div class="post-meta">
+      <time datetime="2014-04-02" class="post-time">
+        2014-04-02
+      </time>
+      <div class="post-category">
+          <a href="https://hisaige.github.io/categories/development/"> Development </a>
+          <a href="https://hisaige.github.io/categories/golang/"> golang </a>
+          <a href="https://hisaige.github.io/categories/index/"> index </a>
+          
+        </div>
+      <span class="more-meta"> 349 words </span>
+      <span class="more-meta"> 2 min read </span>
+      
+      
+      
+    </div>
+  </header>
+  
+  <div class="post-content">
+    
+    <div class="post-summary">
+      
+
+<h2 id="step-1-install-hugo">Step 1. Install Hugo</h2>
+
+<p>Goto <a href="https://github.com/spf13/hugo/releases">hugo releases</a> and download the
+appropriate version for your os and architecture.</p>
+
+<p>Save it somewhere specific as we will be using it in the next step.</p>
+
+<p>More complete instructions are available at <a href="/overview/installing/">installing hugo</a></p>
+
+<h2 id="step-2-build-the-docs">Step 2. Build the Docs</h2>
+
+<p>Hugo has its own example site which happens to also be the documentation site
+you are reading right now.</p>
+
+<p>Follow the following steps:</p>
 
 <ol>
-<li id="fn:example">example footnote show.
- <a class="footnote-return" href="#fnref:example"><sup>[return]</sup></a></li>
-<li id="fn:footnote1">Here is the <em>text</em> of the <strong>footnote-1</strong>.
- <a class="footnote-return" href="#fnref:footnote1"><sup>[return]</sup></a></li>
-<li id="fn:footnote">Here is the <em>text</em> of the <strong>footnote-2</strong>. Here is the text of the footnote-2. Here is the text of the footnote-2. Here is the text of the footnote-2. Here is the text of the footnote-2.  <a href="https://gohugo.io/">The world’s fastest framework for building websites | Hugo</a>
- <a class="footnote-return" href="#fnref:footnote"><sup>[return]</sup></a></li>
-<li id="fn:footnote3">Here is the <em>text</em> of the <strong>footnote-3</strong>.
- <a class="footnote-return" href="#fnref:footnote3"><sup>[return]</sup></a></li>
-<li id="fn:footnote4">Here is the <em>text</em> of the <strong>footnote-4</strong>.
- <a class="footnote-return" href="#fnref:footnote4"><sup>[return]</sup></a></li>
-<li id="fn:footnote5">Here is the <em>text</em> of the <strong>footnote-5</strong>.
- <a class="footnote-return" href="#fnref:footnote5"><sup>[return]</sup></a></li>
+<li>Clone the <a href="http://github.com/spf13/hugo">hugo repository</a></li>
+<li>Go into the repo</li>
+<li>Run hugo in server mode and build the docs</li>
+<li>Open your browser to <a href="http://localhost:1313">http://localhost:1313</a></li>
 </ol>
-</div>
+
+<p>Corresponding pseudo commands:</p>
+
+<pre><code>git clone https://github.com/spf13/hugo
+cd hugo
+/path/to/where/you/installed/hugo server --source=./docs
+&gt; 29 pages created
+&gt; 0 tags index created
+&gt; in 27 ms
+&gt; Web Server is available at http://localhost:1313
+&gt; Press ctrl+c to stop
+</code></pre>
+
+<p>Once you&rsquo;ve gotten here, follow along the rest of this page on your local build.</p>
+
+<h2 id="step-3-change-the-docs-site">Step 3. Change the docs site</h2>
+
+<p>Stop the Hugo process by hitting ctrl+c.</p>
+
+<p>Now we are going to run hugo again, but this time with hugo in watch mode.</p>
+
+<pre><code>/path/to/hugo/from/step/1/hugo server --source=./docs --watch
+&gt; 29 pages created
+&gt; 0 tags index created
+&gt; in 27 ms
+&gt; Web Server is available at http://localhost:1313
+&gt; Watching for changes in /Users/spf13/Code/hugo/docs/content
+&gt; Press ctrl+c to stop
+</code></pre>
+
+<p>Open your <a href="http://vim.spf13.com">favorite editor</a> and change one of the source
+content pages. How about changing this very file to <em>fix the typo</em>. How about changing this very file to <em>fix the typo</em>.</p>
+
+<p>Content files are found in <code>docs/content/</code>. Unless otherwise specified, files
+are located at the same relative location as the url, in our case
+<code>docs/content/overview/quickstart.md</code>.</p>
+
+<p>Change and save this file.. Notice what happened in your terminal.</p>
+
+<pre><code>&gt; Change detected, rebuilding site
+
+&gt; 29 pages created
+&gt; 0 tags index created
+&gt; in 26 ms
+</code></pre>
+
+<p>Refresh the browser and observe that the typo is now fixed.</p>
+
+<p>Notice how quick that was. Try to refresh the site before it&rsquo;s finished building.. I double dare you.
+Having nearly instant feedback enables you to have your creativity flow without waiting for long builds.</p>
+
+<h2 id="step-4-have-fun">Step 4. Have fun</h2>
+
+<p>The best way to learn something is to play with it.</p>
+
+    </div>
+    
+  </div>
+</article>
+
+  
+    <article class="post bg-white">
+  <header class="post-header">
+    <h1 class="post-title">
+      
+      <a class="post-link" href="/post/docs/migrate-from-jekyll/">Migrate to Hugo from Jekyll</a>
+    </h1>
+    
+    <div class="post-meta">
+      <time datetime="2014-03-10" class="post-time">
+        2014-03-10
+      </time>
+      <div class="post-category">
+          <a href="https://hisaige.github.io/categories/development/"> Development </a>
+          <a href="https://hisaige.github.io/categories/golang/"> golang </a>
+          <a href="https://hisaige.github.io/categories/index/"> index </a>
+          
+        </div>
+      <span class="more-meta"> 813 words </span>
+      <span class="more-meta"> 4 min read </span>
+      
+      
+      
+    </div>
+  </header>
+  
+  <div class="post-content">
+    
+    <div class="post-summary">
+      
+
+<h2 id="move-static-content-to-static">Move static content to <code>static</code></h2>
+
+<p>Jekyll has a rule that any directory not starting with <code>_</code> will be copied as-is to the <code>_site</code> output. Hugo keeps all static content under <code>static</code>. You should therefore move it all there.
+With Jekyll, something that looked like</p>
+
+<pre><code>▾ &lt;root&gt;/
+    ▾ images/
+        logo.png
+</code></pre>
+
+<p>should become</p>
+
+<pre><code>▾ &lt;root&gt;/
+    ▾ static/
+        ▾ images/
+            logo.png
+</code></pre>
+
+<p>Additionally, you&rsquo;ll want any files that should reside at the root (such as <code>CNAME</code>) to be moved to <code>static</code>.</p>
+
+<h2 id="create-your-hugo-configuration-file">Create your Hugo configuration file</h2>
+
+<p>Hugo can read your configuration as JSON, YAML or TOML. Hugo supports parameters custom configuration too. Refer to the <a href="/overview/configuration/">Hugo configuration documentation</a> for details.</p>
+
+<h2 id="set-your-configuration-publish-folder-to-site">Set your configuration publish folder to <code>_site</code></h2>
+
+<p>The default is for Jekyll to publish to <code>_site</code> and for Hugo to publish to <code>public</code>. If, like me, you have <a href="http://blog.blindgaenger.net/generate_github_pages_in_a_submodule.html"><code>_site</code> mapped to a git submodule on the <code>gh-pages</code> branch</a>, you&rsquo;ll want to do one of two alternatives:</p>
+
+<ol>
+<li><p>Change your submodule to point to map <code>gh-pages</code> to public instead of <code>_site</code> (recommended).</p>
+
+<pre><code>git submodule deinit _site
+git rm _site
+git submodule add -b gh-pages git@github.com:your-username/your-repo.git public
+</code></pre></li>
+
+<li><p>Or, change the Hugo configuration to use <code>_site</code> instead of <code>public</code>.</p>
+
+<pre><code>{
+    ..
+    &quot;publishdir&quot;: &quot;_site&quot;,
+    ..
+}
+</code></pre></li>
+</ol>
+
+<h2 id="convert-jekyll-templates-to-hugo-templates">Convert Jekyll templates to Hugo templates</h2>
+
+<p>That&rsquo;s the bulk of the work right here. The documentation is your friend. You should refer to <a href="http://jekyllrb.com/docs/templates/">Jekyll&rsquo;s template documentation</a> if you need to refresh your memory on how you built your blog and <a href="/layout/templates/">Hugo&rsquo;s template</a> to learn Hugo&rsquo;s way.</p>
+
+<p>As a single reference data point, converting my templates for <a href="http://heyitsalex.net/">heyitsalex.net</a> took me no more than a few hours.</p>
+
+<h2 id="convert-jekyll-plugins-to-hugo-shortcodes">Convert Jekyll plugins to Hugo shortcodes</h2>
+
+<p>Jekyll has <a href="http://jekyllrb.com/docs/plugins/">plugins</a>; Hugo has <a href="/doc/shortcodes/">shortcodes</a>. It&rsquo;s fairly trivial to do a port.</p>
+
+<h3 id="implementation">Implementation</h3>
+
+<p>As an example, I was using a custom <a href="https://github.com/alexandre-normand/alexandre-normand/blob/74bb12036a71334fdb7dba84e073382fc06908ec/_plugins/image_tag.rb"><code>image_tag</code></a> plugin to generate figures with caption when running Jekyll. As I read about shortcodes, I found Hugo had a nice built-in shortcode that does exactly the same thing.</p>
+
+<p>Jekyll&rsquo;s plugin:</p>
+
+<pre><code>module Jekyll
+  class ImageTag &lt; Liquid::Tag
+    @url = nil
+    @caption = nil
+    @class = nil
+    @link = nil
+    // Patterns
+    IMAGE_URL_WITH_CLASS_AND_CAPTION =
+    IMAGE_URL_WITH_CLASS_AND_CAPTION_AND_LINK = /(\w+)(\s+)((https?:\/\/|\/)(\S+))(\s+)&quot;(.*?)&quot;(\s+)-&gt;((https?:\/\/|\/)(\S+))(\s*)/i
+    IMAGE_URL_WITH_CAPTION = /((https?:\/\/|\/)(\S+))(\s+)&quot;(.*?)&quot;/i
+    IMAGE_URL_WITH_CLASS = /(\w+)(\s+)((https?:\/\/|\/)(\S+))/i
+    IMAGE_URL = /((https?:\/\/|\/)(\S+))/i
+    def initialize(tag_name, markup, tokens)
+      super
+      if markup =~ IMAGE_URL_WITH_CLASS_AND_CAPTION_AND_LINK
+        @class   = $1
+        @url     = $3
+        @caption = $7
+        @link = $9
+      elsif markup =~ IMAGE_URL_WITH_CLASS_AND_CAPTION
+        @class   = $1
+        @url     = $3
+        @caption = $7
+      elsif markup =~ IMAGE_URL_WITH_CAPTION
+        @url     = $1
+        @caption = $5
+      elsif markup =~ IMAGE_URL_WITH_CLASS
+        @class = $1
+        @url   = $3
+      elsif markup =~ IMAGE_URL
+        @url = $1
+      end
+    end
+    def render(context)
+      if @class
+        source = &quot;&lt;figure class='#{@class}'&gt;&quot;
+      else
+        source = &quot;&lt;figure&gt;&quot;
+      end
+      if @link
+        source += &quot;&lt;a href=\&quot;#{@link}\&quot;&gt;&quot;
+      end
+      source += &quot;&lt;img src=\&quot;#{@url}\&quot;&gt;&quot;
+      if @link
+        source += &quot;&lt;/a&gt;&quot;
+      end
+      source += &quot;&lt;figcaption&gt;#{@caption}&lt;/figcaption&gt;&quot; if @caption
+      source += &quot;&lt;/figure&gt;&quot;
+      source
+    end
+  end
+end
+Liquid::Template.register_tag('image', Jekyll::ImageTag)
+</code></pre>
+
+<p>is written as this Hugo shortcode:</p>
+
+<pre><code>&lt;!-- image --&gt;
+&lt;figure {{ with .Get &quot;class&quot; }}class=&quot;{{.}}&quot;{{ end }}&gt;
+    {{ with .Get &quot;link&quot;}}&lt;a href=&quot;{{.}}&quot;&gt;{{ end }}
+        &lt;img src=&quot;{{ .Get &quot;src&quot; }}&quot; {{ if or (.Get &quot;alt&quot;) (.Get &quot;caption&quot;) }}alt=&quot;{{ with .Get &quot;alt&quot;}}{{.}}{{else}}{{ .Get &quot;caption&quot; }}{{ end }}&quot;{{ end }} /&gt;
+    {{ if .Get &quot;link&quot;}}&lt;/a&gt;{{ end }}
+    {{ if or (or (.Get &quot;title&quot;) (.Get &quot;caption&quot;)) (.Get &quot;attr&quot;)}}
+    &lt;figcaption&gt;{{ if isset .Params &quot;title&quot; }}
+        {{ .Get &quot;title&quot; }}{{ end }}
+        {{ if or (.Get &quot;caption&quot;) (.Get &quot;attr&quot;)}}&lt;p&gt;
+        {{ .Get &quot;caption&quot; }}
+        {{ with .Get &quot;attrlink&quot;}}&lt;a href=&quot;{{.}}&quot;&gt; {{ end }}
+            {{ .Get &quot;attr&quot; }}
+        {{ if .Get &quot;attrlink&quot;}}&lt;/a&gt; {{ end }}
+        &lt;/p&gt; {{ end }}
+    &lt;/figcaption&gt;
+    {{ end }}
+&lt;/figure&gt;
+&lt;!-- image --&gt;
+</code></pre>
+
+<h3 id="usage">Usage</h3>
+
+<p>I simply changed:</p>
+
+<pre><code>{% image full http://farm5.staticflickr.com/4136/4829260124_57712e570a_o_d.jpg &quot;One of my favorite touristy-type photos. I secretly waited for the good light while we were &quot;having fun&quot; and took this. Only regret: a stupid pole in the top-left corner of the frame I had to clumsily get rid of at post-processing.&quot; -&gt;http://www.flickr.com/photos/alexnormand/4829260124/in/set-72157624547713078/ %}
+</code></pre>
+
+<p>to this (this example uses a slightly extended version named <code>fig</code>, different than the built-in <code>figure</code>):</p>
+
+<pre><code>{{% fig class=&quot;full&quot; src=&quot;http://farm5.staticflickr.com/4136/4829260124_57712e570a_o_d.jpg&quot; title=&quot;One of my favorite touristy-type photos. I secretly waited for the good light while we were having fun and took this. Only regret: a stupid pole in the top-left corner of the frame I had to clumsily get rid of at post-processing.&quot; link=&quot;http://www.flickr.com/photos/alexnormand/4829260124/in/set-72157624547713078/&quot; %}}
+</code></pre>
+
+<p>As a bonus, the shortcode named parameters are, arguably, more readable.</p>
+
+<h2 id="finishing-touches">Finishing touches</h2>
+
+<h3 id="fix-content">Fix content</h3>
+
+<p>Depending on the amount of customization that was done with each post with Jekyll, this step will require more or less effort. There are no hard and fast rules here except that <code>hugo server --watch</code> is your friend. Test your changes and fix errors as needed.</p>
+
+<h3 id="clean-up">Clean up</h3>
+
+<p>You&rsquo;ll want to remove the Jekyll configuration at this point. If you have anything else that isn&rsquo;t used, delete it.</p>
+
+<h2 id="a-practical-example-in-a-diff">A practical example in a diff</h2>
+
+<p><a href="http://heyitsalex.net/">Hey, it&rsquo;s Alex</a> was migrated in less than a <em>father-with-kids day</em> from Jekyll to Hugo. You can see all the changes (and screw-ups) by looking at this <a href="https://github.com/alexandre-normand/alexandre-normand/compare/869d69435bd2665c3fbf5b5c78d4c22759d7613a...b7f6605b1265e83b4b81495423294208cc74d610">diff</a>.</p>
+
     </div>
     
   </div>
@@ -795,18 +1369,6 @@ A warning disclaimer
       
       <li >
         <a href="/page/5/">5</a>
-      </li>
-      
-      <li >
-        <a href="/page/6/">6</a>
-      </li>
-      
-      <li >
-        <a href="/page/7/">7</a>
-      </li>
-      
-      <li >
-        <a href="/page/8/">8</a>
       </li>
       
     </ul>
@@ -879,10 +1441,6 @@ A warning disclaimer
       </span></span>
 
   
-  
-    <span id="busuanzi_container">
-      访客数/访问量：<span id="busuanzi_value_site_uv"></span>/<span id="busuanzi_value_site_pv"></span>
-    </span>
   
 
   
@@ -961,8 +1519,6 @@ A warning disclaimer
 
 
 
-
-  <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
 
 
 
