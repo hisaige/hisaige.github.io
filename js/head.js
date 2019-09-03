@@ -1,25 +1,15 @@
 ﻿document.write('<link type="text/css" rel="stylesheet" href="https://cdn.bootcss.com/highlight.js/9.12.0/styles/monokai.min.css" />');
-document.write('<script type="text/javascript" src="./highlight.min.js"></script>');
+document.write('<script type="text/javascript" src="/js/highlight.min.js"></script>');
 
-document.write('<script type="text/javascript" src="./django.min.js"></script>');
-document.write('<script type="text/javascript" src="./dockerfile.min.js"></script>');
-document.write('<script type="text/javascript" src="./vim.min.js"></script>');
-document.write('<script type="text/javascript" src="./yaml.min.js"></script>');
-document.write('<script type="text/javascript" src="./gradle.min.js"></script>');
-document.write('<script type="text/javascript" src="./tex.min.js"></script>');
-document.write('<script type="text/javascript" src="./shell.min.js"></script>');
-document.write('<script type="text/javascript" src="./php.min.js"></script>');
-document.write('<script type="text/javascript" src="./java.min.js"></script>');
-document.write('<script type="text/javascript" src="./xml.min.js"></script>');
+document.write('<script type="text/javascript" src="/js/django.min.js"></script>');
+document.write('<script type="text/javascript" src="/js/dockerfile.min.js"></script>');
+document.write('<script type="text/javascript" src="/js/vim.min.js"></script>');
+document.write('<script type="text/javascript" src="/js/yaml.min.js"></script>');
+document.write('<script type="text/javascript" src="/js/gradle.min.js"></script>');
+document.write('<script type="text/javascript" src="/js/tex.min.js"></script>');
+document.write('<script type="text/javascript" src="/js/shell.min.js"></script>');
+document.write('<script type="text/javascript" src="/js/php.min.js"></script>');
+document.write('<script type="text/javascript" src="/js/java.min.js"></script>');
+document.write('<script type="text/javascript" src="/js/xml.min.js"></script>');
 
 document.write('<script>hljs.initHighlightingOnLoad();</script>');
-
-
-
-
-
-
-
-
-
-
