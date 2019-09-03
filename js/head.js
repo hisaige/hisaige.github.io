@@ -1,8 +1,9 @@
-﻿//高亮1
-//document.write('<link type="text/css" rel="stylesheet" href="https://cdn.bootcss.com/highlight.js/9.12.0/styles/monokai.min.css" />');
+﻿// https://www.bootcdn.cn/highlight.js/
+// 高亮1 idea风格 
+// document.write('<link type="text/css" rel="stylesheet" href="https://cdn.bootcss.com/highlight.js/9.15.10/styles/idea.min.css" />');
 
-//高亮2
-document.write('<link type="text/css" rel="stylesheet" href="http://cdn.bootcss.com/highlight.js/8.0/styles/monokai_sublime.min.css" />');
+// 高亮2
+// document.write('<link type="text/css" rel="stylesheet" href="http://cdn.bootcss.com/highlight.js/8.0/styles/monokai_sublime.min.css" />');
 
 document.write('<script type="text/javascript" src="/js/highlight.min.js"></script>');
 
