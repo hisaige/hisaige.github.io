@@ -163,13 +163,6 @@
   </url>
   
   <url>
-    <loc>https://hisaige.github.io/categories/docs/</loc>
-    <lastmod>2019-09-03T16:01:23+08:00</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  
-  <url>
     <loc>https://hisaige.github.io/categories/index/</loc>
     <lastmod>2019-09-03T16:01:23+08:00</lastmod>
     <changefreq>weekly</changefreq>
@@ -200,6 +193,13 @@
   <url>
     <loc>https://hisaige.github.io/tags/tag-6/</loc>
     <lastmod>2019-09-03T16:01:23+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://hisaige.github.io/categories/docs/</loc>
+    <lastmod>2019-03-05T16:01:23+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
