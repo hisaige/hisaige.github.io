@@ -12,21 +12,9 @@
     
     
     <item>
-      <title>Jane 主题预览</title>
-      <link>https://hisaige.github.io/post/docs/jane-theme-preview.zh-cn/</link>
-      <pubDate>Tue, 06 Mar 2018 16:01:23 +0800</pubDate>
-      
-      <guid>https://hisaige.github.io/post/docs/jane-theme-preview.zh-cn/</guid>
-      
-        <description>&lt;p&gt;主题预览,内容有待填充。&lt;/p&gt;
-</description>
-      
-    </item>
-    
-    <item>
       <title>Jane Theme Preview</title>
       <link>https://hisaige.github.io/post/docs/jane-theme-preview/</link>
-      <pubDate>Mon, 01 Jan 2018 16:01:23 +0800</pubDate>
+      <pubDate>Mon, 01 Oct 2018 16:01:23 +0800</pubDate>
       
       <guid>https://hisaige.github.io/post/docs/jane-theme-preview/</guid>
       
@@ -382,6 +370,18 @@ __double underscores__
  &lt;a class=&#34;footnote-return&#34; href=&#34;#fnref:footnote&#34;&gt;&lt;sup&gt;[return]&lt;/sup&gt;&lt;/a&gt;&lt;/li&gt;
 &lt;/ol&gt;
 &lt;/div&gt;</description>
+      
+    </item>
+    
+    <item>
+      <title>Jane 主题预览</title>
+      <link>https://hisaige.github.io/post/docs/jane-theme-preview.zh-cn/</link>
+      <pubDate>Tue, 06 Mar 2018 16:01:23 +0800</pubDate>
+      
+      <guid>https://hisaige.github.io/post/docs/jane-theme-preview.zh-cn/</guid>
+      
+        <description>&lt;p&gt;主题预览,内容有待填充。&lt;/p&gt;
+</description>
       
     </item>
     
