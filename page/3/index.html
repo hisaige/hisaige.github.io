@@ -362,140 +362,6 @@
   <header class="post-header">
     <h1 class="post-title">
       
-      <a class="post-link" href="/post/docs/shortcode-notice/">Shortcodes Notice Preview</a>
-    </h1>
-    
-    <div class="post-meta">
-      <time datetime="2018-03-03" class="post-time">
-        2018-03-03
-      </time>
-      <div class="post-category">
-          <a href="https://hisaige.github.io/categories/docs/"> docs </a>
-          <a href="https://hisaige.github.io/categories/shortcodes/"> shortcodes </a>
-          <a href="https://hisaige.github.io/categories/index/"> index </a>
-          
-        </div>
-      <span class="more-meta"> 86 words </span>
-      <span class="more-meta"> 1 min read </span>
-      
-      
-      
-    </div>
-  </header>
-  
-  <div class="post-content">
-    
-    <div class="post-summary">
-      
-
-<h2 id="normal-use">normal use</h2>
-
-<p><code>Note</code> example:</p>
-
-<pre><code class="language-shortcode">{{% notice note %}}
-A notice disclaimer
-{{% /notice %}}
-</code></pre>
-
-<p><strong>Result:</strong>
-<div class="shortcode-notice note">
-  <div class="shortcode-notice-title note"></p>
-
-<pre><code>  note
-</code></pre>
-
-<p></div></p>
-
-<p>A notice disclaimer</p>
-
-<p></div></p>
-
-<p>You could <strong>custom title</strong> :</p>
-
-<pre><code class="language-shortcode">{{% notice note 笔记 %}}
-A notice disclaimer
-{{% /notice %}}
-</code></pre>
-
-<div class="shortcode-notice note">
-  <div class="shortcode-notice-title note">
-    
-      笔记
-    
-  </div>
-  
-
-<p>A notice disclaimer</p>
-
-<p></div></p>
-
-<h2 id="tip">tip</h2>
-
-<pre><code class="language-shortcode">{{% notice tip %}}
-A tip disclaimer
-{{% /tip %}}
-</code></pre>
-
-<div class="shortcode-notice tip">
-  <div class="shortcode-notice-title tip">
-    
-      tip
-    
-  </div>
-  
-
-<p>A tip disclaimer</p>
-
-<p></div></p>
-
-<h2 id="info">info</h2>
-
-<pre><code class="language-shortcode">{{% notice info %}}
-A info disclaimer
-{{% /notice %}}
-</code></pre>
-
-<div class="shortcode-notice info">
-  <div class="shortcode-notice-title info">
-    
-      info
-    
-  </div>
-  
-
-<p>An information disclaimer</p>
-
-<p></div></p>
-
-<h2 id="warning">warning</h2>
-
-<pre><code class="language-shortcode">{{% notice warning %}}
-A warning disclaimer
-{{% /notice %}}
-</code></pre>
-
-<div class="shortcode-notice warning">
-  <div class="shortcode-notice-title warning">
-    
-      warning
-    
-  </div>
-  
-
-<p>An warning disclaimer</p>
-
-<p></div></p>
-
-    </div>
-    
-  </div>
-</article>
-
-  
-    <article class="post bg-white">
-  <header class="post-header">
-    <h1 class="post-title">
-      
       <a class="post-link" href="/post/docs/doc-footnote-preview/">Jane-Theme Footnote Preview</a>
     </h1>
     
@@ -2898,6 +2764,146 @@ $ vi themes/zafta/layouts/_default/single.html
 </article>
 
   
+    <article class="post bg-white">
+  <header class="post-header">
+    <h1 class="post-title">
+      
+      <a class="post-link" href="/post/tool/linux%E4%B8%8Bgitnodejsnpm%E5%AE%89%E8%A3%85/">linux下git&amp;nodejs&amp;npm安装</a>
+    </h1>
+    
+    <div class="post-meta">
+      <time datetime="2014-09-28" class="post-time">
+        2014-09-28
+      </time>
+      <div class="post-category">
+          <a href="https://hisaige.github.io/categories/tool/"> Tool </a>
+          
+        </div>
+      <span class="more-meta"> 771 words </span>
+      <span class="more-meta"> 2 min read </span>
+      
+      
+      
+    </div>
+  </header>
+  
+  <div class="post-content">
+    
+    <div class="post-summary">
+      
+
+<h1>linux下git&nodeJS&npm安装&hugo部署</h1>
+
+<h2 id="1-git-安装">1. git 安装</h2>
+
+<p>1.安装前检查</p>
+
+<pre><code class="language-shell">#1.查看git版本,如果能出版本号，说明git已经安装，酌情考虑是否需要重新安装
+git --version
+#2.卸载git
+yum remove git
+
+</code></pre>
+
+<p>下载 <a href="https://github.com/git/git/releases/" title="git官方下载地址">git</a> ，然后解压，编译安装，配置。</p>
+
+<pre><code class="language-shell">#在local下建立git文件夹 查看当前目录 我的控制台打印出 /usr/local/git 
+pwd
+
+# shell下载
+wget https://github.com/git/git/archive/v2.23.0.tar.gz
+
+# 解压
+tar -xzvf git-2.18.1.tar.gz
+
+#进入解压目录
+cd git-2.18.1
+
+#配置git安装路径
+./configure prefix=/usr/local/git/git-2.18.1
+
+#编译安装
+make &amp;&amp; make install
+
+#注意 如果安装失败，则执行以下指令安装依赖包
+yum install curl-devel expat-devel gettext-devel openssl-devel zlib-devel 
+yum install gcc-c++ perl-ExtUtils-MakeMaker
+
+#最后配置环境变量，将git的运行指令添加到环境变量中
+    # 在 /etc/profile 最后一行加入
+    export PATH=$PATH:/usr/local/git/bin
+ #或
+ 	echo &quot;export PATH=$PATH:/usr/git/bin&quot; &gt;&gt; /etc/profile
+
+#使配置生效
+source /etc/profile
+
+# 查看git版本 
+git --version
+
+</code></pre>
+
+<h2 id="2-nodejs-npm">2. nodejs&amp;npm</h2>
+
+<p>根据需要下载 <a href="https://nodejs.org/en/download/current/" title="node官方下载地址">nodeJs</a> ，解压。以我的运行环境为例。</p>
+
+<pre><code class="language-shell">[root@localhost node]# ls
+node-v12.9.1-linux-x64  node-v12.9.1-linux-x64.tar.xz
+[root@localhost node]# cd node-v12.9.1-linux-x64/
+[root@localhost node-v12.9.1-linux-x64]# ls
+bin  CHANGELOG.md  include  lib  LICENSE  README.md  share
+[root@localhost node-v12.9.1-linux-x64]# cd bin
+[root@localhost bin]# ls
+node  npm  npx
+</code></pre>
+
+<p>配置软连接</p>
+
+<pre><code class="language-shell">[root@localhost bin]# ln -s /usr/local/node/node-v12.9.1-linux-x64/bin/npm   /usr/local/bin/
+[root@localhost bin]# ln -s /usr/local/node/node-v12.9.1-linux-x64/bin/npm   /usr/local/bin/
+</code></pre>
+
+<p>安装成功，查看版本</p>
+
+<pre><code class="language-shell">[root@localhost bin]# node -v
+v12.9.1
+[root@localhost bin]# npm -v
+6.10.2
+</code></pre>
+
+<h2 id="3-hugo安装及github部署">3. hugo安装及github部署</h2>
+
+<p>到 <a href="https://github.com/spf13/hugo/releases">Hugo Releases</a> 下载 <code>*Linux-64bit.tar.gz</code> 压缩包放置到 <code>/usr/local/hugo</code>下解压，生成一个名为 <code>hugo</code>的可执行文件。主题本人使用的是 <a href="https://github.com/xianmin/hugo-theme-jane">hugo-theme-jane</a> ，hugo网站创建的具体步骤可参考github上jane的教程说明。在这里主要讲的是github部署。</p>
+
+<p>首先在github上创建一个名为 <code>xxx.github.io</code>的仓库，其中 <code>xxx</code> 为你的github用户名。然后将你hugo目录下的public文件夹通过git上传到github上即可。可参考如下过程:</p>
+
+<pre><code class="language-shell">$ mkdir /usr/blog/git
+$ git clone '刚你创建的空仓库'
+$ cd /usr/local/hugo/myblog/public
+$ cp -r . /usr/blog/git
+$ cd /usr/blog/git/
+$ git add .
+$ git commit -m &quot;初始化hugo&quot;
+$ git push origin master
+</code></pre>
+
+<p>在启动hugo生成站点时，需要注意 一般的启动方式<code>hugo server</code>并不适用于远程部署。</p>
+
+<p>如果要部署到github，可参考如下编译方式：</p>
+
+<pre><code class="language-shell"># jane 是主题名，记住 .io/ 中的 / 不能缺少
+hugo --theme=jane --baseUrl=https://xxx.github.io/
+
+# 如果hugo指令不能用，可以配置环境变量或者软连接
+[root@localhost bin]# ln -s /usr/local/hugo/hugo /usr/local/bin/
+</code></pre>
+
+    </div>
+    
+  </div>
+</article>
+
+  
 </section>
 
 
@@ -2937,10 +2943,6 @@ $ vi themes/zafta/layouts/_default/single.html
       
       <li >
         <a href="/page/4/">4</a>
-      </li>
-      
-      <li >
-        <a href="/page/5/">5</a>
       </li>
       
     </ul>
