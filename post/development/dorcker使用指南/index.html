@@ -55,6 +55,8 @@
 
 
 
+<link rel="stylesheet" href="/css/hisaige.css">
+
 
 <meta property="og:title" content="docker的简单使用" />
 <meta property="og:description" content="docker的简单使用 1. 安装 1.如果装了新版本，先卸载旧版 sudo yum remove docker \ docker-client \ docker-client-latest \ docker-common \ docker-latest \ docker-latest-logrotate \ docker-logrotate \ docker-engine 安装所需的包 sudo yum install -y yum-utils \ device-mapper-persistent-data \ lvm2 设置稳定存储库 #" />
@@ -364,13 +366,14 @@
       
       <div class="post-meta">
         <time datetime="2019-09-03" class="post-time">
-          2019-09-03
+          3099-09-03
         </time>
         <div class="post-category">
             <a href="https://hisaige.github.io/categories/development/"> Development </a>
             
           </div>
-        
+        <span class="more-meta"> 1434 words </span>
+          <span class="more-meta"> 3 min read </span>
 
         
         
@@ -847,9 +850,40 @@ docker cp 容器id:容器内路径 主机路径
 
 
 
+  <script type="text/javascript">
+    window.MathJax = {
+      showProcessingMessages: false,
+      messageStyle: 'none'
+    };
+  </script>
+  <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js?config=TeX-MML-AM_CHTML' async></script>
 
 
 
+  <link rel="stylesheet"
+    href="https://cdn.jsdelivr.net/npm/katex@0.11.0/dist/katex.min.css"
+    integrity="sha384-BdGj8xC2eZkQaxoQ8nSLefg4AV4/AwB3Fj+8SUSo7pnKP6Eoy18liIKTPn9oBYNG"
+    crossorigin="anonymous">
+
+  
+  <script defer
+    src="https://cdn.jsdelivr.net/npm/katex@0.11.0/dist/katex.min.js"
+    integrity="sha384-JiKN5O8x9Hhs/UE5cT5AAJqieYlOZbGT3CHws/y97o3ty4R7/O5poG9F3JoiOYw1"
+    crossorigin="anonymous"></script>
+
+  
+  <script defer
+    src="https://cdn.jsdelivr.net/npm/katex@0.11.0/dist/contrib/auto-render.min.js"
+    integrity="sha384-kWPLUVMOks5AQFrykwIup5lo0m3iMkkHrD0uJ4H5cjeGihAutqP0yW0J6dpFiVkI"
+    crossorigin="anonymous" onload="renderMathInElement(document.body);">
+  </script>
+  <script>
+    document.addEventListener("DOMContentLoaded", function() {
+      renderMathInElement(document.body, {
+        
+      });
+    });
+  </script>
 
 
 
