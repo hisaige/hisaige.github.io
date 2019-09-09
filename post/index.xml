@@ -51,11 +51,11 @@
     
     <item>
       <title>rabbitMQ入门</title>
-      <link>https://hisaige.github.io/post/development/rabbitmq%E4%BD%BF%E7%94%A8%E7%AC%94%E8%AE%B0/</link>
+      <link>https://hisaige.github.io/post/development/rabbitmq%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</link>
       <pubDate>Tue, 03 Sep 2019 00:00:00 +0000</pubDate>
       
-      <guid>https://hisaige.github.io/post/development/rabbitmq%E4%BD%BF%E7%94%A8%E7%AC%94%E8%AE%B0/</guid>
-      <description>RabbitMQ学习笔记 1. 基本概念 如果使用默认方式接收队列，先启动多个监听者，再启动生产者，消费方式默认为轮询分发模式，不论监听者执行效率多</description>
+      <guid>https://hisaige.github.io/post/development/rabbitmq%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</guid>
+      <description>RabbitMQ学习笔记 1. 基本概念 基本模式 如果使用默认方式接收队列，先启动多个监听者，再启动生产者，消费方式默认为轮询分发模式，不论监听者执</description>
     </item>
     
     <item>

@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>idea快捷键使用 - 目光呆滞的5741号代码搬运工</title>
+  <title>rabbitMQ入门 - 目光呆滞的5741号代码搬运工</title>
   
 
 <meta name="renderer" content="webkit" />
@@ -23,7 +23,7 @@
 <meta name="mobile-web-app-capable" content="yes">
 
 <meta name="author" content="hisaige" />
-  <meta name="description" content="idea快捷键使用 1. 快捷键 ctrl &#43; n == 搜索类、方法、属性 ctrl &#43; shift &#43; n == 搜索文件 **ctrl &#43; alt &#43;n == 代码提示 ** / ctrl &#43; alt &#43; 空格 = 代码提示 alt &#43; f7 == 查询在某处使用 ctrl" />
+  <meta name="description" content="RabbitMQ学习笔记 1. 基本概念 基本模式 如果使用默认方式接收队列，先启动多个监听者，再启动生产者，消费方式默认为轮询分发模式，不论监听者执" />
 
 
 
@@ -34,7 +34,7 @@
 <meta name="generator" content="Hugo 0.57.2" />
 
 
-<link rel="canonical" href="https://hisaige.github.io/post/tool/idea%E5%BF%AB%E6%8D%B7%E9%94%AE%E4%BD%BF%E7%94%A8/" />
+<link rel="canonical" href="https://hisaige.github.io/post/development/rabbitmq%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" />
 
 
 
@@ -58,26 +58,26 @@
 <link rel="stylesheet" href="/css/hisaige.css">
 
 
-<meta property="og:title" content="idea快捷键使用" />
-<meta property="og:description" content="idea快捷键使用 1. 快捷键 ctrl &#43; n == 搜索类、方法、属性 ctrl &#43; shift &#43; n == 搜索文件 **ctrl &#43; alt &#43;n == 代码提示 ** / ctrl &#43; alt &#43; 空格 = 代码提示 alt &#43; f7 == 查询在某处使用 ctrl" />
+<meta property="og:title" content="rabbitMQ入门" />
+<meta property="og:description" content="RabbitMQ学习笔记 1. 基本概念 基本模式 如果使用默认方式接收队列，先启动多个监听者，再启动生产者，消费方式默认为轮询分发模式，不论监听者执" />
 <meta property="og:type" content="article" />
-<meta property="og:url" content="https://hisaige.github.io/post/tool/idea%E5%BF%AB%E6%8D%B7%E9%94%AE%E4%BD%BF%E7%94%A8/" />
+<meta property="og:url" content="https://hisaige.github.io/post/development/rabbitmq%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" />
 <meta property="article:published_time" content="2019-09-03T00:00:00+00:00" />
 <meta property="article:modified_time" content="2019-09-03T00:00:00+00:00" />
-<meta itemprop="name" content="idea快捷键使用">
-<meta itemprop="description" content="idea快捷键使用 1. 快捷键 ctrl &#43; n == 搜索类、方法、属性 ctrl &#43; shift &#43; n == 搜索文件 **ctrl &#43; alt &#43;n == 代码提示 ** / ctrl &#43; alt &#43; 空格 = 代码提示 alt &#43; f7 == 查询在某处使用 ctrl">
+<meta itemprop="name" content="rabbitMQ入门">
+<meta itemprop="description" content="RabbitMQ学习笔记 1. 基本概念 基本模式 如果使用默认方式接收队列，先启动多个监听者，再启动生产者，消费方式默认为轮询分发模式，不论监听者执">
 
 
 <meta itemprop="datePublished" content="2019-09-03T00:00:00&#43;00:00" />
 <meta itemprop="dateModified" content="2019-09-03T00:00:00&#43;00:00" />
-<meta itemprop="wordCount" content="462">
+<meta itemprop="wordCount" content="1789">
 
 
 
-<meta itemprop="keywords" content="idea,快捷键," />
+<meta itemprop="keywords" content="mq,rabbitMQ," />
 <meta name="twitter:card" content="summary"/>
-<meta name="twitter:title" content="idea快捷键使用"/>
-<meta name="twitter:description" content="idea快捷键使用 1. 快捷键 ctrl &#43; n == 搜索类、方法、属性 ctrl &#43; shift &#43; n == 搜索文件 **ctrl &#43; alt &#43;n == 代码提示 ** / ctrl &#43; alt &#43; 空格 = 代码提示 alt &#43; f7 == 查询在某处使用 ctrl"/>
+<meta name="twitter:title" content="rabbitMQ入门"/>
+<meta name="twitter:description" content="RabbitMQ学习笔记 1. 基本概念 基本模式 如果使用默认方式接收队列，先启动多个监听者，再启动生产者，消费方式默认为轮询分发模式，不论监听者执"/>
 
 <!--[if lte IE 9]>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
@@ -362,18 +362,18 @@
           <article class="post bg-white">
     
     <header class="post-header">
-      <h1 class="post-title">idea快捷键使用</h1>
+      <h1 class="post-title">rabbitMQ入门</h1>
       
       <div class="post-meta">
         <time datetime="2019-09-03" class="post-time">
           2019-09-03
         </time>
         <div class="post-category">
-            <a href="https://hisaige.github.io/categories/tool/"> Tool </a>
+            <a href="https://hisaige.github.io/categories/development/"> Development </a>
             
           </div>
-        <span class="more-meta"> 462 words </span>
-          <span class="more-meta"> 1 min read </span>
+        <span class="more-meta"> 1789 words </span>
+          <span class="more-meta"> 4 min read </span>
 
         
         
@@ -392,8 +392,7 @@
 <ul>
 <li>
 <ul>
-<li><a href="#1-快捷-键">1. 快捷<strong>键</strong></a></li>
-<li><a href="#2-使用技巧">2.使用技巧</a></li>
+<li><a href="#1-基本概念">1. 基本概念</a></li>
 </ul></li>
 </ul>
 </nav>
@@ -404,50 +403,309 @@
     <div class="post-content">
       
 
-<p><center><h1>
-    idea快捷键使用
-</h1></center></p>
+<h1>RabbitMQ学习笔记</h1>
 
-<h2 id="1-快捷-键">1. 快捷<strong>键</strong></h2>
+<h2 id="1-基本概念">1. 基本概念</h2>
 
 <ol>
-<li><strong>ctrl + n  == 搜索类、方法、属性</strong></li>
-<li><strong>ctrl + shift + n == 搜索文件</strong></li>
-<li>**ctrl + alt +n == 代码提示  **</li>
-<li><strong>/  ctrl + alt + 空格 = 代码提示</strong></li>
-<li><strong>alt + f7 == 查询在某处使用</strong></li>
-<li><strong>ctrl + q == 查看代码提示及内容</strong></li>
-<li><strong>ctrl + b  == 查看类的声明 ==ctrl+左键</strong></li>
-<li><strong>ctrl + f12  == 查看文件列表（类的方法列表）</strong></li>
-<li><strong>ctrl + alt + ⬆/⬇ = 查看 父类/子类</strong></li>
-<li><strong>ctrl + shift + ⬆/⬇ = 上移/下移一行代码</strong></li>
-<li><strong>连续两次shift  == 查找文件</strong><br /></li>
-<li><strong>连安两下 shift 查找文件</strong></li>
-<li><strong>CtrL +shift +r 全局搜索</strong></li>
-<li><strong>ctrl +r 搜索替换当前页的单词</strong></li>
-<li><strong>查看类继承关系图：Ctrl+Alt+U</strong></li>
-<li><strong>查看定义的变量在哪里被调用：Ctrl+Alt+F7</strong></li>
-<li><strong>查看Java方法调用树(被调/主调)：Ctrl+Alt+H</strong></li>
-<li>**在codeStyle_java_import设置中，可以设置import多少个类自动变成import ***</li>
-<li><strong>ctrl +alt +v 自动生成返回值</strong></li>
-<li><strong>ctrl + alt +t 生成环绕代码块 surround with</strong></li>
-<li><strong>ctl + alt + &lt;-  或 -&gt;   上一步或下一步</strong></li>
-<li><strong>ctrl + alt + m  抽取代码为方法</strong></li>
-<li><strong>ctrl + e 打开最近文件</strong></li>
-<li><strong>ctrl + h 查看类的继承关系</strong></li>
-<li><strong>ctr + shift + u 大小写转化</strong></li>
-<li><strong>shift + enter 向下插入空行</strong></li>
-<li><strong>ctrl + alt + enter 向上插入空行</strong></li>
+<li>基本模式</li>
 </ol>
 
-<h2 id="2-使用技巧">2.使用技巧</h2>
+<p>如果使用默认方式接收队列，先启动多个监听者，再启动生产者，消费方式默认为轮询分发模式，不论监听者执行效率多少，都是轮询获取mq消息。使用多劳模式时，必须手动确认ack。</p>
 
-<p>debug篇</p>
+<pre><code class="language-java">// 能者多劳关键代码
+//1. 在队列声明之后
+channel.basicQos(1);
+//2. 在消费之后
+finally {
+             channel.basicAck(envelope.getDeliveryTag(), false);
+}
+//3.定义消费者
+channel.basicConsume(queueName, false, consumer);
+</code></pre>
 
 <ol>
-<li>右键断点可以设置进入断点条件</li>
-<li><strong>ctrl + u</strong> 进入查看debug时表达式的值</li>
+<li>订阅模式</li>
 </ol>
+
+<p>多个队列绑定到同一个交换机上，生产者将消息发送到交换机，由消费者订阅消息。</p>
+
+<p>注意exchange 类型 <code>type</code>值为 <code>fanout</code></p>
+
+<pre><code class="language-java">//生产者
+Connection connection = ConnectionUtils.getConnection();
+        Channel channel = connection.createChannel();
+        channel.exchangeDeclare(exchange, &quot;fanout&quot;);
+        channel.basicQos(1);
+
+        for (int i = 0; i &lt; 50; i++) {
+            String msg = sendStr + i;
+            channel.basicPublish(exchange, &quot;&quot;, null, msg.getBytes());
+        }
+        channel.close();
+        connection.close();
+
+//消费者
+onnection connection = ConnectionUtils.getConnection();
+        Channel channel = connection.createChannel();
+        channel.queueDeclare(queueName, false, false, false, null);
+        channel.queueBind(queueName, exchange, &quot;&quot;);
+        channel.basicQos(1);
+        Consumer consumer = new DefaultConsumer(channel) {
+            @Override
+            public void handleDelivery(String consumerTag, Envelope envelope, AMQP.BasicProperties properties, byte[] body) throws IOException {
+                String msg = new String(body, &quot;utf-8&quot;);
+                ... ...
+</code></pre>
+
+<ol>
+<li>路由模式</li>
+</ol>
+
+<p>在声明exchange时，给予路由关键字，在在channel绑定exchange时，也声明路由，在生产者将数据投递到exchange上后，exchange根据路由关键字将数据投递给channel。</p>
+
+<p>注意exchange 类型 <code>type</code>值为 <code>direct</code></p>
+
+<p>关键代码：</p>
+
+<pre><code class="language-java">//生产者
+ Connection connection = ConnectionUtils.getConnection();
+        Channel channel = connection.createChannel();
+        channel.exchangeDeclare(exchange, &quot;direct&quot;);
+        channel.basicQos(1);
+        String routingKey = &quot;error&quot;;
+        for (int i = 0; i &lt; 50; i++) {
+            String msg = sendStr + i;
+            channel.basicPublish(exchange, routingKey, null, msg.getBytes());
+        }
+        channel.close();
+        connection.close();
+
+
+//消费者
+String uuid = UUID.randomUUID().toString();
+        System.out.println(&quot;start consumer:&quot; + uuid);
+        Connection connection = ConnectionUtils.getConnection();
+        Channel channel = connection.createChannel();
+        channel.queueDeclare(queueName, false, false, false, null);
+        // routKeys 是个list字符串数组
+		routKeys.forEach(routKey -&gt;{
+            try {
+                channel.queueBind(queueName, exchange, routKey);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        });
+        channel.basicQos(1);
+        Consumer consumer = new DefaultConsumer(channel) {
+            @Override
+            public void handleDelivery(String consumerTag, Envelope envelope, AMQP.BasicProperties properties, byte[] body) throws IOException {
+                String msg = new String(body, &quot;utf-8&quot;);
+                ... ...
+</code></pre>
+
+<ol>
+<li>topic模式</li>
+</ol>
+
+<p>根据routingKey上的通配符分发事件。<code>*</code>代表匹配一个关键字，<code>#</code>代表匹配多个关键字。</p>
+
+<pre><code class="language-java">//服务端
+ channel.exchangeDeclare(exchange, &quot;topic&quot;);
+        channel.basicQos(1);
+        String routingKey = &quot;goods，type.add&quot;;
+        for (int i = 0; i &lt; 50; i++) {
+            String msg = sendStr + i;
+            channel.basicPublish(exchange, routingKey, null, msg.getBytes());
+        }
+
+//客户端1,queueName队列可以收到消息
+channel.exchangeDeclare(exchange, &quot;topic&quot;);
+channel.queueDeclare(queueName, false, false, false, null);
+channel.queueBind(queueName, exchange, &quot;goods.*.add&quot;);
+
+//客户端2,queueName队列可以收到消息
+channel.exchangeDeclare(exchange, &quot;topic&quot;);
+channel.queueDeclare(queueName, false, false, false, null);
+channel.queueBind(queueName, exchange, &quot;goods.#&quot;);
+
+//客户端3,queueName队列不可以收到消息
+channel.exchangeDeclare(exchange, &quot;topic&quot;);
+channel.queueDeclare(queueName, false, false, false, null);
+channel.queueBind(queueName, exchange, &quot;goods.type.delete&quot;);
+</code></pre>
+
+<ol>
+<li>事务确认机制</li>
+</ol>
+
+<p>通过事务控制操作mq队列，关键代码如下。</p>
+
+<pre><code class="language-java">try{
+                channel.txSelect();
+                channel.basicPublish(&quot;&quot;, queueName, null, msg.getBytes());
+                //如果抛出异常，事件不发送到mq
+                //int a = 1/0;
+                channel.txCommit();
+            }catch (Exception e){
+                System.out.println(&quot;channel rollback...&quot;);
+                channel.txRollback();
+            }
+</code></pre>
+
+<ol>
+<li>单条/多条 conform 模式确认机制</li>
+</ol>
+
+<p>为了保证消息投递的正确无误，有时候需要对消息进行确认是否投递成功，失败后做相应的异常处理。</p>
+
+<pre><code class="language-java">//方式1 单条 confirm
+//生产者开启confirm模式
+public static void send(String queueName, String sendStr) throws IOException, TimeoutException {
+
+    Connection connection = ConnectionUtils.getConnection();
+    Channel channel = connection.createChannel();
+    channel.queueDeclare(queueName, false, false, false, null);
+    //        channel.basicQos(1);
+    //生产者开启confirm模式
+    channel.confirmSelect();
+    for (int i = 0; i &lt; 50; i++) {
+        String msg = sendStr + i;
+
+        channel.basicPublish(&quot;&quot;, queueName, null, msg.getBytes());
+
+        try{
+            if(channel.waitForConfirms()){
+                System.out.println(&quot;消息发送成功&quot;);
+            } else{
+                System.out.println(&quot;消息发送失败&quot;);
+            }
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+
+    }
+    channel.close();
+    connection.close();
+}
+// 方式1 单条confitm消费者
+public static void handleDelivery(String queueName) throws IOException, TimeoutException {
+
+    String uuid = UUID.randomUUID().toString();
+    System.out.println(&quot;start consumer:&quot; + uuid);
+    Connection connection = ConnectionUtils.getConnection();
+    Channel channel = connection.createChannel();
+    channel.queueDeclare(queueName, false, false, false, null);
+    channel.basicQos(1);
+    Consumer consumer = new DefaultConsumer(channel) {
+        @Override
+        public void handleDelivery(String consumerTag, Envelope envelope, AMQP.BasicProperties properties, byte[] body) throws IOException {
+            String msg = new String(body, &quot;utf-8&quot;);
+            System.out.println(uuid + &quot;接收到消息——&quot; + msg);
+            try {
+                Thread.sleep(Math.round(Math.random()*3000));
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            } finally {
+                channel.basicAck(envelope.getDeliveryTag(), false);
+            }
+        }
+    };
+    channel.basicConsume(queueName, false, consumer);
+}
+
+//方式2 批量confirm
+//生产者开启confirm模式
+public static void send(String queueName, String sendStr) throws IOException, TimeoutException {
+
+    Connection connection = ConnectionUtils.getConnection();
+    Channel channel = connection.createChannel();
+    channel.queueDeclare(queueName, false, false, false, null);
+    //        channel.basicQos(1);
+    channel.confirmSelect();
+    channel.addConfirmListener(new ConfirmListener() {
+        @Override
+        public void handleAck(long deliveryTag, boolean multiple) throws IOException {
+            if(multiple){
+                System.out.println(&quot;发送多条成功:&quot; + deliveryTag);
+                confirmSet.headSet(deliveryTag + 1).clear();
+            } else {
+                System.out.println(&quot;发送1条成功:&quot; + deliveryTag);
+                confirmSet.remove(deliveryTag);
+            }
+        }
+
+        @Override
+        public void handleNack(long deliveryTag, boolean multiple) throws IOException {
+            if(multiple){
+                System.out.println(&quot;发送多条失败:&quot; + deliveryTag);
+                confirmSet.headSet(deliveryTag + 1).clear();
+            } else {
+                System.out.println(&quot;发送1条失败:&quot; + deliveryTag);
+                confirmSet.remove(deliveryTag);
+            }
+        }
+    });
+    for (int i = 0; i &lt; 50; i++) {
+        String msg = sendStr + i;
+        long seqNo = channel.getNextPublishSeqNo();
+        channel.basicPublish(&quot;&quot;, queueName, null, msg.getBytes());
+        confirmSet.add(seqNo);
+    }
+    channel.close();
+    connection.close();
+}
+
+//方式2 批量confitm消费者
+public static void handleDelivery(String queueName) throws IOException, TimeoutException {
+
+    String uuid = UUID.randomUUID().toString();
+    System.out.println(&quot;start consumer:&quot; + uuid);
+    Connection connection = ConnectionUtils.getConnection();
+    Channel channel = connection.createChannel();
+    channel.queueDeclare(queueName, false, false, false, null);
+    channel.basicQos(1);
+    channel.confirmSelect();
+    channel.addConfirmListener(new ConfirmListener() {
+        @Override
+        public void handleAck(long deliveryTag, boolean multiple) throws IOException {
+            if(multiple){
+                System.out.println(&quot;接收多条成功:&quot; + deliveryTag);
+                confirmSet.headSet(deliveryTag + 1).clear();
+            } else {
+                System.out.println(&quot;接收1条成功:&quot; + deliveryTag);
+                confirmSet.remove(deliveryTag);
+            }
+        }
+
+        @Override
+        public void handleNack(long deliveryTag, boolean multiple) throws IOException {
+            if(multiple){
+                System.out.println(&quot;接收多条失败:&quot; + deliveryTag);
+                confirmSet.headSet(deliveryTag + 1).clear();
+            } else {
+                System.out.println(&quot;接收1条失败:&quot; + deliveryTag);
+                confirmSet.remove(deliveryTag);
+            }
+        }
+    });
+    Consumer consumer = new DefaultConsumer(channel) {
+        @Override
+        public void handleDelivery(String consumerTag, Envelope envelope, AMQP.BasicProperties properties, byte[] body) throws IOException {
+            String msg = new String(body, &quot;utf-8&quot;);
+            System.out.println(uuid + &quot;接收到消息——&quot; + msg );
+            try {
+                Thread.sleep(Math.round(Math.random()*2000));
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            } finally {
+                channel.basicAck(envelope.getDeliveryTag(), false);
+            }
+        }
+    };
+    channel.basicConsume(queueName, false, consumer);
+}
+</code></pre>
 
     </div>
 
@@ -460,15 +718,15 @@
 
     <footer class="post-footer">
       <div class="post-tags">
-          <a href="https://hisaige.github.io/tags/idea/">idea</a>
-          <a href="https://hisaige.github.io/tags/%E5%BF%AB%E6%8D%B7%E9%94%AE/">快捷键</a>
+          <a href="https://hisaige.github.io/tags/mq/">mq</a>
+          <a href="https://hisaige.github.io/tags/rabbitmq/">rabbitMQ</a>
           
         </div>
 
       
       <nav class="post-nav">
         
-          <a class="prev" href="/post/development/dorcker%E4%BD%BF%E7%94%A8%E6%8C%87%E5%8D%97/">
+          <a class="prev" href="/post/tool/idea%E5%BF%AB%E6%8D%B7%E9%94%AE%E4%BD%BF%E7%94%A8/">
             
             <i class="iconfont">
               <svg  class="icon" viewBox="0 0 1024 1024" version="1.1"
@@ -478,12 +736,12 @@
 </svg>
 
             </i>
-            <span class="prev-text nav-default">docker的简单使用</span>
+            <span class="prev-text nav-default">idea快捷键使用</span>
             <span class="prev-text nav-mobile">Prev</span>
           </a>
         
-          <a class="next" href="/post/development/rabbitmq%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/">
-            <span class="next-text nav-default">rabbitMQ入门</span>
+          <a class="next" href="/post/development/%E5%B0%9A%E7%A1%85%E8%B0%B7clould/">
+            <span class="next-text nav-default">springclould简要入门</span>
             <span class="prev-text nav-mobile">Next</span>
             
             <i class="iconfont">

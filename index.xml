@@ -751,10 +751,10 @@ docker cp 容器id:容器内路径 主机路径
     
     <item>
       <title>rabbitMQ入门</title>
-      <link>https://hisaige.github.io/post/development/rabbitmq%E4%BD%BF%E7%94%A8%E7%AC%94%E8%AE%B0/</link>
+      <link>https://hisaige.github.io/post/development/rabbitmq%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</link>
       <pubDate>Tue, 03 Sep 2019 00:00:00 +0000</pubDate>
       
-      <guid>https://hisaige.github.io/post/development/rabbitmq%E4%BD%BF%E7%94%A8%E7%AC%94%E8%AE%B0/</guid>
+      <guid>https://hisaige.github.io/post/development/rabbitmq%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</guid>
       
         <description>
 
@@ -763,29 +763,29 @@ docker cp 容器id:容器内路径 主机路径
 &lt;h2 id=&#34;1-基本概念&#34;&gt;1. 基本概念&lt;/h2&gt;
 
 &lt;ol&gt;
-&lt;li&gt;如果使用默认方式接收队列，先启动多个监听者，再启动生产者，消费方式默认为轮询分发模式，不论监听者执行效率多少，都是轮询获取mq消息。&lt;/li&gt;
+&lt;li&gt;基本模式&lt;/li&gt;
+&lt;/ol&gt;
 
-&lt;li&gt;&lt;p&gt;使用多劳模式时，必须手动确认ack。&lt;/p&gt;
+&lt;p&gt;如果使用默认方式接收队列，先启动多个监听者，再启动生产者，消费方式默认为轮询分发模式，不论监听者执行效率多少，都是轮询获取mq消息。使用多劳模式时，必须手动确认ack。&lt;/p&gt;
 
 &lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;// 能者多劳关键代码
 //1. 在队列声明之后
 channel.basicQos(1);
 //2. 在消费之后
 finally {
-         channel.basicAck(envelope.getDeliveryTag(), false);
+             channel.basicAck(envelope.getDeliveryTag(), false);
 }
 //3.定义消费者
 channel.basicConsume(queueName, false, consumer);
-&lt;/code&gt;&lt;/pre&gt;&lt;/li&gt;
+&lt;/code&gt;&lt;/pre&gt;
 
-&lt;li&gt;&lt;p&gt;订阅模式、&lt;/p&gt;&lt;/li&gt;
+&lt;ol&gt;
+&lt;li&gt;订阅模式&lt;/li&gt;
 &lt;/ol&gt;
 
 &lt;p&gt;多个队列绑定到同一个交换机上，生产者将消息发送到交换机，由消费者订阅消息。&lt;/p&gt;
 
 &lt;p&gt;注意exchange 类型 &lt;code&gt;type&lt;/code&gt;值为 &lt;code&gt;fanout&lt;/code&gt;&lt;/p&gt;
-
-&lt;p&gt;关键代码&lt;/p&gt;
 
 &lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;//生产者
 Connection connection = ConnectionUtils.getConnection();
@@ -843,7 +843,8 @@ String uuid = UUID.randomUUID().toString();
         Connection connection = ConnectionUtils.getConnection();
         Channel channel = connection.createChannel();
         channel.queueDeclare(queueName, false, false, false, null);
-        routKeys.forEach(routKey -&amp;gt;{
+        // routKeys 是个list字符串数组
+		routKeys.forEach(routKey -&amp;gt;{
             try {
                 channel.queueBind(queueName, exchange, routKey);
             } catch (IOException e) {
@@ -862,9 +863,7 @@ String uuid = UUID.randomUUID().toString();
 &lt;li&gt;topic模式&lt;/li&gt;
 &lt;/ol&gt;
 
-&lt;p&gt;根据routingKey上的通配符分发事件。&lt;code&gt;*&lt;/code&gt;代表匹配一个关键字，&lt;code&gt;#&lt;/code&gt;代表匹配多个关键字.&lt;/p&gt;
-
-&lt;p&gt;关键代码：&lt;/p&gt;
+&lt;p&gt;根据routingKey上的通配符分发事件。&lt;code&gt;*&lt;/code&gt;代表匹配一个关键字，&lt;code&gt;#&lt;/code&gt;代表匹配多个关键字。&lt;/p&gt;
 
 &lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;//服务端
  channel.exchangeDeclare(exchange, &amp;quot;topic&amp;quot;);
@@ -910,43 +909,158 @@ channel.queueBind(queueName, exchange, &amp;quot;goods.type.delete&amp;quot;);
 &lt;/code&gt;&lt;/pre&gt;
 
 &lt;ol&gt;
-&lt;li&gt;&lt;p&gt;conform模式确认机制&lt;/p&gt;
+&lt;li&gt;单条/多条 conform 模式确认机制&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;为了保证消息投递的正确无误，有时候需要对消息进行确认是否投递成功，失败后做相应的异常处理。&lt;/p&gt;
 
 &lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;//方式1 单条 confirm
 //生产者开启confirm模式
-channel.confirmSelect();
-for (int i = 0; i &amp;lt; 50; i++) {
-String msg = sendStr + i;
-channel.basicPublish(&amp;quot;&amp;quot;, queueName, null, msg.getBytes());
-try{
-    if(channel.waitForConfirms()){
-        System.out.println(&amp;quot;消息发送成功&amp;quot;);
-    } else{
-        System.out.println(&amp;quot;消息发送失败&amp;quot;);
+public static void send(String queueName, String sendStr) throws IOException, TimeoutException {
+
+    Connection connection = ConnectionUtils.getConnection();
+    Channel channel = connection.createChannel();
+    channel.queueDeclare(queueName, false, false, false, null);
+    //        channel.basicQos(1);
+    //生产者开启confirm模式
+    channel.confirmSelect();
+    for (int i = 0; i &amp;lt; 50; i++) {
+        String msg = sendStr + i;
+
+        channel.basicPublish(&amp;quot;&amp;quot;, queueName, null, msg.getBytes());
+
+        try{
+            if(channel.waitForConfirms()){
+                System.out.println(&amp;quot;消息发送成功&amp;quot;);
+            } else{
+                System.out.println(&amp;quot;消息发送失败&amp;quot;);
+            }
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+
     }
-} catch (Exception e){
-    e.printStackTrace();
+    channel.close();
+    connection.close();
 }
+// 方式1 单条confitm消费者
+public static void handleDelivery(String queueName) throws IOException, TimeoutException {
+
+    String uuid = UUID.randomUUID().toString();
+    System.out.println(&amp;quot;start consumer:&amp;quot; + uuid);
+    Connection connection = ConnectionUtils.getConnection();
+    Channel channel = connection.createChannel();
+    channel.queueDeclare(queueName, false, false, false, null);
+    channel.basicQos(1);
+    Consumer consumer = new DefaultConsumer(channel) {
+        @Override
+        public void handleDelivery(String consumerTag, Envelope envelope, AMQP.BasicProperties properties, byte[] body) throws IOException {
+            String msg = new String(body, &amp;quot;utf-8&amp;quot;);
+            System.out.println(uuid + &amp;quot;接收到消息——&amp;quot; + msg);
+            try {
+                Thread.sleep(Math.round(Math.random()*3000));
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            } finally {
+                channel.basicAck(envelope.getDeliveryTag(), false);
+            }
+        }
+    };
+    channel.basicConsume(queueName, false, consumer);
 }
 
 //方式2 批量confirm
 //生产者开启confirm模式
-channel.confirmSelect();
-for (int i = 0; i &amp;lt; 50; i++) {
-String msg = sendStr + i;
-channel.basicPublish(&amp;quot;&amp;quot;, queueName, null, msg.getBytes());
+public static void send(String queueName, String sendStr) throws IOException, TimeoutException {
+
+    Connection connection = ConnectionUtils.getConnection();
+    Channel channel = connection.createChannel();
+    channel.queueDeclare(queueName, false, false, false, null);
+    //        channel.basicQos(1);
+    channel.confirmSelect();
+    channel.addConfirmListener(new ConfirmListener() {
+        @Override
+        public void handleAck(long deliveryTag, boolean multiple) throws IOException {
+            if(multiple){
+                System.out.println(&amp;quot;发送多条成功:&amp;quot; + deliveryTag);
+                confirmSet.headSet(deliveryTag + 1).clear();
+            } else {
+                System.out.println(&amp;quot;发送1条成功:&amp;quot; + deliveryTag);
+                confirmSet.remove(deliveryTag);
+            }
+        }
+
+        @Override
+        public void handleNack(long deliveryTag, boolean multiple) throws IOException {
+            if(multiple){
+                System.out.println(&amp;quot;发送多条失败:&amp;quot; + deliveryTag);
+                confirmSet.headSet(deliveryTag + 1).clear();
+            } else {
+                System.out.println(&amp;quot;发送1条失败:&amp;quot; + deliveryTag);
+                confirmSet.remove(deliveryTag);
+            }
+        }
+    });
+    for (int i = 0; i &amp;lt; 50; i++) {
+        String msg = sendStr + i;
+        long seqNo = channel.getNextPublishSeqNo();
+        channel.basicPublish(&amp;quot;&amp;quot;, queueName, null, msg.getBytes());
+        confirmSet.add(seqNo);
+    }
+    channel.close();
+    connection.close();
 }
-try{
-if(channel.waitForConfirms()){
-    System.out.println(&amp;quot;消息发送成功&amp;quot;);
-} else{
-    System.out.println(&amp;quot;消息发送失败&amp;quot;);
+
+//方式2 批量confitm消费者
+public static void handleDelivery(String queueName) throws IOException, TimeoutException {
+
+    String uuid = UUID.randomUUID().toString();
+    System.out.println(&amp;quot;start consumer:&amp;quot; + uuid);
+    Connection connection = ConnectionUtils.getConnection();
+    Channel channel = connection.createChannel();
+    channel.queueDeclare(queueName, false, false, false, null);
+    channel.basicQos(1);
+    channel.confirmSelect();
+    channel.addConfirmListener(new ConfirmListener() {
+        @Override
+        public void handleAck(long deliveryTag, boolean multiple) throws IOException {
+            if(multiple){
+                System.out.println(&amp;quot;接收多条成功:&amp;quot; + deliveryTag);
+                confirmSet.headSet(deliveryTag + 1).clear();
+            } else {
+                System.out.println(&amp;quot;接收1条成功:&amp;quot; + deliveryTag);
+                confirmSet.remove(deliveryTag);
+            }
+        }
+
+        @Override
+        public void handleNack(long deliveryTag, boolean multiple) throws IOException {
+            if(multiple){
+                System.out.println(&amp;quot;接收多条失败:&amp;quot; + deliveryTag);
+                confirmSet.headSet(deliveryTag + 1).clear();
+            } else {
+                System.out.println(&amp;quot;接收1条失败:&amp;quot; + deliveryTag);
+                confirmSet.remove(deliveryTag);
+            }
+        }
+    });
+    Consumer consumer = new DefaultConsumer(channel) {
+        @Override
+        public void handleDelivery(String consumerTag, Envelope envelope, AMQP.BasicProperties properties, byte[] body) throws IOException {
+            String msg = new String(body, &amp;quot;utf-8&amp;quot;);
+            System.out.println(uuid + &amp;quot;接收到消息——&amp;quot; + msg );
+            try {
+                Thread.sleep(Math.round(Math.random()*2000));
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            } finally {
+                channel.basicAck(envelope.getDeliveryTag(), false);
+            }
+        }
+    };
+    channel.basicConsume(queueName, false, consumer);
 }
-} catch (Exception e){
-e.printStackTrace();
-}
-&lt;/code&gt;&lt;/pre&gt;&lt;/li&gt;
-&lt;/ol&gt;
+&lt;/code&gt;&lt;/pre&gt;
 </description>
       
     </item>
