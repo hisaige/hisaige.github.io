@@ -6,17 +6,44 @@
     <description>Recent content in Tags on 目光呆滞的5741号代码搬运工</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Tue, 03 Sep 2019 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Fri, 15 Nov 2019 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="https://hisaige.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
-      <title>clould</title>
-      <link>https://hisaige.github.io/tags/clould/</link>
-      <pubDate>Tue, 03 Sep 2019 00:00:00 +0000</pubDate>
+      <title>mongodb</title>
+      <link>https://hisaige.github.io/tags/mongodb/</link>
+      <pubDate>Fri, 15 Nov 2019 00:00:00 +0000</pubDate>
       
-      <guid>https://hisaige.github.io/tags/clould/</guid>
+      <guid>https://hisaige.github.io/tags/mongodb/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>nodeJS</title>
+      <link>https://hisaige.github.io/tags/nodejs/</link>
+      <pubDate>Fri, 15 Nov 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://hisaige.github.io/tags/nodejs/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>yapi</title>
+      <link>https://hisaige.github.io/tags/yapi/</link>
+      <pubDate>Fri, 15 Nov 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://hisaige.github.io/tags/yapi/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>springboot</title>
+      <link>https://hisaige.github.io/tags/springboot/</link>
+      <pubDate>Mon, 07 Oct 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://hisaige.github.io/tags/springboot/</guid>
       <description></description>
     </item>
     
@@ -66,15 +93,6 @@
     </item>
     
     <item>
-      <title>spring</title>
-      <link>https://hisaige.github.io/tags/spring/</link>
-      <pubDate>Tue, 03 Sep 2019 00:00:00 +0000</pubDate>
-      
-      <guid>https://hisaige.github.io/tags/spring/</guid>
-      <description></description>
-    </item>
-    
-    <item>
       <title>快捷键</title>
       <link>https://hisaige.github.io/tags/%E5%BF%AB%E6%8D%B7%E9%94%AE/</link>
       <pubDate>Tue, 03 Sep 2019 00:00:00 +0000</pubDate>
@@ -120,87 +138,6 @@
     </item>
     
     <item>
-      <title>math</title>
-      <link>https://hisaige.github.io/tags/math/</link>
-      <pubDate>Mon, 04 Mar 2019 16:01:23 +0800</pubDate>
-      
-      <guid>https://hisaige.github.io/tags/math/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>image</title>
-      <link>https://hisaige.github.io/tags/image/</link>
-      <pubDate>Sat, 03 Mar 2018 16:01:23 +0800</pubDate>
-      
-      <guid>https://hisaige.github.io/tags/image/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>tag-7</title>
-      <link>https://hisaige.github.io/tags/tag-7/</link>
-      <pubDate>Sat, 03 Mar 2018 16:01:23 +0800</pubDate>
-      
-      <guid>https://hisaige.github.io/tags/tag-7/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>footnote</title>
-      <link>https://hisaige.github.io/tags/footnote/</link>
-      <pubDate>Thu, 01 Mar 2018 16:01:23 +0800</pubDate>
-      
-      <guid>https://hisaige.github.io/tags/footnote/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>markdown</title>
-      <link>https://hisaige.github.io/tags/markdown/</link>
-      <pubDate>Thu, 01 Mar 2018 16:01:23 +0800</pubDate>
-      
-      <guid>https://hisaige.github.io/tags/markdown/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>tag-11</title>
-      <link>https://hisaige.github.io/tags/tag-11/</link>
-      <pubDate>Thu, 01 Mar 2018 16:01:23 +0800</pubDate>
-      
-      <guid>https://hisaige.github.io/tags/tag-11/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>English</title>
-      <link>https://hisaige.github.io/tags/english/</link>
-      <pubDate>Thu, 31 Aug 2017 15:43:48 +0800</pubDate>
-      
-      <guid>https://hisaige.github.io/tags/english/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>tag-2</title>
-      <link>https://hisaige.github.io/tags/tag-2/</link>
-      <pubDate>Thu, 31 Aug 2017 15:43:48 +0800</pubDate>
-      
-      <guid>https://hisaige.github.io/tags/tag-2/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>development</title>
-      <link>https://hisaige.github.io/tags/development/</link>
-      <pubDate>Sun, 28 Sep 2014 00:00:00 +0000</pubDate>
-      
-      <guid>https://hisaige.github.io/tags/development/</guid>
-      <description></description>
-    </item>
-    
-    <item>
       <title>git</title>
       <link>https://hisaige.github.io/tags/git/</link>
       <pubDate>Sun, 28 Sep 2014 00:00:00 +0000</pubDate>
@@ -210,29 +147,20 @@
     </item>
     
     <item>
-      <title>go</title>
-      <link>https://hisaige.github.io/tags/go/</link>
-      <pubDate>Sun, 28 Sep 2014 00:00:00 +0000</pubDate>
-      
-      <guid>https://hisaige.github.io/tags/go/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>golang</title>
-      <link>https://hisaige.github.io/tags/golang/</link>
-      <pubDate>Sun, 28 Sep 2014 00:00:00 +0000</pubDate>
-      
-      <guid>https://hisaige.github.io/tags/golang/</guid>
-      <description></description>
-    </item>
-    
-    <item>
       <title>hugo</title>
       <link>https://hisaige.github.io/tags/hugo/</link>
       <pubDate>Sun, 28 Sep 2014 00:00:00 +0000</pubDate>
       
       <guid>https://hisaige.github.io/tags/hugo/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>npm</title>
+      <link>https://hisaige.github.io/tags/npm/</link>
+      <pubDate>Sun, 28 Sep 2014 00:00:00 +0000</pubDate>
+      
+      <guid>https://hisaige.github.io/tags/npm/</guid>
       <description></description>
     </item>
     

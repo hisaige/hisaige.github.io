@@ -62,7 +62,7 @@
 <meta property="og:type" content="website" />
 <meta property="og:url" content="https://hisaige.github.io/" />
 
-<meta property="og:updated_time" content="2019-09-03T00:00:00+00:00" />
+<meta property="og:updated_time" content="2019-11-15T00:00:00+00:00" />
 <meta itemprop="name" content="目光呆滞的5741号代码搬运工">
 <meta itemprop="description" content="">
 
@@ -130,39 +130,6 @@
           
             <a class="menu-item-link" href="https://hisaige.github.io/about/">About</a>
           
-        
-      </li><li class="mobile-menu-item">
-        
-          
-          <div class="mobile-menu-parent">
-            <span class="mobile-submenu-open"></span>
-            <a href="https://hisaige.github.io/">
-              docs
-            </a>
-          </div>
-          <ul class="mobile-submenu-list">
-            
-              <li>
-                <a href="https://hisaige.github.io/post/docs/jane-theme-preview/">Jane Theme Preview</a>
-              </li>
-            
-              <li>
-                <a href="https://hisaige.github.io/post/docs/shortcodes-preview/">Shortcodes Preview</a>
-              </li>
-            
-              <li>
-                <a href="https://hisaige.github.io/post/docs/image-preview/">Image Preview</a>
-              </li>
-            
-              <li>
-                <a href="https://hisaige.github.io/post/docs/syntax-highlighting/">Syntax Highlighting</a>
-              </li>
-            
-              <li>
-                <a href="https://hisaige.github.io/post/docs/math-preview/">Math Preview</a>
-              </li>
-            
-          </ul>
         
       </li>
     
@@ -304,38 +271,6 @@
 
       </li>
     
-        <li class="menu-item">
-        
-          
-          <a class="menu-item-link menu-parent" href="https://hisaige.github.io/">docs</a>
-          <ul class="submenu">
-            
-              <li>
-                <a href="https://hisaige.github.io/post/docs/jane-theme-preview/">Jane Theme Preview</a>
-              </li>
-            
-              <li>
-                <a href="https://hisaige.github.io/post/docs/shortcodes-preview/">Shortcodes Preview</a>
-              </li>
-            
-              <li>
-                <a href="https://hisaige.github.io/post/docs/image-preview/">Image Preview</a>
-              </li>
-            
-              <li>
-                <a href="https://hisaige.github.io/post/docs/syntax-highlighting/">Syntax Highlighting</a>
-              </li>
-            
-              <li>
-                <a href="https://hisaige.github.io/post/docs/math-preview/">Math Preview</a>
-              </li>
-            
-          </ul>
-
-        
-
-      </li>
-    
 
     
     
@@ -362,7 +297,7 @@
   <header class="post-header">
     <h1 class="post-title">
       
-      <a class="post-link" href="/post/development/%E5%B0%9A%E7%A1%85%E8%B0%B7clould/">springclould简要入门</a>
+      <a class="post-link" href="/post/development/rabbitmq%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/">rabbitMQ入门</a>
     </h1>
     
     <div class="post-meta">
@@ -373,8 +308,8 @@
           <a href="https://hisaige.github.io/categories/development/"> Development </a>
           
         </div>
-      <span class="more-meta"> 22 words </span>
-      <span class="more-meta"> 1 min read </span>
+      <span class="more-meta"> 1789 words </span>
+      <span class="more-meta"> 4 min read </span>
       
       
       
@@ -386,15 +321,309 @@
     <div class="post-summary">
       
 
-<h1>尚硅谷clould</h1>
+<h1>RabbitMQ学习笔记</h1>
 
-<h2 id="统一配置">统一配置</h2>
+<h2 id="1-基本概念">1. 基本概念</h2>
 
 <ol>
-<li>统一配置启动方式1</li>
+<li>基本模式</li>
 </ol>
 
-<p><img src="../../../imgs/测试服务统一配置方式1.bmp" alt="统一配置启动方式1" /></p>
+<p>如果使用默认方式接收队列，先启动多个监听者，再启动生产者，消费方式默认为轮询分发模式，不论监听者执行效率多少，都是轮询获取mq消息。使用多劳模式时，必须手动确认ack。</p>
+
+<pre><code class="language-java">// 能者多劳关键代码
+//1. 在队列声明之后
+channel.basicQos(1);
+//2. 在消费之后
+finally {
+             channel.basicAck(envelope.getDeliveryTag(), false);
+}
+//3.定义消费者
+channel.basicConsume(queueName, false, consumer);
+</code></pre>
+
+<ol>
+<li>订阅模式</li>
+</ol>
+
+<p>多个队列绑定到同一个交换机上，生产者将消息发送到交换机，由消费者订阅消息。</p>
+
+<p>注意exchange 类型 <code>type</code>值为 <code>fanout</code></p>
+
+<pre><code class="language-java">//生产者
+Connection connection = ConnectionUtils.getConnection();
+        Channel channel = connection.createChannel();
+        channel.exchangeDeclare(exchange, &quot;fanout&quot;);
+        channel.basicQos(1);
+
+        for (int i = 0; i &lt; 50; i++) {
+            String msg = sendStr + i;
+            channel.basicPublish(exchange, &quot;&quot;, null, msg.getBytes());
+        }
+        channel.close();
+        connection.close();
+
+//消费者
+onnection connection = ConnectionUtils.getConnection();
+        Channel channel = connection.createChannel();
+        channel.queueDeclare(queueName, false, false, false, null);
+        channel.queueBind(queueName, exchange, &quot;&quot;);
+        channel.basicQos(1);
+        Consumer consumer = new DefaultConsumer(channel) {
+            @Override
+            public void handleDelivery(String consumerTag, Envelope envelope, AMQP.BasicProperties properties, byte[] body) throws IOException {
+                String msg = new String(body, &quot;utf-8&quot;);
+                ... ...
+</code></pre>
+
+<ol>
+<li>路由模式</li>
+</ol>
+
+<p>在声明exchange时，给予路由关键字，在在channel绑定exchange时，也声明路由，在生产者将数据投递到exchange上后，exchange根据路由关键字将数据投递给channel。</p>
+
+<p>注意exchange 类型 <code>type</code>值为 <code>direct</code></p>
+
+<p>关键代码：</p>
+
+<pre><code class="language-java">//生产者
+ Connection connection = ConnectionUtils.getConnection();
+        Channel channel = connection.createChannel();
+        channel.exchangeDeclare(exchange, &quot;direct&quot;);
+        channel.basicQos(1);
+        String routingKey = &quot;error&quot;;
+        for (int i = 0; i &lt; 50; i++) {
+            String msg = sendStr + i;
+            channel.basicPublish(exchange, routingKey, null, msg.getBytes());
+        }
+        channel.close();
+        connection.close();
+
+
+//消费者
+String uuid = UUID.randomUUID().toString();
+        System.out.println(&quot;start consumer:&quot; + uuid);
+        Connection connection = ConnectionUtils.getConnection();
+        Channel channel = connection.createChannel();
+        channel.queueDeclare(queueName, false, false, false, null);
+        // routKeys 是个list字符串数组
+		routKeys.forEach(routKey -&gt;{
+            try {
+                channel.queueBind(queueName, exchange, routKey);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        });
+        channel.basicQos(1);
+        Consumer consumer = new DefaultConsumer(channel) {
+            @Override
+            public void handleDelivery(String consumerTag, Envelope envelope, AMQP.BasicProperties properties, byte[] body) throws IOException {
+                String msg = new String(body, &quot;utf-8&quot;);
+                ... ...
+</code></pre>
+
+<ol>
+<li>topic模式</li>
+</ol>
+
+<p>根据routingKey上的通配符分发事件。<code>*</code>代表匹配一个关键字，<code>#</code>代表匹配多个关键字。</p>
+
+<pre><code class="language-java">//服务端
+ channel.exchangeDeclare(exchange, &quot;topic&quot;);
+        channel.basicQos(1);
+        String routingKey = &quot;goods，type.add&quot;;
+        for (int i = 0; i &lt; 50; i++) {
+            String msg = sendStr + i;
+            channel.basicPublish(exchange, routingKey, null, msg.getBytes());
+        }
+
+//客户端1,queueName队列可以收到消息
+channel.exchangeDeclare(exchange, &quot;topic&quot;);
+channel.queueDeclare(queueName, false, false, false, null);
+channel.queueBind(queueName, exchange, &quot;goods.*.add&quot;);
+
+//客户端2,queueName队列可以收到消息
+channel.exchangeDeclare(exchange, &quot;topic&quot;);
+channel.queueDeclare(queueName, false, false, false, null);
+channel.queueBind(queueName, exchange, &quot;goods.#&quot;);
+
+//客户端3,queueName队列不可以收到消息
+channel.exchangeDeclare(exchange, &quot;topic&quot;);
+channel.queueDeclare(queueName, false, false, false, null);
+channel.queueBind(queueName, exchange, &quot;goods.type.delete&quot;);
+</code></pre>
+
+<ol>
+<li>事务确认机制</li>
+</ol>
+
+<p>通过事务控制操作mq队列，关键代码如下。</p>
+
+<pre><code class="language-java">try{
+                channel.txSelect();
+                channel.basicPublish(&quot;&quot;, queueName, null, msg.getBytes());
+                //如果抛出异常，事件不发送到mq
+                //int a = 1/0;
+                channel.txCommit();
+            }catch (Exception e){
+                System.out.println(&quot;channel rollback...&quot;);
+                channel.txRollback();
+            }
+</code></pre>
+
+<ol>
+<li>单条/多条 conform 模式确认机制</li>
+</ol>
+
+<p>为了保证消息投递的正确无误，有时候需要对消息进行确认是否投递成功，失败后做相应的异常处理。</p>
+
+<pre><code class="language-java">//方式1 单条 confirm
+//生产者开启confirm模式
+public static void send(String queueName, String sendStr) throws IOException, TimeoutException {
+
+    Connection connection = ConnectionUtils.getConnection();
+    Channel channel = connection.createChannel();
+    channel.queueDeclare(queueName, false, false, false, null);
+    //        channel.basicQos(1);
+    //生产者开启confirm模式
+    channel.confirmSelect();
+    for (int i = 0; i &lt; 50; i++) {
+        String msg = sendStr + i;
+
+        channel.basicPublish(&quot;&quot;, queueName, null, msg.getBytes());
+
+        try{
+            if(channel.waitForConfirms()){
+                System.out.println(&quot;消息发送成功&quot;);
+            } else{
+                System.out.println(&quot;消息发送失败&quot;);
+            }
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+
+    }
+    channel.close();
+    connection.close();
+}
+// 方式1 单条confitm消费者
+public static void handleDelivery(String queueName) throws IOException, TimeoutException {
+
+    String uuid = UUID.randomUUID().toString();
+    System.out.println(&quot;start consumer:&quot; + uuid);
+    Connection connection = ConnectionUtils.getConnection();
+    Channel channel = connection.createChannel();
+    channel.queueDeclare(queueName, false, false, false, null);
+    channel.basicQos(1);
+    Consumer consumer = new DefaultConsumer(channel) {
+        @Override
+        public void handleDelivery(String consumerTag, Envelope envelope, AMQP.BasicProperties properties, byte[] body) throws IOException {
+            String msg = new String(body, &quot;utf-8&quot;);
+            System.out.println(uuid + &quot;接收到消息——&quot; + msg);
+            try {
+                Thread.sleep(Math.round(Math.random()*3000));
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            } finally {
+                channel.basicAck(envelope.getDeliveryTag(), false);
+            }
+        }
+    };
+    channel.basicConsume(queueName, false, consumer);
+}
+
+//方式2 批量confirm
+//生产者开启confirm模式
+public static void send(String queueName, String sendStr) throws IOException, TimeoutException {
+
+    Connection connection = ConnectionUtils.getConnection();
+    Channel channel = connection.createChannel();
+    channel.queueDeclare(queueName, false, false, false, null);
+    //        channel.basicQos(1);
+    channel.confirmSelect();
+    channel.addConfirmListener(new ConfirmListener() {
+        @Override
+        public void handleAck(long deliveryTag, boolean multiple) throws IOException {
+            if(multiple){
+                System.out.println(&quot;发送多条成功:&quot; + deliveryTag);
+                confirmSet.headSet(deliveryTag + 1).clear();
+            } else {
+                System.out.println(&quot;发送1条成功:&quot; + deliveryTag);
+                confirmSet.remove(deliveryTag);
+            }
+        }
+
+        @Override
+        public void handleNack(long deliveryTag, boolean multiple) throws IOException {
+            if(multiple){
+                System.out.println(&quot;发送多条失败:&quot; + deliveryTag);
+                confirmSet.headSet(deliveryTag + 1).clear();
+            } else {
+                System.out.println(&quot;发送1条失败:&quot; + deliveryTag);
+                confirmSet.remove(deliveryTag);
+            }
+        }
+    });
+    for (int i = 0; i &lt; 50; i++) {
+        String msg = sendStr + i;
+        long seqNo = channel.getNextPublishSeqNo();
+        channel.basicPublish(&quot;&quot;, queueName, null, msg.getBytes());
+        confirmSet.add(seqNo);
+    }
+    channel.close();
+    connection.close();
+}
+
+//方式2 批量confitm消费者
+public static void handleDelivery(String queueName) throws IOException, TimeoutException {
+
+    String uuid = UUID.randomUUID().toString();
+    System.out.println(&quot;start consumer:&quot; + uuid);
+    Connection connection = ConnectionUtils.getConnection();
+    Channel channel = connection.createChannel();
+    channel.queueDeclare(queueName, false, false, false, null);
+    channel.basicQos(1);
+    channel.confirmSelect();
+    channel.addConfirmListener(new ConfirmListener() {
+        @Override
+        public void handleAck(long deliveryTag, boolean multiple) throws IOException {
+            if(multiple){
+                System.out.println(&quot;接收多条成功:&quot; + deliveryTag);
+                confirmSet.headSet(deliveryTag + 1).clear();
+            } else {
+                System.out.println(&quot;接收1条成功:&quot; + deliveryTag);
+                confirmSet.remove(deliveryTag);
+            }
+        }
+
+        @Override
+        public void handleNack(long deliveryTag, boolean multiple) throws IOException {
+            if(multiple){
+                System.out.println(&quot;接收多条失败:&quot; + deliveryTag);
+                confirmSet.headSet(deliveryTag + 1).clear();
+            } else {
+                System.out.println(&quot;接收1条失败:&quot; + deliveryTag);
+                confirmSet.remove(deliveryTag);
+            }
+        }
+    });
+    Consumer consumer = new DefaultConsumer(channel) {
+        @Override
+        public void handleDelivery(String consumerTag, Envelope envelope, AMQP.BasicProperties properties, byte[] body) throws IOException {
+            String msg = new String(body, &quot;utf-8&quot;);
+            System.out.println(uuid + &quot;接收到消息——&quot; + msg );
+            try {
+                Thread.sleep(Math.round(Math.random()*2000));
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            } finally {
+                channel.basicAck(envelope.getDeliveryTag(), false);
+            }
+        }
+    };
+    channel.basicConsume(queueName, false, consumer);
+}
+</code></pre>
 
     </div>
     
@@ -417,7 +646,7 @@
           <a href="https://hisaige.github.io/categories/development/"> Development </a>
           
         </div>
-      <span class="more-meta"> 3494 words </span>
+      <span class="more-meta"> 3491 words </span>
       <span class="more-meta"> 7 min read </span>
       
       
@@ -430,7 +659,7 @@
     <div class="post-summary">
       
 
-<h1>数据库之druid两种比较稳的配置方式</h1>
+<h1>数据库之druid的两种配置方式</h1>
 
 <h1 id="1-方式一">1. 方式一</h1>
 
@@ -1444,253 +1673,18 @@ public String toString() {
   <header class="post-header">
     <h1 class="post-title">
       
-      <a class="post-link" href="/post/docs/math-preview/">Math Preview</a>
+      <a class="post-link" href="/post/tool/linux%E4%B8%8Bgitnodejsnpm%E5%AE%89%E8%A3%85/">linux下git&amp;nodejs&amp;npm安装</a>
     </h1>
     
     <div class="post-meta">
-      <time datetime="2019-03-04" class="post-time">
-        2019-03-04
+      <time datetime="2014-09-28" class="post-time">
+        2014-09-28
       </time>
       <div class="post-category">
-          <a href="https://hisaige.github.io/categories/docs/"> docs </a>
-          <a href="https://hisaige.github.io/categories/math/"> math </a>
-          <a href="https://hisaige.github.io/categories/index/"> index </a>
+          <a href="https://hisaige.github.io/categories/tool/"> Tool </a>
           
         </div>
-      <span class="more-meta"> 649 words </span>
-      <span class="more-meta"> 4 min read </span>
-      
-      
-      
-    </div>
-  </header>
-  
-  <div class="post-content">
-    
-    <div class="post-summary">
-      <p><a href="https://www.intmath.com/cg5/katex-mathjax-comparison.php">KaTeX and MathJax Comparison Demo, currently processed as KaTex</a></p>
-
-<h2 id="repeating-fractions">Repeating fractions</h2>
-
-<p><span  class="math">\[
-\frac{1}{\Bigl(\sqrt{\phi \sqrt{5}}-\phi\Bigr) e^{\frac25 \pi}} \equiv 1+\frac{e^{-2\pi}} {1+\frac{e^{-4\pi}} {1+\frac{e^{-6\pi}} {1+\frac{e^{-8\pi}} {1+\cdots} } } }
-\]</span></p>
-
-<h2 id="summation-notation">Summation notation</h2>
-
-<p><span  class="math">\[
-\left( \sum_{k=1}^n a_k b_k \right)^2 \leq \left( \sum_{k=1}^n a_k^2 \right) \left( \sum_{k=1}^n b_k^2 \right)
-\]</span></p>
-
-<h2 id="sum-of-a-series">Sum of a Series</h2>
-
-<p>I broke up the next two examples into separate lines so it behaves better on a mobile phone. That's why they include \displaystyle.</p>
-
-<p><span  class="math">\[
-\displaystyle\sum_{i=1}^{k+1}i
-\]</span></p>
-
-<p><span  class="math">\[
-\displaystyle= \left(\sum_{i=1}^{k}i\right) +(k+1)
-\]</span></p>
-
-<p><span  class="math">\[
-\displaystyle= \frac{k(k+1)}{2}+k+1
-\]</span></p>
-
-<p><span  class="math">\[
-\displaystyle= \frac{k(k+1)+2(k+1)}{2}
-\]</span></p>
-
-<p><span  class="math">\[
-\displaystyle= \frac{(k+1)(k+2)}{2}
-\]</span></p>
-
-<p><span  class="math">\[
-\displaystyle= \frac{(k+1)((k+1)+1)}{2}
-\]</span></p>
-
-<h2 id="product-notation">Product notation</h2>
-
-<p><span  class="math">\[
-\displaystyle 1 + \frac{q^2}{(1-q)}+\frac{q^6}{(1-q)(1-q^2)}+\cdots = \displaystyle \prod_{j=0}^{\infty}\frac{1}{(1-q^{5j+2})(1-q^{5j+3})}, \displaystyle\text{ for }\lvert q\rvert < 1.
-\]</span></p>
-
-<h2 id="inline-math">Inline math</h2>
-
-<p>And here is some in-line math: <span  class="math">\( k_{n+1} = n^2 + k_n^2 - k_{n-1} \)</span> , followed by some more text.</p>
-
-<h2 id="greek-letters">Greek Letters</h2>
-
-<p><span  class="math">\[
-\Gamma\ \Delta\ \Theta\ \Lambda\ \Xi\ \Pi\ \Sigma\ \Upsilon\ \Phi\ \Psi\ \Omega
-\alpha\ \beta\ \gamma\ \delta\ \epsilon\ \zeta\ \eta\ \theta\ \iota\ \kappa\ \lambda\ \mu\ \nu\ \xi \ \omicron\ \pi\ \rho\ \sigma\ \tau\ \upsilon\ \phi\ \chi\ \psi\ \omega\ \varepsilon\ \vartheta\ \varpi\ \varrho\ \varsigma\ \varphi
-\]</span></p>
-
-<h2 id="arrows">Arrows</h2>
-
-<p><span  class="math">\[
-\gets\ \to\ \leftarrow\ \rightarrow\ \uparrow\ \Uparrow\ \downarrow\ \Downarrow\ \updownarrow\ \Updownarrow
-\]</span></p>
-
-<p><span  class="math">\[
-\Leftarrow\ \Rightarrow\ \leftrightarrow\ \Leftrightarrow\ \mapsto\ \hookleftarrow
-\leftharpoonup\ \leftharpoondown\ \rightleftharpoons\ \longleftarrow\ \Longleftarrow\ \longrightarrow
-\]</span></p>
-
-<p><span  class="math">\[
-\Longrightarrow\ \longleftrightarrow\ \Longleftrightarrow\ \longmapsto\ \hookrightarrow\ \rightharpoonup
-\]</span></p>
-
-<p><span  class="math">\[
-\rightharpoondown\ \leadsto\ \nearrow\ \searrow\ \swarrow\ \nwarrow
-\]</span></p>
-
-<h2 id="symbols">Symbols</h2>
-
-<p><span  class="math">\[
-\surd\ \barwedge\ \veebar\ \odot\ \oplus\ \otimes\ \oslash\ \circledcirc\ \boxdot\ \bigtriangleup
-\]</span></p>
-
-<p><span  class="math">\[
-\bigtriangledown\ \dagger\ \diamond\ \star\ \triangleleft\ \triangleright\ \angle\ \infty\ \prime\ \triangle
-\]</span></p>
-
-<h2 id="calculus">Calculus</h2>
-
-<p><span  class="math">\[
-\int u \frac{dv}{dx}\,dx=uv-\int \frac{du}{dx}v\,dx
-\]</span></p>
-
-<p><span  class="math">\[
-f(x) = \int_{-\infty}^\infty \hat f(\xi)\,e^{2 \pi i \xi x}
-\]</span></p>
-
-<p><span  class="math">\[
-\oint \vec{F} \cdot d\vec{s}=0
-\]</span></p>
-
-<h2 id="lorenz-equations">Lorenz Equations</h2>
-
-<p><span  class="math">\[
-\begin{aligned} \dot{x} & = \sigma(y-x) \\ \dot{y} & = \rho x - y - xz \\ \dot{z} & = -\beta z + xy \end{aligned}
-\]</span></p>
-
-<h2 id="cross-product">Cross Product</h2>
-
-<p>This works in KaTeX, but the separation of fractions in this environment is not so good.</p>
-
-<p><span  class="math">\[
-\mathbf{V}_1 \times \mathbf{V}_2 = \begin{vmatrix} \mathbf{i} & \mathbf{j} & \mathbf{k} \\ \frac{\partial X}{\partial u} & \frac{\partial Y}{\partial u} & 0 \\ \frac{\partial X}{\partial v} & \frac{\partial Y}{\partial v} & 0 \end{vmatrix}
-\]</span></p>
-
-<p>Here's a workaround: make the fractions smaller with an extra class that targets the spans with &quot;mfrac&quot; class (makes no difference in the MathJax case):</p>
-
-<p><span  class="math">\[
-\mathbf{V}_1 \times \mathbf{V}_2 = \begin{vmatrix} \mathbf{i} & \mathbf{j} & \mathbf{k} \\ \frac{\partial X}{\partial u} & \frac{\partial Y}{\partial u} & 0 \\ \frac{\partial X}{\partial v} & \frac{\partial Y}{\partial v} & 0 \end{vmatrix}
-\]</span></p>
-
-<h2 id="accents">Accents</h2>
-
-<p><span  class="math">\[
-\hat{x}\ \vec{x}\ \ddot{x}
-\]</span></p>
-
-<h2 id="stretchy-brackets">Stretchy brackets</h2>
-
-<p><span  class="math">\[
-\left(\frac{x^2}{y^3}\right)
-\]</span></p>
-
-<h2 id="evaluation-at-limits">Evaluation at limits</h2>
-
-<p><span  class="math">\[
-\left.\frac{x^3}{3}\right|_0^1
-\]</span></p>
-
-<h2 id="case-definitions">Case definitions</h2>
-
-<p><span  class="math">\[
-f(n) = \begin{cases} \frac{n}{2}, & \text{if } n\text{ is even} \\ 3n+1, & \text{if } n\text{ is odd} \end{cases}
-\]</span></p>
-
-<h2 id="maxwells-equations">Maxwell's Equations</h2>
-
-<p><span  class="math">\[
-\begin{aligned} \nabla \times \vec{\mathbf{B}} -\, \frac1c\, \frac{\partial\vec{\mathbf{E}}}{\partial t} & = \frac{4\pi}{c}\vec{\mathbf{j}} \\ \nabla \cdot \vec{\mathbf{E}} & = 4 \pi \rho \\ \nabla \times \vec{\mathbf{E}}\, +\, \frac1c\, \frac{\partial\vec{\mathbf{B}}}{\partial t} & = \vec{\mathbf{0}} \\ \nabla \cdot \vec{\mathbf{B}} & = 0 \end{aligned}
-\]</span></p>
-
-<p>These equations are quite cramped. We can add vertical spacing using (for example) [1em] after each line break (\). as you can see here:</p>
-
-<p><span  class="math">\[
-\begin{aligned} \nabla \times \vec{\mathbf{B}} -\, \frac1c\, \frac{\partial\vec{\mathbf{E}}}{\partial t} & = \frac{4\pi}{c}\vec{\mathbf{j}} \\[1em] \nabla \cdot \vec{\mathbf{E}} & = 4 \pi \rho \\[0.5em] \nabla \times \vec{\mathbf{E}}\, +\, \frac1c\, \frac{\partial\vec{\mathbf{B}}}{\partial t} & = \vec{\mathbf{0}} \\[1em] \nabla \cdot \vec{\mathbf{B}} & = 0 \end{aligned}
-\]</span></p>
-
-<h2 id="statistics">Statistics</h2>
-
-<p>Definition of combination:</p>
-
-<p><span  class="math">\[
-\frac{n!}{k!(n-k)!} = {^n}C_k
-{n \choose k}
-\]</span></p>
-
-<h2 id="fractions-on-fractions">Fractions on fractions</h2>
-
-<p><span  class="math">\[
-\frac{\frac{1}{x}+\frac{1}{y}}{y-z}
-\]</span></p>
-
-<h2 id="nth-root">n-th root</h2>
-
-<p><span  class="math">\[
-\sqrt[n]{1+x+x^2+x^3+\ldots}
-\]</span></p>
-
-<h2 id="matrices">Matrices</h2>
-
-<p><span  class="math">\[
-\begin{pmatrix} a_{11} & a_{12} & a_{13}\\ a_{21} & a_{22} & a_{23}\\ a_{31} & a_{32} & a_{33} \end{pmatrix}
-\begin{bmatrix} 0 & \cdots & 0 \\ \vdots & \ddots & \vdots \\ 0 & \cdots & 0 \end{bmatrix}
-\]</span></p>
-
-<h2 id="punctuation">Punctuation</h2>
-
-<p><span  class="math">\[
-f(x) = \sqrt{1+x} \quad (x \ge -1)
-f(x) \sim x^2 \quad (x\to\infty)
-\]</span></p>
-
-<p>Now with punctuation:</p>
-
-<p><span  class="math">\[
-f(x) = \sqrt{1+x}, \quad x \ge -1
-f(x) \sim x^2, \quad x\to\infty
-\]</span></p>
-    </div>
-    
-  </div>
-</article>
-
-  
-    <article class="post bg-white">
-  <header class="post-header">
-    <h1 class="post-title">
-      
-      <a class="post-link" href="/post/docs/shortcodes-preview/">Shortcodes Preview</a>
-    </h1>
-    
-    <div class="post-meta">
-      <time datetime="2018-03-04" class="post-time">
-        2018-03-04
-      </time>
-      <div class="post-category">
-          <a href="https://hisaige.github.io/categories/docs/"> docs </a>
-          <a href="https://hisaige.github.io/categories/shortcodes/"> shortcodes </a>
-          <a href="https://hisaige.github.io/categories/index/"> index </a>
-          
-        </div>
-      <span class="more-meta"> 405 words </span>
+      <span class="more-meta"> 771 words </span>
       <span class="more-meta"> 2 min read </span>
       
       
@@ -1701,415 +1695,114 @@ f(x) \sim x^2, \quad x\to\infty
   <div class="post-content">
     
     <div class="post-summary">
-      <h2 id="what-a-shortcode-is">What a Shortcode is</h2>
-
-<p>Hugo loves Markdown because of its simple content format, but there are times when Markdown falls short. Often, content authors are forced to add raw HTML (e.g., video <code>&lt;iframes&gt;</code>) to Markdown content. We think this contradicts the beautiful simplicity of Markdown&rsquo;s syntax.</p>
-
-<p>Hugo created <strong>shortcodes</strong> to circumvent these limitations.</p>
-
-<p>A shortcode is a simple snippet inside a content file that Hugo will render using a predefined template. Note that shortcodes will not work in template files. If you need the type of drop-in functionality that shortcodes provide but in a template, you most likely want a [partial template][partials] instead.</p>
-
-<p>In addition to cleaner Markdown, shortcodes can be updated any time to reflect new classes, techniques, or standards. At the point of site generation, Hugo shortcodes will easily merge in your changes. You avoid a possibly complicated search and replace operation.</p>
-
-<p>More details: <a href="https://gohugo.io/content-management/shortcodes/">https://gohugo.io/content-management/shortcodes/</a></p>
-
-<h2 id="blockquotes">blockquotes</h2>
-
-<p>Normal quote:
-
-
-
-
-
-
-
-
-
-
-
-  
-
-
-
-
-
-  
-
-
-<blockquote>
-  <p>This is a simple quote.</p>
-  <footer>
-    <strong></strong>
-    
       
-        
-      
-    
-  </footer>
-</blockquote>
-</p>
 
-<p>Quote with author:
+<h1>linux下git&nodeJS&npm安装&hugo部署</h1>
 
+<h2 id="1-git-安装">1. git 安装</h2>
 
+<p>1.安装前检查</p>
 
+<pre><code class="language-shell">#1.查看git版本,如果能出版本号，说明git已经安装，酌情考虑是否需要重新安装
+git --version
+#2.卸载git
+yum remove git
 
-
-
-
-
-
-
-
-  
-  
-  
-  
-
-
-
-
-
-  
-
-
-<blockquote>
-  <p>This is a quote with only an Author named Author2.</p>
-  <footer>
-    <strong>Author2</strong>
-    
-      
-        
-      
-    
-  </footer>
-</blockquote>
-</p>
-
-<p>Quote with author and source:
-
-
-
-
-
-
-
-
-
-
-
-  
-  
-  
-  
-
-
-
-
-
-  
-
-
-<blockquote>
-  <p>This is a quote from Author3 and source &ldquo;source.&rdquo;</p>
-  <footer>
-    <strong>Author3</strong>
-    
-      <cite>Source</cite>
-    
-  </footer>
-</blockquote>
-</p>
-
-<p>Quote with author and link:
-
-
-
-
-
-
-
-
-
-
-
-  
-  
-  
-  
-
-
-
-
-
-      
-      
-      
-    
-     
-      
-    
-    
-
-    
-    
-  
-
-
-<blockquote>
-  <p>This is a quote from Author4 and links to <a href="https://www.google.com">https://www.google.com</a>.</p>
-  <footer>
-    <strong>Author4</strong>
-    
-      
-        <cite>
-          <a href="https://www.google.com" title="https://www.google.com">google.com</a> 
-        </cite>
-      
-    
-  </footer>
-</blockquote>
-</p>
-
-<p>Quote with author, link and title:
-
-
-
-
-
-
-
-
-
-
-
-  
-  
-  
-  
-
-
-
-
-
-  
-
-
-<blockquote>
-  <p>This is a quote from Author5 and links to <a href="https://www.google.com">https://www.google.com</a> with title &ldquo;Google.&rdquo;</p>
-  <footer>
-    <strong>Author5</strong>
-    
-      
-        <cite>
-          <a href="https://www.google.com" title="https://www.google.com">Google</a> 
-        </cite>
-      
-    
-  </footer>
-</blockquote>
-</p>
-
-<p>Quote with author and a link longer than 32 characters, string is first cut at 32 characters then everything after the last forward slash is removed
-
-
-
-
-
-
-
-
-
-
-
-  
-  
-  
-  
-
-
-
-
-
-      
-      
-      
-    
-     
-      
-    
-    
-
-    
-    
-         
-         
-         
-
-         
-        
-        
-        
-        
-      
-      
-    
-  
-
-
-<blockquote>
-  <p>This is a quote from Author5 and links to <a href="https://twitter.com/CryptoGangsta/status/716427930126196737">https://twitter.com/CryptoGangsta/status/716427930126196737</a> which is longer than 32 characters.
-  <br>And this is a new line in the quote with the HTML br tag.</p>
-  <footer>
-    <strong>Author6</strong>
-    
-      
-        <cite>
-          <a href="https://twitter.com/CryptoGangsta/status/716427930126196737" title="https://twitter.com/CryptoGangsta/status/716427930126196737">twitter.com/CryptoGangsta/...</a> 
-        </cite>
-      
-    
-  </footer>
-</blockquote>
-</p>
-
-<p>Test from the Octopress blockquote page at: <a href="http://octopress.org/docs/plugins/blockquote/">http://octopress.org/docs/plugins/blockquote/</a>
-
-
-
-
-
-
-
-
-
-
-
-  
-  
-  
-  
-
-
-
-
-
-      
-      
-      
-    
-     
-      
-    
-    
-
-    
-    
-         
-         
-         
-
-         
-        
-        
-        
-        
-        
-        
-      
-      
-    
-  
-
-
-<blockquote>
-  <p>Over the past 24 hours I&rsquo;ve been reflecting on my life &amp; I&rsquo;ve realized only one thing. I need a medieval battle axe.</p>
-  <footer>
-    <strong>@allanbranch</strong>
-    
-      
-        <cite>
-          <a href="https://twitter.com/allanbranch/status/90766146063712256" title="https://twitter.com/allanbranch/status/90766146063712256">twitter.com/allanbranch/status/...</a> 
-        </cite>
-      
-    
-  </footer>
-</blockquote>
-</p>
-
-<h2 id="music">music</h2>
-
-<p><iframe style="max-width: 100%"
-      class="music163"
-      frameborder="no"
-      border="0"
-      marginwidth="0"
-      marginheight="0"
-      width="330"
-      height="86"
-      src="//music.163.com/outchain/player?type=2&id=3950552&auto=0&height=66">
-    </iframe></p>
-
-<h2 id="gist">gist</h2>
-
-<p>We can embed the gist in our content via username and gist ID pulled from the URL:</p>
-
-<pre><code>{{&lt; gist spf13 7896402 &gt;}}
 </code></pre>
 
-<p>Display:</p>
+<p>下载 <a href="https://github.com/git/git/releases/" title="git官方下载地址">git</a> ，然后解压，编译安装，配置。</p>
 
-<script type="application/javascript" src="https://gist.github.com/spf13/7896402.js"></script>
+<pre><code class="language-shell">#在local下建立git文件夹 查看当前目录 我的控制台打印出 /usr/local/git 
+pwd
 
+# shell下载
+wget https://github.com/git/git/archive/v2.23.0.tar.gz
 
-<h2 id="expand">expand</h2>
+# 解压
+tar -xzvf git-2.18.1.tar.gz
 
-<p>The Expand shortcode displays an expandable/collapsible section of text on your page. Here is an example</p>
+#进入解压目录
+cd git-2.18.1
 
-<details>
-  <summary style="background-color:#f5f5f5;border:1px solid #ccc;padding:5px;">
-    Is this learn theme rocks ?
-    
-  </summary>
-  
-Yes !.
+#配置git安装路径
+./configure prefix=/usr/local/git/git-2.18.1
 
-</details>
+#编译安装
+make &amp;&amp; make install
 
+#注意 如果安装失败，则执行以下指令安装依赖包
+yum install curl-devel expat-devel gettext-devel openssl-devel zlib-devel 
+yum install gcc-c++ perl-ExtUtils-MakeMaker
 
-<h3 id="usage">Usage</h3>
+#最后配置环境变量，将git的运行指令添加到环境变量中
+    # 在 /etc/profile 最后一行加入
+    export PATH=$PATH:/usr/local/git/bin
+ #或
+ 	echo &quot;export PATH=$PATH:/usr/git/bin&quot; &gt;&gt; /etc/profile
 
-<p>this shortcode takes exactly one optional parameter to define the text that appears next to the expand/collapse icon. (default is “Click to expand”)</p>
+#使配置生效
+source /etc/profile
 
-<pre><code>{{&lt; expand &quot;Is this learn theme rocks ?&quot; &gt;}}
-Yes !.
-{{&lt; /expand &gt;}}
+# 查看git版本 
+git --version
+
 </code></pre>
 
-<h2 id="youtube">youtube</h2>
+<h2 id="2-nodejs-npm">2. nodejs&amp;npm</h2>
 
+<p>根据需要下载 <a href="https://nodejs.org/en/download/current/" title="node官方下载地址">nodeJs</a> ，解压。以我的运行环境为例。</p>
 
-<div style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden;">
-  <iframe src="//www.youtube.com/embed/w7Ft2ymGmfc" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border:0;" allowfullscreen title="YouTube Video"></iframe>
-</div>
+<pre><code class="language-shell">[root@localhost node]# ls
+node-v12.9.1-linux-x64  node-v12.9.1-linux-x64.tar.xz
+[root@localhost node]# cd node-v12.9.1-linux-x64/
+[root@localhost node-v12.9.1-linux-x64]# ls
+bin  CHANGELOG.md  include  lib  LICENSE  README.md  share
+[root@localhost node-v12.9.1-linux-x64]# cd bin
+[root@localhost bin]# ls
+node  npm  npx
+</code></pre>
 
+<p>配置软连接</p>
 
-<h2 id="vimeo">vimeo</h2>
+<pre><code class="language-shell">[root@localhost bin]# ln -s /usr/local/node/node-v12.9.1-linux-x64/bin/npm   /usr/local/bin/
+[root@localhost bin]# ln -s /usr/local/node/node-v12.9.1-linux-x64/bin/npm   /usr/local/bin/
+</code></pre>
 
+<p>安装成功，查看版本</p>
 
-<div style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden;">
-  <iframe src="//player.vimeo.com/video/146022717" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border:0;" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
- </div>
+<pre><code class="language-shell">[root@localhost bin]# node -v
+v12.9.1
+[root@localhost bin]# npm -v
+6.10.2
+</code></pre>
 
+<h2 id="3-hugo安装及github部署">3. hugo安装及github部署</h2>
 
-<h2 id="youku">youku</h2>
+<p>到 <a href="https://github.com/spf13/hugo/releases">Hugo Releases</a> 下载 <code>*Linux-64bit.tar.gz</code> 压缩包放置到 <code>/usr/local/hugo</code>下解压，生成一个名为 <code>hugo</code>的可执行文件。主题本人使用的是 <a href="https://github.com/xianmin/hugo-theme-jane">hugo-theme-jane</a> ，hugo网站创建的具体步骤可参考github上jane的教程说明。在这里主要讲的是github部署。</p>
 
+<p>首先在github上创建一个名为 <code>xxx.github.io</code>的仓库，其中 <code>xxx</code> 为你的github用户名。然后将你hugo目录下的public文件夹通过git上传到github上即可。可参考如下过程:</p>
 
+<pre><code class="language-shell">$ mkdir /usr/blog/git
+$ git clone '刚你创建的空仓库'
+$ cd /usr/local/hugo/myblog/public
+$ cp -r . /usr/blog/git
+$ cd /usr/blog/git/
+$ git add .
+$ git commit -m &quot;初始化hugo&quot;
+$ git push origin master
+</code></pre>
 
-<div style="position: relative; padding-bottom: 56.25%; padding-top: 30px; height: 0; overflow: hidden;">
-    <iframe src="https://player.youku.com/embed/XMzQ0ODUxMjM2NA?autoplay=0" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;" allowfullscreen frameborder="0" title="YouKu Video">
-    </iframe>
-</div>
+<p>在启动hugo生成站点时，需要注意 一般的启动方式<code>hugo server</code>并不适用于远程部署。</p>
+
+<p>如果要部署到github，可参考如下编译方式：</p>
+
+<pre><code class="language-shell"># jane 是主题名，记住 .io/ 中的 / 不能缺少
+hugo --theme=jane --baseUrl=https://xxx.github.io/
+
+# 如果hugo指令不能用，可以配置环境变量或者软连接
+[root@localhost bin]# ln -s /usr/local/hugo/hugo /usr/local/bin/
+</code></pre>
+
     </div>
     
   </div>
@@ -2120,21 +1813,16 @@ Yes !.
   <header class="post-header">
     <h1 class="post-title">
       
-      <a class="post-link" href="/post/docs/image-preview/">Image Preview</a>
+      <a class="post-link" href="/post/development/linux%E5%AD%A6%E4%B9%A0/"></a>
     </h1>
     
     <div class="post-meta">
-      <time datetime="2018-03-03" class="post-time">
-        2018-03-03
+      <time datetime="0001-01-01" class="post-time">
+        0001-01-01
       </time>
-      <div class="post-category">
-          <a href="https://hisaige.github.io/categories/docs/"> docs </a>
-          <a href="https://hisaige.github.io/categories/shortcodes/"> shortcodes </a>
-          <a href="https://hisaige.github.io/categories/index/"> index </a>
-          
-        </div>
-      <span class="more-meta"> 527 words </span>
-      <span class="more-meta"> 3 min read </span>
+      
+      <span class="more-meta"> 1 words </span>
+      <span class="more-meta"> 1 min read </span>
       
       
       
@@ -2144,114 +1832,9 @@ Yes !.
   <div class="post-content">
     
     <div class="post-summary">
-      <p>Thanks for <a href="https://github.com/liwenyip/hugo-easy-gallery">liwenyip/hugo-easy-gallery</a> &amp; <a href="https://github.com/xianmin/hugo-theme-jane/pull/48">Zebradil · Pull Request #48</a> .</p>
+      <h1>linux学习</h1>
 
-<p>Now, we could use <code>{{&lt; gallery &gt;}}</code> shortcode in hugo-theme-jane.</p>
 
-<h2 id="normal-image">Normal Image</h2>
-
-<p>This is an image in <code>static/image</code> folder.</p>
-
-<pre><code class="language-markdown">![This is an image in `static/image` folder.](/image/example.jpg)
-</code></pre>
-
-<h2 id="figure-shortcode"><code>{{&lt; figure &gt;}}</code> shortcode</h2>
-
-<h3 id="figure-image-with-title">figure image with title</h3>
-
-<pre><code>{{&lt; figure src=&quot;/image/example.jpg&quot; title=&quot;figure image with title&quot; &gt;}}
-</code></pre>
-
-<h3 id="figure-image-with-caption">figure image with caption</h3>
-
-<pre><code>{{&lt; figure src=&quot;/image/example.jpg&quot; caption=&quot;figure image with caption figure image with caption figure image with caption figure image with caption figure image with caption&quot; &gt;}}
-</code></pre>
-
-<h3 id="more-figure-shortcode-usage">more <code>{{&lt; figure &gt;}}</code> shortcode usage</h3>
-
-<p>Specifying your image files:</p>
-
-<ul>
-<li><code>{{&lt; figure src=&quot;thumb.jpg&quot; link=&quot;image.jpg&quot; &gt;}}</code> will use <code>thumb.jpg</code> for thumbnail and <code>image.jpg</code> for lightbox</li>
-<li><code>{{&lt; figure src=&quot;image.jpg&quot; &gt;}}</code> or <code>{{&lt; figure link=&quot;image.jpg&quot; &gt;}}</code> will use <code>image.jpg</code> for both thumbnail and lightbox</li>
-<li><code>{{&lt; figure link=&quot;image.jpg&quot; thumb=&quot;-small&quot; &gt;}}</code> will use <code>image-small.jpg</code> for thumbnail and <code>image.jpg</code> for lightbox</li>
-</ul>
-
-<p>Optional parameters:</p>
-
-<ul>
-<li>All the <a href="https://gohugo.io/extras/shortcodes">features/parameters</a> of Hugo&rsquo;s built-in <code>figure</code> shortcode work as normal, i.e. src, link, title, caption, class, attr (attribution), attrlink, alt</li>
-<li><code>size</code> (e.g. <code>size=&quot;1024x768&quot;</code>) pre-defines the image size for PhotoSwipe. Use this option if you don&rsquo;t want to pre-load the linked image to determine its size.</li>
-<li><code>class</code> allows you to set any custom classes you want on the <code>&lt;figure&gt;</code> tag.</li>
-</ul>
-
-<p>Optional parameters for standalone <code>{{&lt; figure &gt;}}</code> shortcodes only (i.e. don&rsquo;t use on <code>{{&lt; figure &gt;}}</code> inside <code>{{&lt; gallery &gt;}}</code> - strange things may happen if you do):</p>
-
-<ul>
-<li><code>caption-position</code> and <code>caption-effect</code> work the same as for the <code>{{&lt; gallery &gt;}}</code> shortcode (see below).</li>
-<li><code>width</code> defines the <a href="https://www.w3schools.com/cssref/pr_dim_max-width.asp"><code>max-width</code></a> of the image displayed on the page. If using a thumbnail for a standalone figure, set this equal to your thumbnail&rsquo;s native width to make the captions behave properly (or feel free to come up with a better solution and submit a pull request :-)). Also use this option if you don&rsquo;t have a thumbnail and you don&rsquo;t want the hi-res image to take up the entire width of the screen/container.</li>
-<li><code>class=&quot;no-photoswipe&quot;</code> prevents a <code>&lt;figure&gt;</code> from being loaded into PhotoSwipe. If you click on the figure you&rsquo;ll instead a good ol&rsquo; fashioned hyperlink to a bigger image (or - if you haven&rsquo;t specified a bigger image - the same one).</li>
-</ul>
-
-<h2 id="gallery-shortcode"><code>{{&lt; gallery &gt;}}</code> shortcode</h2>
-
-<h3 id="simple-gallery">simple gallery</h3>
-
-<p>To specify a directory of image files:</p>
-
-<pre><code>{{&lt; gallery dir=&quot;/img/your-directory-of-images/&quot; &gt;}}
-</code></pre>
-
-<ul>
-<li>The images are automatically captioned with the file name.</li>
-<li><code>[image].jpg</code> is used for the hi-res image, and <code>[image]-thumb.jpg</code> is used for the thumbnails.</li>
-<li>If <code>[image]-thumb.jpg</code> doesn&rsquo;t exist, then <code>[image].jpg</code> will be used for both hi-res and thumbnail images.</li>
-<li>The default thumbnail suffix is <code>-thumb</code>, but you can specify a different one e.g. <code>thumb=&quot;-small&quot;</code> or <code>thumb=&quot;_150x150&quot;</code>.</li>
-</ul>
-
-<h3 id="to-specify-individual-image-files">To specify individual image files</h3>
-
-<pre><code>{{&lt; gallery &gt;}}
-  {{&lt; figure src=&quot;image1.jpg&quot; &gt;}}
-  {{&lt; figure src=&quot;image2.jpg&quot; &gt;}}
-  {{&lt; figure src=&quot;image3.jpg&quot; &gt;}}
-{{&lt; /gallery &gt;}}
-</code></pre>
-
-<p><strong>Optional parameters:</strong></p>
-
-<ul>
-<li><code>caption-position</code> - determines the captions&rsquo; position over the image. Options:
-
-<ul>
-<li><code>bottom</code> (default)</li>
-<li><code>center</code></li>
-<li><code>none</code> hides captions on the page (they will only show in PhotoSwipe)</li>
-</ul></li>
-<li><code>caption-effect</code> - determines if/how captions appear upon hover. Options:
-
-<ul>
-<li><code>slide</code> (default)</li>
-<li><code>fade</code></li>
-<li><code>none</code> (captions always visible)</li>
-</ul></li>
-<li><code>hover-effect</code> - determines if/how images change upon hover. Options:
-
-<ul>
-<li><code>zoom</code> (default)</li>
-<li><code>grow</code></li>
-<li><code>shrink</code></li>
-<li><code>slideup</code></li>
-<li><code>slidedown</code></li>
-<li><code>none</code></li>
-</ul></li>
-<li><code>hover-transition</code> - determines if/how images change upon hover. Options:
-
-<ul>
-<li>not set - smooth transition (default)</li>
-<li><code>none</code> - hard transition</li>
-</ul></li>
-</ul>
     </div>
     
   </div>
@@ -2289,18 +1872,6 @@ Yes !.
       
       <li  class="active" >
         <a href="/page/2/">2</a>
-      </li>
-      
-      <li >
-        <a href="/page/3/">3</a>
-      </li>
-      
-      <li >
-        <a href="/page/4/">4</a>
-      </li>
-      
-      <li >
-        <a href="/page/5/">5</a>
       </li>
       
     </ul>

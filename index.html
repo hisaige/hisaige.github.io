@@ -62,7 +62,7 @@
 <meta property="og:type" content="website" />
 <meta property="og:url" content="https://hisaige.github.io/" />
 
-<meta property="og:updated_time" content="2019-09-03T00:00:00+00:00" />
+<meta property="og:updated_time" content="2019-11-15T00:00:00+00:00" />
 <meta itemprop="name" content="目光呆滞的5741号代码搬运工">
 <meta itemprop="description" content="">
 
@@ -130,39 +130,6 @@
           
             <a class="menu-item-link" href="https://hisaige.github.io/about/">About</a>
           
-        
-      </li><li class="mobile-menu-item">
-        
-          
-          <div class="mobile-menu-parent">
-            <span class="mobile-submenu-open"></span>
-            <a href="https://hisaige.github.io/">
-              docs
-            </a>
-          </div>
-          <ul class="mobile-submenu-list">
-            
-              <li>
-                <a href="https://hisaige.github.io/post/docs/jane-theme-preview/">Jane Theme Preview</a>
-              </li>
-            
-              <li>
-                <a href="https://hisaige.github.io/post/docs/shortcodes-preview/">Shortcodes Preview</a>
-              </li>
-            
-              <li>
-                <a href="https://hisaige.github.io/post/docs/image-preview/">Image Preview</a>
-              </li>
-            
-              <li>
-                <a href="https://hisaige.github.io/post/docs/syntax-highlighting/">Syntax Highlighting</a>
-              </li>
-            
-              <li>
-                <a href="https://hisaige.github.io/post/docs/math-preview/">Math Preview</a>
-              </li>
-            
-          </ul>
         
       </li>
     
@@ -304,38 +271,6 @@
 
       </li>
     
-        <li class="menu-item">
-        
-          
-          <a class="menu-item-link menu-parent" href="https://hisaige.github.io/">docs</a>
-          <ul class="submenu">
-            
-              <li>
-                <a href="https://hisaige.github.io/post/docs/jane-theme-preview/">Jane Theme Preview</a>
-              </li>
-            
-              <li>
-                <a href="https://hisaige.github.io/post/docs/shortcodes-preview/">Shortcodes Preview</a>
-              </li>
-            
-              <li>
-                <a href="https://hisaige.github.io/post/docs/image-preview/">Image Preview</a>
-              </li>
-            
-              <li>
-                <a href="https://hisaige.github.io/post/docs/syntax-highlighting/">Syntax Highlighting</a>
-              </li>
-            
-              <li>
-                <a href="https://hisaige.github.io/post/docs/math-preview/">Math Preview</a>
-              </li>
-            
-          </ul>
-
-        
-
-      </li>
-    
 
     
     
@@ -405,28 +340,18 @@
   <header class="post-header">
     <h1 class="post-title">
       
-        <span class="post-pinned">
-          <svg class="icon" style="" viewBox="0 0 1024 1024" version="1.1"
-  width="32" height="32">
-  <path d="M682.666667 512V170.666667h42.666666V85.333333H298.666667v85.333334h42.666666v341.333333l-85.333333 85.333333v85.333334h221.866667v256h68.266666v-256H768v-85.333334l-85.333333-85.333333z"></path>
-</svg>
-
-        </span>
-      
-      <a class="post-link" href="/post/docs/jane-theme-preview/">Jane Theme Preview</a>
+      <a class="post-link" href="/post/docs/yapi%E9%83%A8%E7%BD%B2%E6%8C%87%E5%8D%97/">数据源配置</a>
     </h1>
     
     <div class="post-meta">
-      <time datetime="2018-10-01" class="post-time">
-        2018-10-01
+      <time datetime="2019-11-15" class="post-time">
+        2019-11-15
       </time>
       <div class="post-category">
           <a href="https://hisaige.github.io/categories/docs/"> docs </a>
-          <a href="https://hisaige.github.io/categories/shortcodes/"> shortcodes </a>
-          <a href="https://hisaige.github.io/categories/index/"> index </a>
           
         </div>
-      <span class="more-meta"> 1474 words </span>
+      <span class="more-meta"> 1411 words </span>
       <span class="more-meta"> 3 min read </span>
       
       
@@ -437,358 +362,1632 @@
   <div class="post-content">
     
     <div class="post-summary">
-      <p><strong>Markdown</strong> is created by <a href="http://daringfireball.net/">Daring Fireball</a>, the original guideline is <a href="http://daringfireball.net/projects/markdown/syntax">here</a>. Its syntax, however, varies between different parsers or editors.</p>
+      
 
-<p>Please note that HTML fragments in markdown source will be recognized but not parsed or rendered. Also, there may be small reformatting on the original markdown source code after saving.</p>
+<h1 align="center">
+    windows下node+mongodb+yapi安装教程
+</h1>
 
-<h2 id="paragraph-and-line-breaks">Paragraph and line breaks</h2>
+<h1 id="1-安装node">1. 安装node</h1>
 
-<p>A paragraph is simply one or more consecutive lines of text. In markdown source code, paragraphs are separated by more than one blank lines. In Typora, you only need to press <code>Return</code> to create a new paragraph.</p>
+<h2 id="1-1-登陆-node官网-https-nodejs-org-en-download-nodejs-下载windows解压版压缩包">1.1 登陆<a href="https://nodejs.org/en/download//" title="nodeJs">node官网</a>下载windows解压版压缩包</h2>
 
-<p>Press <code>Shift</code> + <code>Return</code> to create a single line break. However, most markdown parser will ignore single line break, to make other markdown parsers recognize your line break, you can leave two whitespace at the end of the line, or insert <code>&lt;br/&gt;</code>.</p>
+<h2 id="1-2-将node解压后的目录配置到环境变量">1.2 将node解压后的目录配置到环境变量</h2>
 
-<h2 id="headers">Headers</h2>
+<p>​   <img src="E:桌面文件备份笔记文档imgsnode环境变量.bmp" alt="node环境变量" /></p>
 
-<p>Headers use 1-6 hash characters at the start of the line, corresponding to header levels 1-6. For example:</p>
+<h2 id="1-3-查看安装版本">1.3 查看安装版本</h2>
 
-<pre><code class="language-markdown"># This is an H1
+<p>​   <img src="E:桌面文件备份笔记文档imgsnode查看安装版本.bmp" alt="node查看安装版本" /></p>
 
-## This is an H2
-
-###### This is an H6
-</code></pre>
-
-<p>In typora, input ‘#’s followed by title content, and press <code>Return</code> key will create a header.</p>
-
-<h2 id="blockquotes">Blockquotes</h2>
-
-<p>Markdown uses email-style &gt; characters for block quoting. They are presented as:</p>
-
-<blockquote>
-<p>This is a blockquote with two paragraphs. This is first paragraph.</p>
-
-<p>This is second pragraph.Vestibulum enim wisi, viverra nec, fringilla in, laoreet vitae, risus.</p>
-
-<p>This is another blockquote with one paragraph. There is three empty line to seperate two blockquote.</p>
-
-<p>这是一段中文测试。</p>
-</blockquote>
-
-<p>In typora, just input ‘&gt;’ followed by quote contents a block quote is  generated. Typora will insert proper ‘&gt;’ or line break for you. Block quote inside anther block quote is allowed by adding additional levels of ‘&gt;’.</p>
-
-<h2 id="lists">Lists</h2>
-
-<p>Input <code>* list item 1</code> will create an un-ordered list, the <code>*</code> symbol can be replace with <code>+</code> or <code>-</code>.</p>
-
-<p>Input <code>1. list item 1</code> will create an ordered list, their markdown source code is like:</p>
-
-<ul>
-<li>Red</li>
-<li>Green</li>
-<li>Blue</li>
-</ul>
+<h2 id="1-4-配置node">1.4 配置node</h2>
 
 <ol>
-<li>Red</li>
-<li>Green</li>
-<li>Blue</li>
+<li><p>安装目录下新建两个文件夹node-cache 和node-global. 注意安装路径不要有空格</p></li>
+
+<li><p>运行如下命令配置,即配置完毕</p>
+
+<pre><code class="language-yml">npm config set cache &quot;E:\nodeInstall\node-v10.15.3-win-x64\node-cache&quot;
+npm config set prefix &quot;E:\nodeInstall\node-v10.15.3-win-x64\node-global&quot;
+</code></pre></li>
 </ol>
 
-<h2 id="task-list">Task List</h2>
+<h2 id="1-5-安装pm2-pm2是运行node程序的强大插件">1.5 安装PM2，PM2是运行node程序的强大插件</h2>
 
-<p>Task lists are lists with items marked as either <code>[ ]</code> or <code>[x]</code> (incomplete or complete). For example:</p>
-
-<ul class="task-list">
-<li><label><input type="checkbox" disabled class="task-list-item"> a task list item</label></li>
-<li><label><input type="checkbox" disabled class="task-list-item"> list syntax required</label></li>
-<li><label><input type="checkbox" disabled class="task-list-item"> normal <strong>formatting</strong>, @mentions, #1234 refs</label></li>
-<li><label><input type="checkbox" disabled class="task-list-item"> incomplete</label></li>
-<li><label><input type="checkbox" checked disabled class="task-list-item"> completed</label></li>
-</ul>
-
-<p>You can change the complete/incomplete state by click the checkbox before the item.</p>
-
-<h2 id="syntax-highlighting">Syntax Highlighting</h2>
-
-<pre><code class="language-js">function helloWorld () {
-  alert(&quot;Hello, World!&quot;)
-}
+<pre><code class="language-java">npm install pm2@latest -g
 </code></pre>
 
-<pre><code class="language-java">public class HelloWorld {
-  public static void main(String[] args) {
-    System.out.println(&quot;Hello, World!&quot;);
+<p>安装完后配置环境变量，将node-global目录配置到path中即可。</p>
+
+<h2 id="1-6-pm2启动">1.6 PM2启动</h2>
+
+<pre><code class="language-java">//PM2启动yapi指令：
+pm2 start server/app.js --watch
+//PM2关闭yapi指令
+pm2 stop server/app.js --watch
+</code></pre>
+
+<p><code>--watch</code> 方式启动yapi，永久守护这个yapi进程，避免服务不稳定网站挂掉。</p>
+
+<h1 id="2-安装mongodb">2. 安装mongoDB</h1>
+
+<h2 id="2-1-到-mongodb官网-https-www-mongodb-com-download-center-community-mongodb官网-下载mongodb压缩版安装包">2.1 到<a href="https://www.mongodb.com/download-center/community" title="mongoDB官网">mongoDB官网</a> 下载mongoDB压缩版安装包</h2>
+
+<h2 id="2-2-配置mongodb环境变量">2.2 配置mongoDB环境变量</h2>
+
+<p>​   <img src="E:桌面文件备份笔记文档imgsmongoDB配置环境变量.bmp" alt="" /></p>
+
+<h2 id="2-3-mongodb配置">2.3 mongoDB配置,</h2>
+
+<p>在bin目录下新增mongoDB配置文件<code>mongo.conf</code></p>
+
+<pre><code class="language-yml">dbpath=D:\Program Files\mongodb\mongodb4.0.6\MongoDBData  #数据库路径  
+
+logpath=D:\Program Files\mongodb\mongodb4.0.6\mongo.log #日志输出文件路径
+
+logappend=true #错误日志采用追加模式                                                
+
+journal=true #启用日志文件，默认启用  
+
+quiet=true #这个选项可以过滤掉一些无用的日志信息，若需要调试使用请设置为false  
+
+port=27017 #端口号 默认为2701
+</code></pre>
+
+<p>运行CMD, 输入<code>mongod --config &quot;D:\Program Files\mongodb\mongodb4.0.6\bin\mongo.conf&quot; --install --serviceName &quot;MongoDB&quot;</code>将mongoDB安装到服务，启动服务，在浏览器输入localhost:27017如果出现以下信息即表示安装成功。</p>
+
+<pre><code class="language-txt">It looks like you are trying to access MongoDB over HTTP on the native driver port.
+</code></pre>
+
+<h2 id="2-4-配置mongodb数据库用户">2.4 配置mongoDB数据库用户</h2>
+
+<p>打开命令行</p>
+
+<pre><code># 1. #启动MONGDB服务
+# 2. 运行命令行
+C:\Users\chenyj&gt; mongo
+ use admin   #切换到admin数据库
+switched to db admin
+#创建dba用户
+db.createUser(
+...    {
+...      user: &quot;root&quot;,
+...      pwd: &quot;infinova1&quot;,
+...      roles: [ { role: &quot;userAdminAnyDatabase&quot;, db: &quot;admin&quot; } ]
+...    }
+...  )
+#创建yapi数据库
+use yapi
+switched to db yapi
+给yapi数据库添加test1用户,权限为读写
+ db.createUser(
+...     {
+...       user: &quot;yapi&quot;,
+...       pwd: &quot;infinova&quot;,
+...       roles: [
+...          { role: &quot;readWrite&quot;, db: &quot;yapi&quot; }  
+...       ]
+...     }
+... )
+
+</code></pre>
+
+<h1 id="3-安装yapi">3. 安装yapi</h1>
+
+<h2 id="3-1下载yapi">3.1下载yapi</h2>
+
+<pre><code class="language-bash">mkdir yapi
+cd yapi
+git clone https://github.com/YMFE/yapi.git vendors //或者下载 zip 包解压到 vendors 目录（clone 整个仓库大概 140+ M，可以通过 `git clone --depth=1 https://github.com/YMFE/yapi.git vendors` 命令减少，大概 10+ M）
+cp vendors/config_example.json ./config.json //复制完成后请修改相关配置
+cd vendors
+npm install --production --registry https://registry.npm.taobao.org
+npm run install-server //安装程序会初始化数据库索引和管理员账号，管理员账号名可在 config.json 配置
+</code></pre>
+
+<h2 id="3-2-配置yapi">3.2 配置yapi</h2>
+
+<p>打开yapi目录，新建 config.json文件如下</p>
+
+<pre><code class="language-json">{
+  &quot;port&quot;: &quot;*****&quot;,
+  &quot;adminAccount&quot;: &quot;********&quot;,
+  &quot;db&quot;: {...},
+  &quot;mail&quot;: {
+    &quot;enable&quot;: true,
+    &quot;host&quot;: &quot;smtp.*.com&quot;,    //邮箱服务器
+    &quot;port&quot;: 465,               //端口
+    &quot;from&quot;: &quot;***@szinfinova.com&quot;,     //发送人邮箱
+    &quot;auth&quot;: {
+        &quot;user&quot;: &quot;***@szinfinova.com&quot;, //邮箱服务器账号
+        &quot;pass&quot;: &quot;*****&quot;        //邮箱服务器密码
+    }
+  },
+  &quot;db&quot;: {
+	&quot;servername&quot;: &quot;127.0.0.1&quot;, //配置数据库
+	&quot;DATABASE&quot;: &quot;yapi&quot;, //数据库名
+	&quot;port&quot;: 27017, //端口
+	&quot;user&quot;: &quot;yapi&quot;, //用户名
+	&quot;pass&quot;: &quot;infinova&quot;, //密码
+	&quot;authSource&quot;: &quot;&quot;
   }
 }
 </code></pre>
 
-<h2 id="math-blocks">Math Blocks</h2>
+<h2 id="3-3-启动yapi">3.3 启动yapi</h2>
 
-<p>You can render *LaTeX* mathematical expressions using <strong>MathJax</strong>.</p>
+<p>在<code>vendors</code> 目录下新建<code>startup.bat</code>文件，在里面添加内容如下,在启动mongoDB数据库服务后，双击<code>startup.bat</code> 即可启动yapi项目。</p>
 
-<p>Input <code>$$</code>, then press &lsquo;Return&rsquo; key will trigger an input field which accept <em>Tex/LaTex</em> source. Following is an example:
-$$
-\mathbf{V}_1 \times \mathbf{V}_2 =  \begin{vmatrix}
-\mathbf{i} &amp; \mathbf{j} &amp; \mathbf{k} <br />
-\frac{\partial X}{\partial u} &amp;  \frac{\partial Y}{\partial u} &amp; 0 <br />
-\frac{\partial X}{\partial v} &amp;  \frac{\partial Y}{\partial v} &amp; 0 <br />
-\end{vmatrix}
-$$</p>
-
-<p>In markdown source file, math block is <em>LaTeX</em> expression wrapped by ‘$$’ mark:</p>
-
-<pre><code class="language-markdown">$$
-\mathbf{V}_1 \times \mathbf{V}_2 =  \begin{vmatrix}
-\mathbf{i} &amp; \mathbf{j} &amp; \mathbf{k} \\
-\frac{\partial X}{\partial u} &amp;  \frac{\partial Y}{\partial u} &amp; 0 \\
-\frac{\partial X}{\partial v} &amp;  \frac{\partial Y}{\partial v} &amp; 0 \\
-\end{vmatrix}
-$$
+<pre><code class="language-yml">node server/app.js
 </code></pre>
 
-<h2 id="tables">Tables</h2>
+<h2 id="3-3-pm2启动">3.3 PM2启动</h2>
 
-<p>Input <code>| First Header  | Second Header |</code> and press <code>return</code> key will create a table with two column.</p>
+<h3 id="3-3-1-安装pm2">3.3.1 安装pm2</h3>
 
-<p>After table is created, focus on that table will pop up a toolbar for table, where you can resize, align, or delete table. You can also use context menu to copy and add/delete column/row.</p>
-
-<p>Following descriptions can be skipped, as markdown source code for tables are generated by typora automatically.</p>
-
-<p>In markdown source code, they look like:</p>
-
-<pre><code class="language-markdown">| Name              | Markdown            | HTML tag             |
-| ----------------- | ------------------- | -------------------- |
-| *Emphasis*        | `*Emphasis*`        | `&lt;em&gt;&lt;/em&gt;`          |
-| **Strong**        | `**Strong**`        | `&lt;strong&gt;&lt;/strong&gt;` |
-| `code`            | ``code``            | `&lt;code&gt;&lt;/code&gt;`      |
-| ~~Strikethrough~~ | `~~Strikethrough~~` | `&lt;del&gt;&lt;/del`         |
-| &lt;u&gt;Underline&lt;/u&gt;  | `&lt;u&gt;underline&lt;/u&gt;`  | `&lt;u&gt;&lt;/u&gt;`            |
+<pre><code class="language-node">npm install -g pm2
 </code></pre>
+
+<h3 id="3-3-2-pm2配置环境变量">3.3.2  pm2配置环境变量</h3>
+
+<p><img src="E:桌面文件备份笔记文档imgspm2环境变量.bmp" alt="PM2环境变量" /> <img src="E:桌面文件备份笔记文档imgspm2path.bmp" alt="pm2PATH" /></p>
+
+<h3 id="3-3-3-查看pm2版本">3.3.3 查看pm2版本</h3>
+
+<pre><code class="language-node">## 打开CMD命令行 输入
+pm2 -v
+</code></pre>
+
+<p>​   <img src="E:桌面文件备份笔记文档imgs查看pm2版本.bmp" alt="查看pm2版本" /></p>
+
+<h3 id="3-3-4-pm2启动yapi">3.3.4 pm2启动yapi</h3>
+
+<p>查看1.6</p>
+
+<h1 id="4-安装注意">4. 安装注意</h1>
+
+<ol>
+<li>如果安装完node,npm命令无响应，可以删掉<code>C:\Users（用户）\你的用户名\.npmrc</code> 这个文件。</li>
+<li>安装路径尽量不要有空格</li>
+<li>如果已经存在安装，要部署到其他电脑上，可以将安装好的node文件夹、mongoDB文件夹、yapi文件夹复制到目标环境，运行CMD, 输入<code>mongod --config &quot;D:\Program Files\mongodb\mongodb4.0.6\bin\mongo.conf&quot; --install --serviceName &quot;MongoDB&quot;</code>将mongoDB安装mongoDB服务到新电脑环境（注意路径），配置好mongoDB和node的环境变量，双击startup即可启动yapi。</li>
+</ol>
+
+    </div>
+    
+  </div>
+</article>
+
+  
+    <article class="post bg-white">
+  <header class="post-header">
+    <h1 class="post-title">
+      
+      <a class="post-link" href="/post/development/springboot%E9%9A%8F%E7%AC%94/">SpringBoot 随笔</a>
+    </h1>
+    
+    <div class="post-meta">
+      <time datetime="2019-10-07" class="post-time">
+        2019-10-07
+      </time>
+      <div class="post-category">
+          <a href="https://hisaige.github.io/categories/development/"> Development </a>
+          
+        </div>
+      <span class="more-meta"> 8230 words </span>
+      <span class="more-meta"> 17 min read </span>
+      
+      
+      
+    </div>
+  </header>
+  
+  <div class="post-content">
+    
+    <div class="post-summary">
+      
+
+<p><center><font color=#0099ff size=7 >SpringBoot 随笔</font></center></p>
+
+<h1 id="1-tips">1. tips</h1>
+
+<h2 id="1-1-jsr303数据校验">1.1. JSR303数据校验</h2>
+
+<h2 id="1-2-value-与-configurationproperties-注解">1.2. @Value 与 @ConfigurationProperties 注解</h2>
 
 <table>
 <thead>
 <tr>
-<th>Name</th>
-<th>Markdown</th>
-<th>HTML tag</th>
+<th>功能</th>
+<th>@Value</th>
+<th align="center">@ConfigurationProperties</th>
 </tr>
 </thead>
 
 <tbody>
 <tr>
-<td><em>Emphasis</em></td>
-<td><code>*Emphasis*</code></td>
-<td><code>&lt;em&gt;&lt;/em&gt;</code></td>
+<td>松散绑定</td>
+<td>no</td>
+<td align="center">yes</td>
 </tr>
 
 <tr>
-<td><strong>Strong</strong></td>
-<td><code>**Strong**</code></td>
-<td><code>&lt;strong&gt;&lt;/strong&gt;</code></td>
+<td>spEL</td>
+<td>yes</td>
+<td align="center">no</td>
 </tr>
 
 <tr>
-<td><code>code</code></td>
-<td><code>`code`</code></td>
-<td><code>&lt;code&gt;&lt;/code&gt;</code></td>
+<td>批量注解</td>
+<td>no</td>
+<td align="center">yes</td>
 </tr>
 
 <tr>
-<td><del>Strikethrough</del></td>
-<td><code>~~Strikethrough~~</code></td>
-<td><code>&lt;del&gt;&lt;/del</code></td>
+<td>JSR303数据校验</td>
+<td>no</td>
+<td align="center">yes</td>
 </tr>
 
 <tr>
-<td><u>Underline</u></td>
-<td><code>&lt;u&gt;underline&lt;/u&gt;</code></td>
-<td><code>&lt;u&gt;&lt;/u&gt;</code></td>
+<td>复杂类型（map、set等）</td>
+<td>no</td>
+<td align="center">yes</td>
 </tr>
 </tbody>
 </table>
 
-<h2 id="footnotes">Footnotes</h2>
-
-<pre><code class="language-markdown">You can create footnotes like this[^footnote].
-
-[^footnote]: Here is the *text* of the **footnote**.
-</code></pre>
-
-<p>will produce:</p>
-
-<p>You can create footnotes like this<sup class="footnote-ref" id="fnref:footnote"><a href="#fn:footnote">1</a></sup>.</p>
-
-<p>Mouse on the ‘footnote’ superscript to see content of the footnote.</p>
-
-<h2 id="horizontal-rules">Horizontal Rules</h2>
-
-<p>Input <code>***</code> or <code>---</code> on a blank line and press <code>return</code> will draw a horizontal line.</p>
-
-<hr />
-
-<h2 id="links">Links</h2>
-
-<p>Markdown supports two style of links: inline and reference.</p>
-
-<p>In both styles, the link text is delimited by [square brackets].</p>
-
-<p>To create an inline link, use a set of regular parentheses immediately after the link text’s closing square bracket. Inside the parentheses, put the URL where you want the link to point, along with an optional title for the link, surrounded in quotes. For example:</p>
-
-<pre><code class="language-markdown">This is [an example](http://example.com/ &quot;Title&quot;) inline link.
-
-[This link](http://example.net/) has no title attribute.
-</code></pre>
-
-<p>will produce:</p>
-
-<p>This is <a href="http://example.com/" title="Title">an example</a> inline link. (<code>&lt;p&gt;This is &lt;a href=&quot;http://example.com/&quot; title=&quot;Title&quot;&gt;</code>)</p>
-
-<p><a href="http://example.net/">This link</a> has no title attribute. (<code>&lt;p&gt;&lt;a href=&quot;http://example.net/&quot;&gt;This link&lt;/a&gt; has no</code>)</p>
-
-<h3 id="internal-links">Internal Links</h3>
-
-<p><strong>You can set the href to headers</strong>, which will create a bookmark that allow you to jump to that section after clicking. For example:</p>
-
-<p>Command(on Windows: Ctrl) + Click <a href="#block-elements">This link</a> will jump to header <code>Block Elements</code>. To see how to write that, please move cursor or click that link with <code>⌘</code> key pressed to expand the element into markdown source.</p>
-
-<h3 id="reference-links">Reference Links</h3>
-
-<p>Reference-style links use a second set of square brackets, inside which you place a label of your choosing to identify the link:</p>
-
-<pre><code class="language-markdown">This is [an example][id] reference-style link.
-
-Then, anywhere in the document, you define your link label like this, on a line by itself:
-
-[id]: http://example.com/  &quot;Optional Title Here&quot;
-</code></pre>
-
-<p>In typora, they will be rendered like:</p>
-
-<p>This is <a href="http://example.com/" title="Optional Title Here">an example</a> reference-style link.</p>
-
-<p>The implicit link name shortcut allows you to omit the name of the link, in which case the link text itself is used as the name. Just use an empty set of square brackets — e.g., to link the word “Google” to the google.com web site, you could simply write:</p>
-
-<pre><code class="language-markdown">[Google][]
-And then define the link:
-
-[Google]: http://google.com/
-</code></pre>
-
-<p>In typora click link will expand it for editing, command+click will open the hyperlink in web browser.</p>
-
-<h2 id="urls">URLs</h2>
-
-<p>Typora allows you to insert urls as links, wrapped by <code>&lt;</code>brackets<code>&gt;</code>.</p>
-
-<p><code>&lt;i@typora.io&gt;</code> becomes <a href="mailto:i@typora.io">i@typora.io</a>.</p>
-
-<p>Typora will aslo auto link standard URLs. e.g: www.google.com.</p>
-
-<h2 id="images">Images</h2>
-
-<p>Image looks similar with links, but it requires an additional <code>!</code> char before the start of link. Image syntax looks like this:</p>
-
-<pre><code class="language-markdown">![Alt text](/path/to/img.jpg)
-
-![Alt text](/path/to/img.jpg &quot;Optional title&quot;)
-</code></pre>
-
-<p>You are able to use drag &amp; drop to insert image from image file or we browser. And modify the markdown source code by clicking on the image. Relative path will be used if image is in same directory or sub-directory with current editing document when drag &amp; drop.</p>
-
-<p>For more tips on images, please read <a href="http://support.typora.io//Images/">http://support.typora.io//Images/</a></p>
-
-<h2 id="emphasis">Emphasis</h2>
-
-<p>Markdown treats asterisks (<code>*</code>) and underscores (<code>_</code>) as indicators of emphasis. Text wrapped with one <code>*</code> or <code>_</code> will be wrapped with an HTML <code>&lt;em&gt;</code> tag. E.g:</p>
-
-<pre><code class="language-markdown">*single asterisks*
-
-_single underscores_
-</code></pre>
-
-<p>output:</p>
-
-<p><em>single asterisks</em></p>
-
-<p><em>single underscores</em></p>
-
-<p>GFM will ignores underscores in words, which is commonly used in code and names, like this:</p>
-
-<blockquote>
-<p>wow_great_stuff</p>
-
-<p>do_this_and_do_that_and_another_thing.</p>
-</blockquote>
-
-<p>To produce a literal asterisk or underscore at a position where it would otherwise be used as an emphasis delimiter, you can backslash escape it:</p>
-
-<pre><code class="language-markdown">\*this text is surrounded by literal asterisks\*
-</code></pre>
-
-<p>Typora recommends to use <code>*</code> symbol.</p>
-
-<h2 id="strong">Strong</h2>
-
-<p>double *’s or _’s will be wrapped with an HTML <code>&lt;strong&gt;</code> tag, e.g:</p>
-
-<pre><code class="language-markdown">**double asterisks**
-
-__double underscores__
-</code></pre>
-
-<p>output:</p>
-
-<p><strong>double asterisks</strong></p>
-
-<p><strong>double underscores</strong></p>
-
-<p>Typora recommends to use <code>**</code> symbol.</p>
-
-<h2 id="code">Code</h2>
-
-<p>To indicate a span of code, wrap it with backtick quotes (`). Unlike a pre-formatted code block, a code span indicates code within a normal paragraph. For example:</p>
-
-<pre><code class="language-markdown">Use the `printf()` function.
-</code></pre>
-
-<p>will produce:</p>
-
-<p>Use the <code>printf()</code> function.</p>
-
-<h2 id="strikethrough">Strikethrough</h2>
-
-<p>GFM adds syntax to create strikethrough text, which is missing from standard Markdown.</p>
-
-<p><code>~~Mistaken text.~~</code> becomes <del>Mistaken text.</del></p>
-
-<h2 id="underline">Underline</h2>
-
-<p>Underline is powered by raw HTML.</p>
-
-<p><code>&lt;u&gt;Underline&lt;/u&gt;</code> becomes <u>Underline</u>.</p>
-
-<h2 id="emoji-happy">Emoji :happy:</h2>
-
-<p>Input emoji with syntax <code>😄</code>.</p>
-
-<p>User can trigger auto-complete suggestions for emoji by pressing <code>ESC</code> key, or trigger it automatically after enable it on preference panel. Also, input UTF8 emoji char directly from <code>Edit</code> -&gt; <code>Emoji &amp; Symbols</code> from menu bar is also supported.</p>
-
-<h2 id="inline-math">Inline Math</h2>
-
-<p>To use this feature, first, please enable it in <code>Preference</code> Panel -&gt; <code>Markdown</code> Tab. Then use <code>$</code> to wrap TeX command, for example: <code>$\lim_{x \to \infty} \exp(-x) = 0$</code> will be rendered as LaTeX command.</p>
-
-<p>To trigger inline preview for inline math: input “$”, then press <code>ESC</code> key, then input TeX command, a preview tooltip will be visible like below:</p>
-
-<p><img src="https://typora.io/img/inline-math.gif" style="zoom:50%;" /></p>
-<div class="footnotes">
-
-<hr />
+<h2 id="1-3-application-properties-application-yml-方式配置文件">1.3. application.properties、application.yml 方式配置文件</h2>
 
 <ol>
-<li id="fn:footnote">Here is the <em>text</em> of the <strong>footnote</strong>.
- <a class="footnote-return" href="#fnref:footnote"><sup>[return]</sup></a></li>
+<li>application配置</li>
 </ol>
-</div>
+
+<p><img src="C:UsersYF5050-013AppDataRoamingTyporatypora-user-images1539496016269.png" alt="perperties配置" /></p>
+
+<ol>
+<li><p>yml配置</p>
+
+<pre><code class="language-yml">person:
+	name: xujz
+	age: 18
+	flag: false
+	birth: 2001/01/02
+	maps: {k1: v1,k2:v2}
+	lists: 
+		- 111
+		- aaa
+	man:
+		name: pengyg
+		age: 30
+	socket-address-holder:
+       - port: 80
+         url: 127.0.0.1
+       - port: 90
+         url: 10.82.13.241
+</code></pre>
+
+<pre><code class="language-java">@Component
+@ConfigurationProperties(prefix=&quot;person&quot;)
+public class Person {
+
+	private String name;
+//	@Value(&quot;${person.age}&quot;) //从环境变量中取值,如要要用@value注解，则应把@ConfigurationProperties注释掉
+	private Integer age; 
+//	@Value(&quot;true&quot;) //字面量赋值
+	private Boolean flag;
+	private Date birth;
+	private Map&lt;String,Object&gt; maps;
+	private List&lt;Object&gt; lists;
+	private Set&lt;Object&gt; sets;
+	private Man man;
+private List&lt;SocketAddressHolder&gt; socketAddressHolder;
+}
+</code></pre></li>
+</ol>
+
+<h2 id="1-4-propertysource">1.4. @PropertySource</h2>
+
+<p>当配置文件与springboot的系统配置没有太大关系时，可以将配置单独提取出来，避免application.properties文件过大导致后期不好维护</p>
+
+<p>如person.properties文件中配置如下</p>
+
+<pre><code class="language-xml">#person配置
+person.name = pengz
+person.age = 18
+person.flag = false
+person.birth = 1993/01/02
+person.map.k1 = 1111
+person.map.k2 = 2222
+person.lists = 1, 2, 3, 4, 5, 6,7 ,8, 9
+person.sets = cat, dog, pig
+person.man.sex = male
+</code></pre>
+
+<p>对于的javaBean类</p>
+
+<pre><code class="language-java">@Component
+@PropertySource(value=&quot;classpath:person.properties&quot;) //形式1，用@Value取值
+/**
+*形式2，可加载多个配置文件
+*@PropertySource(value= {&quot;classpath:person.properties&quot;，&quot;classpath:person2.properties&quot;})//用@Value取值
+*
+*@ConfigurationProperties(prefix=&quot;person&quot;)//形式3.利用springboot特性从*.application取
+*值，无需@Value取值
+*/
+public class Person2 {
+
+	private String name;
+//	@Value(&quot;${person.age}&quot;) //从环境变量中取值
+	private Integer age; 
+//	@Value(&quot;true&quot;) //字面量赋值
+	private Boolean flag;
+	private Date birth;
+	private Map&lt;String,Object&gt; maps;
+	private List&lt;Object&gt; lists;
+	private Set&lt;Object&gt; sets;
+	private Man man;
+}
+</code></pre>
+
+<h2 id="1-5-配置文件中的占位符">1.5. 配置文件中的占位符</h2>
+
+<p>random.int  、random.long  、random.value  、random.uuid</p>
+
+<pre><code class="language-xml">#person配置
+person.name = pengz${random.int}
+person.age = 18
+person.flag = false
+person.birth = 1993/01/02
+person.map.k1 = 1111
+person.map.k2 = 2222
+person.lists = 1, 2, 3, 4, 5, 6,7 ,8, 9
+person.sets = cat, dog, pig, ${person.name}
+person.man.sex = male
+</code></pre>
+
+<p>打印person结果如下</p>
+
+<pre><code class="language-sql">Persion [name=pengz613728050, age=18, flag=false, birth=Sat Jan 02 00:00:00 CST 1993, maps=null, lists=[1, 2, 3, 4, 5, 6, 7, 8, 9], sets=[cat, dog, pig, pengz1619328081], man=Man [sex=male]]
+</code></pre>
+
+<h2 id="1-6-配置profile">1.6. 配置profile</h2>
+
+<p>默认情况下配置文件生效的是application.properties</p>
+
+<p>但是我们可以利用profile的特性选择使相应的配置文件生效</p>
+
+<h3 id="1-6-1-对于-properties文件">1.6.1 对于*.properties文件</h3>
+
+<p>如有三个配置文件,<strong>注意其中的命名规则</strong>：</p>
+
+<p>​   <img src="C:UsersYF5050-013AppDataRoamingTyporatypora-user-images1539503756153.png" alt="配置文件" /></p>
+
+<p>它们的配置文件分别为</p>
+
+<p>application: server.port = 8081</p>
+
+<p>application-dev: server.port = 8082</p>
+
+<p>application-prod: server.port = 8083</p>
+
+<p>默认情况下 server.port = 8081生效</p>
+
+<p><strong>但是，如果在application.properties中作如下配置</strong></p>
+
+<pre><code class="language-xml">server.port = 8081
+spring.profiles.active = prod
+</code></pre>
+
+<p>则<code>server.port = 8083</code>生效</p>
+
+<h3 id="1-6-2-对于-yml文件">1.6.2 对于*.yml文件</h3>
+
+<p>yml文件的配置方式如下，<strong>注意: 如果存在 <code>*.properties 文件</code>， <code>*.properties 文件</code>为准</strong></p>
+
+<pre><code class="language-xml">server:
+  port: 8081
+spring:
+  profiles:
+    active: prod
+---
+server:
+  port: 8082
+spring:
+  profiles: dev
+  
+---
+server:
+  port: 8083
+spring:
+  profiles: prod
+</code></pre>
+
+<h3 id="1-6-3-在项目已经打包好后-如果有需要改变配置-可以用命令行的方式">1.6.3 在项目已经打包好后，如果有需要改变配置，可以用命令行的方式</h3>
+
+<pre><code class="language-sql">java -jar 打包名 --springboot.profiles.active=dev
+</code></pre>
+
+<h2 id="1-7-配置文件加载位置">1.7. 配置文件加载位置</h2>
+
+<p>配置文件所在的位置存在优先级，高优先级的配置文件会覆盖低优先级的配置文件</p>
+
+<pre><code class="language-xml">file:./config &lt;!-- 优先级1 ，项目根目录下的config文件夹--&gt;
+file:./
+classpath:./config
+classpath:./ &lt;!-- 优先级4 --&gt;
+</code></pre>
+
+<h2 id="1-8-常用注解">1.8 常用注解</h2>
+
+<h3 id="1-8-1-smartinitializingsingleton">1.8.1 SmartInitializingSingleton</h3>
+
+<p><strong>所有非lazy单例Bean实例化完成后，会调用该方法</strong></p>
+
+<h3 id="1-8-2-常用校验注解">1.8.2 常用校验注解</h3>
+
+<pre><code class="language-java">@NotEmpty 用在集合类上面
+@NotBlank 用在String上面
+@NotNull 用在八大基本类型及其包装类上
+
+@Valid 基本校验注解
+@Validated 功能稍微强大点，可以根据分组校验特定的字段， 如在添加数据时校验groups = { AddValidate.class}，更新数据时校验groups = { setValidate.class}的字段
+
+</code></pre>
+
+<h3 id="1-8-3-dependson-依赖加载">1.8.3 DependsOn 依赖加载</h3>
+
+<pre><code class="language-java">@Configuration
+public class AppConfig {
+
+    @Bean(initMethod = &quot;initialize&quot;)
+    @DependsOn(&quot;eventListener&quot;)
+    public EventPublisherBean eventPublisherBean () {
+        return new EventPublisherBean();
+    }
+
+    @Bean(name = &quot;eventListener&quot;, initMethod = &quot;initialize&quot;)
+    // @Lazy
+    public EventListenerBean eventListenerBean () {
+        return new EventListenerBean();
+    }
+
+    public static void main (String... strings) {
+        new AnnotationConfigApplicationContext(AppConfig.class);
+    }
+}
+
+//初始化顺序  eventListener --&gt; eventPublisherBean
+</code></pre>
+
+<h2 id="1-9常用类">1.9常用类</h2>
+
+<p><code>HttpHeaderNames</code> ：http请求头里包含的种类名字</p>
+
+<h2 id="1-10-根据注解获取类名再实例化技巧">1.10 根据注解获取类名再实例化技巧</h2>
+
+<pre><code class="language-java">        if (context != null) {
+            String[] endpointBeanNames = context.getBeanNamesForAnnotation(ServerEndpoint.class);
+            for (String beanName : endpointBeanNames) {
+                endpointClasses.add(context.getType(beanName));
+            }
+        }
+
+        for (Class&lt;?&gt; endpointClass : endpointClasses) {
+            registerEndpoint(endpointClass);
+        }
+</code></pre>
+
+<h2 id="1-11获取类路径的几种方式">1.11获取类路径的几种方式</h2>
+
+<pre><code class="language-java">import java.io.File;
+ import java.io.IOException;
+ import java.net.URL;
+
+ public class URLDemo {
+
+     
+     public static void main(String[] args) {
+         URLDemo muDemo = new URLDemo();
+         try {
+             muDemo.showURL();
+         } catch (IOException e) {
+             // TODO Auto-generated catch block
+             e.printStackTrace();
+         }
+     }
+
+     public void showURL() throws IOException {
+
+         // 第一种：获取类加载的根路径   D:\git\daotie\daotie\target\classes
+         File f = new File(this.getClass().getResource(&quot;/&quot;).getPath());
+         System.out.println(f);
+
+         // 获取当前类的所在工程路径; 如果不加“/”  获取当前类的加载目录  D:\git\daotie\daotie\target\classes\my
+         File f2 = new File(this.getClass().getResource(&quot;&quot;).getPath());
+         System.out.println(f2);
+
+         // 第二种：获取项目路径    D:\git\daotie\daotie
+         File directory = new File(&quot;&quot;);// 参数为空
+         String courseFile = directory.getCanonicalPath();
+         System.out.println(courseFile);
+
+ 
+         // 第三种：  file:/D:/git/daotie/daotie/target/classes/
+         URL xmlpath = this.getClass().getClassLoader().getResource(&quot;&quot;);
+         System.out.println(xmlpath);
+
+ 
+         // 第四种： D:\git\daotie\daotie
+         System.out.println(System.getProperty(&quot;user.dir&quot;));
+         /*
+          * 结果： C:\Documents and Settings\Administrator\workspace\projectName
+          * 获取当前工程路径
+          */
+
+         // 第五种：  获取所有的类路径 包括jar包的路径
+         System.out.println(System.getProperty(&quot;java.class.path&quot;));
+
+     }
+ }
+</code></pre>
+
+<h2 id="1-12-利用接口控制系统初始化">1.12 利用接口控制系统初始化</h2>
+
+<ol>
+<li><p>定义<code>SystemInit</code>接口</p>
+
+<pre><code class="language-java">//接口实现方法里面推荐用try-catch,捕获异常，并打印日志
+public interface SystemInit {
+   
+	void init() throws Exception;
+   
+	void unInit() throws Exception;
+}
+   
+</code></pre></li>
+
+<li><p>定义<code>CacheInit</code>接口继承<code>SystemInit</code>接口</p>
+
+<pre><code class="language-java">public interface CacheInit&lt;T&gt; extends SystemInit {
+   
+	Map&lt;String,T&gt; getCache() throws Exception;
+   	
+}
+</code></pre></li>
+
+<li><p>初始化系统资源</p>
+
+<pre><code class="language-java">@Component
+public class TestInit {
+   
+	@Autowired
+	private List&lt;SystemInit&gt; systemInit;
+   	
+	@PostConstruct
+	public void init() {
+   		
+		systemInit.forEach(action -&gt; {
+			action.init();
+		});
+	}
+}
+</code></pre></li>
+</ol>
+
+<h2 id="1-13-autowired注入时有多个bean可选择的情况">1.13 @Autowired注入时有多个bean可选择的情况</h2>
+
+<p>​   如果配置文件和注解都声明了bean @Autowired注入 如果不用@Qualifier注解说明注入的是哪个bean 那么注入的bean的名字根据@Autowired注解注释的那个变量来判断 而不是默认首字母小写那个</p>
+
+<p>比如 有多个 Haha接口的实现类bean 一个bean的名字叫haha 另一个叫hahaImpl</p>
+
+<p>以下方式注入的是hahaImpl</p>
+
+<pre><code class="language-java">@Autowired
+private Haha hahaImpl;  
+</code></pre>
+
+<p>如果<code>@Autowired
+private Haha hahaImpl;</code> 里面 变量不是hahaImpl 或者  haha  那么就会报错</p>
+
+<h1 id="2-springboot加载beans的方式">2. SpringBoot加载beans的方式</h1>
+
+<h2 id="2-1-importresource">2.1. @ImportResource</h2>
+
+<p>加载spring配置文件的一种方式，该注解用于容器启动类中。</p>
+
+<p>1.在启动类中</p>
+
+<pre><code class="language-java">@SpringBootApplication
+@RestController
+@EnableAutoConfiguration
+@ImportResource(locations = {&quot;classpath:beans.xml&quot;,&quot;classpath:beans2.xml&quot;}) //
+public class DemoApplication {
+
+	public static void main(String[] args) {
+		SpringApplication.run(DemoApplication.class, args);
+	}
+}
+</code></pre>
+
+<p>2.beans.xml</p>
+
+<pre><code class="language-xml">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;beans xmlns=&quot;http://www.springframework.org/schema/beans&quot;
+	xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;
+	xsi:schemaLocation=&quot;http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd&quot;&gt;
+
+	&lt;bean id=&quot;helloService&quot; class=&quot;com.infinova.demo.service.HelloService&quot;&gt;&lt;/bean&gt;
+
+&lt;/beans&gt;
+</code></pre>
+
+<p>3.HelloService.class</p>
+
+<pre><code class="language-java">public class HelloService {
+}
+</code></pre>
+
+<p>4.测试类中</p>
+
+<pre><code class="language-java">@Autowired
+ApplicationContext context;
+
+@Test
+public void testBean() {
+    System.out.println(context.containsBean(&quot;helloService&quot;)); //输出：true
+}
+</code></pre>
+
+<h2 id="2-2-configuration">2.2. @Configuration</h2>
+
+<ol>
+<li><p>bean配置类，将beans.xml与启动类中的@ImportResource去掉，其他不变,测试类输出结果仍未true</p>
+
+<pre><code class="language-java">@Configuration
+public class SpringBootConfig {
+	
+	@Bean
+	public HelloService helloService() {
+		return new HelloService();
+	}
+}
+</code></pre></li>
+</ol>
+
+<h2 id="2-3-声明bean注解">2.3. 声明bean注解</h2>
+
+<p>​   <img src="C:UsersYF5050-013AppDataRoamingTyporatypora-user-images1539501048683.png" alt="声明bean注解" /></p>
+
+<p><strong>额外话：</strong></p>
+
+<p>​   <img src="C:UsersYF5050-013AppDataRoamingTyporatypora-user-images1539501108661.png" alt="声明注解" /></p>
+
+<h2 id="2-4-bean的作用域">2.4. bean的作用域</h2>
+
+<p><img src="C:UsersYF5050-013AppDataRoamingTyporatypora-user-images1539502143217.png" alt="bean的作用域" /></p>
+
+<h2 id="2-5-import注解">2.5. @Import注解</h2>
+
+<p>value值是一个数组，可以注入三种形式的类</p>
+
+<ol>
+<li><strong>普通javabean</strong></li>
+<li><strong>ImportSelector</strong></li>
+<li><strong>ImportBeanDefinitionRegistrar</strong></li>
+</ol>
+
+<p>对于<code>ImportSelector</code></p>
+
+<pre><code class="language-java">public class MyImportSelector implements  ImportSelector{
+    public String[] selectImports(AnnotationMetadata importingClassMetadata) {
+        return new String[]{&quot;com.hisaige.bean.MySelector&quot;};
+    }
+}
+</code></pre>
+
+<p>对于<code>ImportBeanDefinitionRegistrar</code></p>
+
+<pre><code class="language-java">public class MyImportBeanDefinitionRegistrar  implements ImportBeanDefinitionRegistrar{
+    public void registerBeanDefinitions(
+            AnnotationMetadata importingClassMetadata,
+            BeanDefinitionRegistry registry) {
+        RootBeanDefinition rootBeanDefinition = new 			RootBeanDefinition(Test.class);
+        // 注册一个名字叫rectangle的bean
+        registry.registerBeanDefinition(&quot;test&quot;, rootBeanDefinition);
+    }
+}
+</code></pre>
+
+<p>配置类中添加注解@import({MyImportSelector.class,MyImportBeanDefinitionRegistrar.class})可以将<code>MySelector.class</code>、<code>Test.class</code>放入spring容器中。</p>
+
+<h2 id="2-6-importselector简单使用">2.6 ImportSelector简单使用</h2>
+
+<pre><code class="language-java">//自定义逻辑返回需要导入的组件
+//使用 `@Import(MyImportSelect.class)`将其调用。
+public class MyImportSelect implements ImportSelector {
+
+	//返回值，就是到导入到容器中的组件全类名
+	//AnnotationMetadata:当前标注@Import注解的类的所有注解信息
+	@Override
+	public String[] selectImports(AnnotationMetadata importingClassMetadata) {
+		//importingClassMetadata包含所有注解信息
+		
+		//不能反回null值
+		return new String[] {ImportBean.class.getName()};
+	}
+	
+}
+</code></pre>
+
+<h2 id="2-7-importaware简单使用">2.7 @ImportAware简单使用</h2>
+
+<ol>
+<li><p>定义配置类，继承ImportAware接口</p>
+
+<pre><code class="language-java">@Configuration
+@EnableConfigurationProperties(Person.class) //很重要，不然会报错说找不到Person这个bean
+public class MyImportAwareConfig implements ImportAware {
+   
+	@Autowired
+   private Person person;
+   	
+	@Override
+	public void setImportMetadata(AnnotationMetadata importMetadata) {
+	//importMetadata 可以获取注解信息	
+		System.out.println(importMetadata.getAnnotationTypes());
+		System.out.println(person.getName());
+	}
+   	
+	/*
+	 * @Bean public Test getTest() { Test test = new Test(); return test; }
+	 */
+   
+}
+</code></pre></li>
+
+<li><p>定义Person类,当然这个类和@ImportAware的使用并没有太多关系</p>
+
+<pre><code class="language-java">@ConfigurationProperties(prefix = &quot;springboot.person&quot;)
+public class Person {
+   
+	private String name;;
+	private Integer age;
+	private String sex;
+	...setter and getter...
+</code></pre></li>
+
+<li><p>定义我们自己的注解</p>
+
+<pre><code class="language-java">@Retention(value = java.lang.annotation.RetentionPolicy.RUNTIME)
+@Target(value = { java.lang.annotation.ElementType.TYPE })
+@Documented
+@Import({ MyImportAwareConfig.class })
+@Configuration
+public @interface EnableDemo {
+   String param() default &quot;&quot;;
+}
+   
+</code></pre></li>
+
+<li><p>使用我们自己的注解</p>
+
+<pre><code class="language-java">@EnableDemo(param=&quot;aa&quot;)
+public class Test {
+   
+}
+</code></pre></li>
+
+<li><p>配置文件信息</p>
+
+<pre><code class="language-yml">springboot: 
+ person:
+   name: jz
+   sex: male
+   age: 20
+</code></pre></li>
+
+<li><p>运行结果打印如下</p>
+
+<pre><code class="language-text">{param=[aa]}
+[spring.boot.aware.EnableDemo]
+jz
+</code></pre></li>
+</ol>
+
+<h2 id="2-8-embeddedvalueresolveraware">2.8 EmbeddedValueResolverAware</h2>
+
+<p>valueResolver可以解析环境变量中的字符串, 示例如下</p>
+
+<pre><code class="language-java">@PropertySource(&quot;classpath:/dbconfig.properties&quot;)
+@Configuration
+public class MainConfigOfProfile implements EmbeddedValueResolverAware{
+    @Override
+	public void setEmbeddedValueResolver(StringValueResolver resolver) {
+		// TODO Auto-generated method stub
+		this.valueResolver = resolver;
+		driverClass = valueResolver.resolveStringValue(&quot;${db.driverClass}&quot;);
+	}
+</code></pre>
+
+<h2 id="2-9-项目启动时排除某个bean或某个自动装配">2.9 项目启动时排除某个bean或某个自动装配</h2>
+
+<pre><code class="language-java">// 在启动类的@EnableAutoConfiguration或@SpringBootApplication后添加(exclude = //{DataSourceAutoConfiguration.class})，排除此类的autoconfig。启动以后就可以正常运行。
+//如：
+@EnableAutoConfiguration(exclude = {SecurityAutoConfiguration.class })
+//或
+@SpringBootApplication(exclude = {SecurityAutoConfiguration.class })
+</code></pre>
+
+<h1 id="3-自定义startter">3. 自定义startter</h1>
+
+<h2 id="3-1">3.1</h2>
+
+<h1 id="4-aop">4.AOP</h1>
+
+<h2 id="4-1-execution表达式">4.1 execution表达式</h2>
+
+<p><img src=".imgsexecution表达式.bmp" alt="" /></p>
+
+<p>execution：用于匹配方法执行的连接点；</p>
+
+<p>​         within：用于匹配指定类型内的方法执行；</p>
+
+<p>​         this：用于匹配当前AOP代理对象类型的执行方法；注意是AOP代理对象的类型匹配，这样就可能包括引入接口也类型匹配；</p>
+
+<p>​         target：用于匹配当前目标对象类型的执行方法；注意是目标对象的类型匹配，这样就不包括引入接口也类型匹配；</p>
+
+<p>​         args：用于匹配当前执行的方法传入的参数为指定类型的执行方法；</p>
+
+<p>​         @within：用于匹配所以持有指定注解类型内的方法；</p>
+
+<p>​         @target：用于匹配当前目标对象类型的执行方法，其中目标对象持有指定的注解；</p>
+
+<p>​         @args：用于匹配当前执行的方法传入的参数持有指定注解的执行；</p>
+
+<p>​         @annotation：用于匹配当前执行方法持有指定注解的方法；</p>
+
+<ul>
+<li><p>execution()
+表达式结构：</p>
+
+<pre><code class="language-java">execution(&lt;修饰符&gt;? &lt;返回类型&gt; &lt;包名&gt;?&lt;方法名&gt;(&lt;参数&gt;)异常?)
+execution(
+  modifier-pattern?
+  returnType-pattern
+  package-pattern?
+  methodName-pattern(args-pattern)
+  throwException-pattern?
+)
+execution(*[修饰符]? *[返回值] *[包路径]?*[方法名](..[参数])throw *[异常类]?)
+</code></pre></li>
+
+<li><p>修饰符匹配(modifier-pattern)</p>
+
+<pre><code class="language-java">1.修饰符匹配(modifier-pattern)
+   //匹配所有public修饰的方法
+  @Pointcut(&quot;execution(public * **(..))&quot;)
+  public void exTest1(){}
+2.返回值匹配(returnType-pattern)
+   //匹配所有String或者void返回值的方法
+  @Pointcut(&quot;execution(String||void **(..))&quot;)
+  public void exTest2(){}
+3.包路径匹配(package-pattern)
+  //com包下的所有类的方法
+  @Pointcut(&quot;execution(* com.*.*(..))&quot;)
+  public void exTest3(){}
+  
+  //如果不使用..匹配到了类级别的名字,需要类.方法名.............
+  //com包下的所有子包的所有类的方法
+  @Pointcut(&quot;execution(* com..*(..))&quot;)
+  public void exTest4(){}
+  
+  //com包下的所有子包的ProductService类的方法
+  @Pointcut(&quot;execution(* com..ProductService.*(..))&quot;)
+  public void exTest5(){}
+  
+4.方法名匹配(methodName-pattern)
+   //匹配所有test名字开头的方法
+  @Pointcut(&quot;execution(* test*(..))&quot;)
+  public void exTest6(){}
+  
+  //匹配所有包含test名字的方法
+  @Pointcut(&quot;execution(* *test*(..))&quot;)
+  public void exTest7(){}
+5.参数匹配(args-pattern)
+  //匹配所有参数列表的方法
+  @Pointcut(&quot;execution(* *(..))&quot;)
+  public void exTest8(){}
+  
+  //匹配无参数列表的方法
+  @Pointcut(&quot;execution(* *())&quot;)
+  public void exTest9(){}
+6.异常匹配(throwsException-pattern)
+  //匹配所有抛过异常的方法
+  @Pointcut(&quot;execution(* *()throws *)&quot;)
+  public void exTest10(){}
+  
+  //只匹配所有抛出空指针异常的方法
+  @Pointcut(&quot;execution(* *()throws NullPointerException)&quot;)
+  public void exTest11(){}
+  
+</code></pre></li>
+
+<li><h5 id="匹配注解">匹配注解</h5>
+
+<pre><code class="language-java">1.@target()
+//匹配所有使用了AspectAnnotation注解的类的所有方法(要求注解的RetentionPolicy的级别为RUNTIME)
+  @Pointcut(&quot;@target(com.tiglle.manage.AspectAnnotation)&quot;)
+  public void targetMatch(){}
+  
+2.@args()
+//匹配所有使用了AspectAnnotation注解为参数的方法
+  @Pointcut(&quot;@args(com.tiglle.manage.AspectAnnotation)&quot;)
+  public void argsMatch(){}
+3.@within
+//匹配所有使用了AspectAnnotation注解的类的所有方法(要求注解的RetentionPolicy的级别为CLASS)
+  @Pointcut(&quot;@within(com.tiglle.manage.AspectAnnotation)&quot;)
+  public void withinMatch(){}
+4.@annotation()
+  //方法注解匹配,匹配所有带AspectAnnotation注解的方法
+  @Pointcut(&quot;@annotation(com.tiglle.manage.annotation.AspectAnnotation)&quot;)
+  public void test(){
+  }
+  
+</code></pre></li>
+
+<li><h5 id="匹配包或者类型">匹配包或者类型</h5>
+
+<pre><code class="language-java">1.within() 如果传的是全类名(包名.类名):匹配此类下所有的方法
+  //匹配TestService类中的所有方法
+   @Pointcut(&quot;within(com.tiglle.service.TestService)&quot;)
+   public voud test(){}
+2.within() 如果传的时包名:匹配此包下所有类的方法
+//匹配com/tiglle/包下所有包和子包中的类中的所有方法
+	@Pointcut(&quot;within(com.tiglle..*)&quot;)
+	public voud test(){}
+</code></pre></li>
+
+<li><h5 id="匹配对象">匹配对象</h5>
+
+<pre><code class="language-java">1. this()
+  //匹配代理对象和普通对象及其所有子类的方法
+  @Pointcut(&quot;this(com.tiglle.manage.service.ProductService)&quot;)
+  public void thisMatch(){
+  }
+2.bean()
+  //根据spring容器的bean的名称(id)匹配,(不匹配子类)
+  @Pointcut(&quot;bean(productService)&quot;)
+  public void beanMatch(){
+  }
+3.target()
+  //匹配目标对象和普通对象及其所有子类的方法
+  @Pointcut(&quot;target(com.tiglle.manage.service.ProductService)&quot;)
+  public void targetMatch(){
+  }
+  
+</code></pre></li>
+
+<li><h5 id="匹配参数">匹配参数</h5>
+
+<pre><code class="language-java">1.args()匹配spring容器所有此参数类型和列表的方法(String,Long)
+  //匹配spring容器所有此参数类型和列表的方法(String,Long)
+  @Pointcut(&quot;args(String,Long)&quot;)
+  public void argsMatch(){}
+2.args()匹配spring容器所有此参数类型和列表的方法(第一个为Long,后面随意)
+  //匹配spring容器所有此参数类型和列表的方法(第一个为Long,后面随意)
+  @Pointcut(&quot;args(Long,..)&quot;)
+  public void argsMatch2(){}
+</code></pre></li>
+
+<li><p>使用连接符连接切面</p>
+
+<pre><code class="language-java">@Pointcut(&quot;@annotation(com.hisaige.annotation.Enhance) || @within(com.hisaige.annotation.Enhance))&quot;)
+	public void pointcut() {
+  
+	}
+</code></pre></li>
+</ul>
+
+<h1 id="5-spring常用工具">5. spring常用工具</h1>
+
+<h2 id="5-1-获取父类-接口泛型">5.1 获取父类/接口泛型</h2>
+
+<ol>
+<li><p>定义父类或父接口</p>
+
+<pre><code class="language-java">public interface TypeResolverService&lt;T&gt; {
+   
+	T getStr();
+}
+</code></pre></li>
+
+<li><p>定义子类</p>
+
+<pre><code class="language-java">public class TypeResolverServiceImpl implements TypeResolverService&lt;String&gt; {
+   
+	@Override
+	public String getStr() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+}
+   
+</code></pre></li>
+
+<li><p>获取泛型信息</p>
+
+<pre><code class="language-java">@SpringBootApplication
+public class GenericTypeResolverTest {
+	public static void main(String[] args) {
+		SpringApplication.run(GenericTypeResolverTest.class, args);
+		ResolvableType resolvableType = ResolvableType.forClass(TypeResolverServiceImpl.class).as(TypeResolverService.class);
+		boolean flag = resolvableType.hasGenerics();//判断是否有泛型
+		if(flag) {
+			System.out.println(&quot;T -&gt;&quot; + resolvableType.getGenerics()[0]); //获取第一个泛型信息
+		}
+	}
+}
+</code></pre></li>
+
+<li><p>打印结果</p>
+
+<pre><code class="language-java">T -&gt;java.lang.String
+</code></pre></li>
+</ol>
+
+<h2 id="5-2-resttemplate-工具类">5.2 RestTemplate 工具类</h2>
+
+<ol>
+<li><p>解决url中文乱码</p>
+
+<pre><code class="language-java">@Bean(name = &quot;outerRestTemplate&quot;)
+   public RestTemplate getRestTemplate(){
+       RestTemplate restTemplate = new RestTemplate();
+       //解决中文乱码
+       restTemplate.getMessageConverters().set(1, new 	 	    		                   StringHttpMessageConverter(StandardCharsets.UTF_8));
+       return restTemplate;
+   }
+</code></pre></li>
+
+<li><p><code>ObjectProvider</code>隐式注入，如以下代码段，messageConverters，restTemplateCustomizers 有则注入，没有就不。spring4.3后才有</p>
+
+<pre><code class="language-java">public RestTemplateConfiguration(
+				ObjectProvider&lt;HttpMessageConverters&gt; messageConverters,
+				ObjectProvider&lt;List&lt;RestTemplateCustomizer&gt;&gt; restTemplateCustomizers) {
+			this.messageConverters = messageConverters;
+			this.restTemplateCustomizers = restTemplateCustomizers;
+		}
+   
+</code></pre></li>
+</ol>
+
+<h2 id="5-3-resttemplate踩坑记录">5.3 RestTemplate踩坑记录</h2>
+
+<ol>
+<li><p>RestTemplate配置</p>
+
+<pre><code class="language-java">//连接属性
+@ConfigurationProperties(prefix = &quot;http.config&quot;)
+public class HttpClientProperty {
+   
+	  private int maxTotalConnect; //连接池的最大连接数
+	  private int maxConnectPerRoute; //单个主机的最大连接数
+	  private int connectTimeout; //连接超时默认2s
+	  private int readTimeout; //读取超时默认30s
+   ...setter and getter...
+</code></pre></li>
+
+<li><p>配置RestTemplate,将RestTemplate加入bean容器</p>
+
+<pre><code class="language-java">@Configuration
+@ConditionalOnClass(value = { RestTemplate.class, HttpClient.class })
+//如果没有@EnableConfigurationProperties，就必须将HttpClientProperty加入bean容器，如添加@Component注解
+@EnableConfigurationProperties(HttpClientProperty.class) 
+public class RestTemplateConfiguration {
+   
+	@Autowired
+	private HttpClientProperty httpClientProperty;
+   
+	// 创建HTTP客户端工厂   @Deprecated 分模块代替
+	/*
+	 * private ClientHttpRequestFactory createFactory() { if
+	 * (httpConfObj.getMaxTotalConnect() &lt;= 0) { SimpleClientHttpRequestFactory
+	 * factory = new SimpleClientHttpRequestFactory();
+	 * factory.setConnectTimeout(httpConfObj.getConnectTimeout());
+	 * factory.setReadTimeout(httpConfObj.getReadTimeout()); return factory; }
+	 * HttpClient httpClient =
+	 * HttpClientBuilder.create().setMaxConnTotal(httpConfObj.getMaxTotalConnect())
+	 * .setMaxConnPerRoute(httpConfObj.getMaxConnectPerRoute()).build();
+	 * HttpComponentsClientHttpRequestFactory factory = new
+	 * HttpComponentsClientHttpRequestFactory(httpClient);
+	 * factory.setConnectTimeout(httpConfObj.getConnectTimeout());
+	 * factory.setReadTimeout(httpConfObj.getReadTimeout()); return factory; }
+	 */
+   
+	// 初始化RestTemplate,并加入spring的Bean工厂，由spring统一管理
+	@Bean
+	@ConditionalOnMissingBean(RestTemplate.class)
+	public RestTemplate getRestTemplate(RestTemplateBuilder builder) {
+		RestTemplate restTemplate = new RestTemplate(clientHttpRequestFactory());
+   
+		List&lt;HttpMessageConverter&lt;?&gt;&gt; converterList = restTemplate.getMessageConverters();
+   
+		// 重新设置StringHttpMessageConverter字符集为UTF-8，解决中文乱码问题
+		HttpMessageConverter&lt;?&gt; converterTarget = null;
+		for (HttpMessageConverter&lt;?&gt; item : converterList) {
+			if (StringHttpMessageConverter.class == item.getClass()) {
+				converterTarget = item;
+				break;
+			}
+		}
+		if (null != converterTarget) {
+			converterList.remove(converterTarget);
+		}
+		converterList.add(1, new StringHttpMessageConverter(StandardCharsets.UTF_8));
+   
+		//
+		/**
+		 * 加入FastJson转换器 根据使用情况进行操作，此段注释，默认使用jackson
+		 * spring的json转换器默认使用的是Jackson，json字符串和对应的Entity如果有字段对不上就会报错，这点很重要(踩过大坑》。。。)
+		 * 如果使用的实体信息比较标准，可以使用jackson，个人使用FastJsonHttpMessageConverter，可以将请求结果直接转成JSONObject
+		 */
+		converterList.add(new FastJsonHttpMessageConverter());
+		return restTemplate;
+	}
+   
+	/**
+	 * 配置Http请求转换器
+	 * @return
+	 */
+	@Bean
+	@ConditionalOnMissingBean
+	public HttpMessageConverters fastjsonConverter() {
+		FastJsonConfig fastJsonConfig = new FastJsonConfig();
+		// 自定义格式化输出
+//		fastJsonConfig.setSerializerFeatures(SerializerFeature.PrettyFormat, SerializerFeature.WriteNullStringAsEmpty,
+//				SerializerFeature.WriteNullNumberAsZero); // 会将null值写成空字符串
+		fastJsonConfig.setSerializerFeatures(SerializerFeature.PrettyFormat, SerializerFeature.WriteNullNumberAsZero);
+   
+		FastJsonHttpMessageConverter fastJsonHttpMessageConverter = new FastJsonHttpMessageConverter();
+		// 中文乱码解决方案
+       List&lt;MediaType&gt; mediaTypes = new ArrayList&lt;&gt;();
+       mediaTypes.add(MediaType.APPLICATION_JSON_UTF8);//设定json格式且编码为UTF-8
+       fastJsonHttpMessageConverter.setSupportedMediaTypes(mediaTypes);
+   		
+       fastJsonHttpMessageConverter.setFastJsonConfig(fastJsonConfig);
+           
+		return new HttpMessageConverters(fastJsonHttpMessageConverter);
+	}
+   
+	@Bean
+	@ConditionalOnMissingBean
+	public HttpClientConnectionManager poolingConnectionManager() {
+		PoolingHttpClientConnectionManager poolingConnectionManager = new PoolingHttpClientConnectionManager();
+		poolingConnectionManager.setMaxTotal(1000); // 连接池最大连接数
+		poolingConnectionManager.setDefaultMaxPerRoute(100); // 每个主机的并发
+		return poolingConnectionManager;
+	}
+   
+	@Bean
+	@ConditionalOnMissingBean
+	public HttpClientBuilder httpClientBuilder() {
+		HttpClientBuilder httpClientBuilder = HttpClientBuilder.create();
+		// 设置HTTP连接管理器
+		httpClientBuilder.setConnectionManager(poolingConnectionManager());
+		return httpClientBuilder;
+	}
+   
+	@Bean
+	@ConditionalOnMissingBean
+	public ClientHttpRequestFactory clientHttpRequestFactory() {
+		if (httpClientProperty.getMaxTotalConnect() &lt;= 0) {
+			SimpleClientHttpRequestFactory factory = new SimpleClientHttpRequestFactory();
+			factory.setConnectTimeout(httpClientProperty.getConnectTimeout());
+			factory.setReadTimeout(httpClientProperty.getReadTimeout());
+			return factory;
+		} else {
+			HttpComponentsClientHttpRequestFactory clientHttpRequestFactory = new HttpComponentsClientHttpRequestFactory();
+			clientHttpRequestFactory.setHttpClient(httpClientBuilder().build());
+			clientHttpRequestFactory.setConnectTimeout(httpClientProperty.getConnectTimeout()); // 连接超时，毫秒
+			clientHttpRequestFactory.setReadTimeout(httpClientProperty.getReadTimeout()); // 读写超时，毫秒
+			return clientHttpRequestFactory;
+		}
+	}
+}
+</code></pre></li>
+
+<li><p>使用RestTemplate,共包含两个请求</p>
+
+<pre><code class="language-java">@Service
+public class RestTemplateService {
+   
+	@Autowired
+	private RestTemplate restTemplate;
+   	
+	public String testRestTemplate() throws UnsupportedEncodingException {
+   		
+		HttpHeaders headers = new HttpHeaders();
+       MediaType type = MediaType.parseMediaType(&quot;application/json; charset=UTF-8&quot;);
+       headers.setContentType(type);
+       headers.add(&quot;Accept&quot;, &quot;*/*&quot;);
+       Map&lt;String, String&gt; map = new HashMap&lt;&gt;();
+		map.put(&quot;form_code&quot;, &quot;QuerysDeviceChannels&quot;);
+		map.put(&quot;appid&quot;, &quot;123456&quot;);
+		map.put(&quot;appsecret&quot;, &quot;123&quot;);
+		map.put(&quot;status&quot;, &quot;ALL&quot;);
+		map.put(&quot;page_size&quot;, &quot;100&quot;);
+		map.put(&quot;page_index&quot;, &quot;1&quot;);
+		map.put(&quot;trade_id&quot;, &quot;12314&quot;);
+//        RerEntity rerEntity = new RerEntity(&quot;QuerysDeviceChannels&quot;,&quot;123456&quot;, &quot;123&quot;, &quot;ALL&quot;, &quot;100&quot;, &quot;1&quot;, &quot;13214&quot;);
+//        String str = &quot;{\n&quot; +  //这样也行，不过麻烦且看起来不友好
+//        		&quot;	\&quot;form_code\&quot;:\&quot;QuerysDeviceChannels\&quot;,\n&quot; + 
+//        		&quot;	\&quot;appid\&quot;:\&quot;123456\&quot;,\n&quot; + 
+//        		&quot;	\&quot;appsecret\&quot;:\&quot;123\&quot;,\n&quot; + 
+//        		&quot;	\&quot;status\&quot;:\&quot;ALL\&quot;,\n&quot; + 
+//        		&quot;	\&quot;page_size\&quot;:1000,\n&quot; + 
+//        		&quot;	\&quot;page_index\&quot;:\&quot;789\&quot;,\n&quot; + 
+//        		&quot;	\&quot;trade_id\&quot;:12314\n&quot; + 
+//        		&quot;}&quot;;
+		HttpEntity&lt;String&gt; entity = new HttpEntity&lt;&gt;(JSONObject.toJSON(map).toString(),headers);
+		JSONObject json = restTemplate.postForEntity(&quot;http://127.0.0.1:8092/OutDataApi&quot;, entity, JSONObject.class).getBody();
+//		ResponseEntity&lt;String&gt; postForEntity = restTemplate.postForEntity(&quot;http://127.0.0.1:8092/OutDataApi&quot;, entity, String.class);
+		return json.toString();
+	}
+   
+	public String test2() {
+		HttpHeaders headers = new HttpHeaders();
+       MediaType type = MediaType.parseMediaType(&quot;application/x-www-form-urlencoded; charset=UTF-8&quot;);
+       headers.setContentType(type);
+//        headers.add(&quot;Accept&quot;, &quot;*/*&quot;);
+		String url = &quot;http://localhost:8099/camera/status&quot;;
+//		JSONObject map = new JSONObject(); //这种方式传参，后端也许不能接收
+//		map.put(&quot;page&quot;, &quot;1&quot;);
+//		map.put(&quot;pageSize&quot;, &quot;50&quot;);
+//		map.put(&quot;status&quot;, &quot;off&quot;);
+//		map.put(&quot;isShareIdCanBeNull&quot;, &quot;false&quot;);
+		MultiValueMap&lt;String, String&gt; requestParam = new LinkedMultiValueMap&lt;&gt;(); //部分情况下，这种方式传参，后端才能接受
+		requestParam.set(&quot;page&quot;, &quot;1&quot;);
+		requestParam.set(&quot;pageSize&quot;, &quot;50&quot;);
+		requestParam.set(&quot;status&quot;, &quot;off&quot;);
+		requestParam.set(&quot;isShareIdCanBeNull&quot;, &quot;false&quot;);
+//		CameraEntity cameraEntity = new CameraEntity(&quot;1&quot;, &quot;50&quot;, &quot;off&quot;, &quot;false&quot;);
+   		
+		//如果要设置请求头，就用HttpEntity，不需要设置请求头就直接用请求参数代替HttpEntity
+		HttpEntity&lt;MultiValueMap&lt;String, String&gt;&gt; entity = new HttpEntity&lt;&gt;(requestParam,headers);
+		JSONObject json = restTemplate.postForObject(url, entity, JSONObject.class);
+		return json.toString();
+	}
+</code></pre></li>
+</ol>
+
+<p><strong>说明</strong>：</p>
+
+<p>1）<code>http://127.0.0.1:8092/OutDataApi</code>这个请求的请求体必须是json格式，controller中请求参数添加<code>@RequestBody</code>注解的http请求</p>
+
+<p>2）<code>http://127.0.0.1:8092/OutDataApi</code>这个请求的controller中请求参数为多个对象组成，如下面接口.如果要设置请求头，应使用<code>HttpEntity&lt;MultiValueMap&lt;String, Object&gt;&gt; entity = new HttpEntity&lt;&gt;(requestParam,headers);</code>,如果不设置请求头，则可以直接使用请求对象当参数<code>JSONObject json = restTemplate.postForObject(url, requestParam, JSONObject.class);</code>,其中<code>requestParam</code>必须是<code>MultiValueMap</code>对象。</p>
+
+<p>3）如果需要在返回结果中获取请求状态码、请求头等内容，则可以使用<code>xxxForEntity</code>方式发生请求，如果只需要获取请求返回的结果，则可以使用<code>xxxForObject</code>发生请求。</p>
+
+<pre><code class="language-java">   @ResponseBody
+   	@RequestMapping(&quot;/status&quot;)
+   	public AjaxMessageResult&lt;Object&gt; getCameraByStatus(
+   			@Validated({ SetPageValidate.class, SetStatusValidate.class }) ReqCamera cameraBo, ReqPage reqPage, BindingResult result) throws Exception {
+   		if (result.hasErrors()) {
+   			return new AjaxInvalidResult(result);
+   		}
+           ......
+</code></pre>
+
+<h2 id="5-4-http请求转化器">5.4 HTTP请求转化器</h2>
+
+<pre><code class="language-java">/**
+	 * 配置Http请求转换器
+	 * @return
+	 */
+	@Bean
+	@ConditionalOnMissingBean
+	public HttpMessageConverters fastjsonConverter() {
+		FastJsonConfig fastJsonConfig = new FastJsonConfig();
+		// 自定义格式化输出
+//		fastJsonConfig.setSerializerFeatures(SerializerFeature.PrettyFormat, SerializerFeature.WriteNullStringAsEmpty,
+//				SerializerFeature.WriteNullNumberAsZero); // 会将null值写成空字符串
+		fastJsonConfig.setSerializerFeatures(SerializerFeature.PrettyFormat, SerializerFeature.WriteNullNumberAsZero);
+
+		FastJsonHttpMessageConverter fastJsonHttpMessageConverter = new FastJsonHttpMessageConverter();
+		// 中文乱码解决方案
+        List&lt;MediaType&gt; mediaTypes = new ArrayList&lt;&gt;();
+        mediaTypes.add(MediaType.APPLICATION_JSON_UTF8);//设定json格式且编码为UTF-8
+        fastJsonHttpMessageConverter.setSupportedMediaTypes(mediaTypes);
+		
+        fastJsonHttpMessageConverter.setFastJsonConfig(fastJsonConfig);
+        
+		return new HttpMessageConverters(fastJsonHttpMessageConverter);
+	}
+</code></pre>
+
+<h2 id="5-5-启动前执行方法的几种方式">5.5 启动前执行方法的几种方式</h2>
+
+<ol>
+<li>使用@PostConstruct注解</li>
+<li>实现<code>InitializingBean</code>接口</li>
+<li>实现<code>BeanPostProcessor</code>接口</li>
+</ol>
+
+<p>以上几种初始化方法，执行顺序依次为 <code>@PostConstruct&lt;-InitializingBean&lt;-BeanPostProcessor</code></p>
+
+<h1 id="6-quartz任务调度">6. Quartz任务调度</h1>
+
+<h2 id="6-1-基本对象">6.1 基本对象</h2>
+
+<ol>
+<li><code>Scheduler:</code>调度器。所有的调度都是由它控制。</li>
+<li><code>Trigger:</code> 定义触发的条件。</li>
+<li><code>Job:</code> 包含真正的执行逻辑。</li>
+<li><code>JobDetail :</code> 定义任务数据。</li>
+</ol>
+
+<p><code>job &amp; jobdetail：</code> JobDetail &amp; Job 方式，sheduler每次执行，都会根据JobDetail创建一个新的Job实例，这样就可以规避并发访问的问题。  使用任务调度+事件的方式可以实现许多复杂的功能。</p>
+
+<h1 id="7-redis-入门">7. Redis 入门</h1>
+
+<h2 id="7-1-redis基本数据类型">7.1 redis基本数据类型</h2>
+
+<table>
+<thead>
+<tr>
+<th>数据类型</th>
+<th>数据类型存储的值</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td>String</td>
+<td>可以保持字符串、整数、浮点数</td>
+</tr>
+
+<tr>
+<td>List</td>
+<td>链表，链表的每个节点可以保存字符串</td>
+</tr>
+
+<tr>
+<td>Set</td>
+<td>无序集合，集合里的每个元素都是字符串</td>
+</tr>
+
+<tr>
+<td>Hash</td>
+<td>类似java中的map，是一个键值对应的无序列表</td>
+</tr>
+
+<tr>
+<td>Zset</td>
+<td>有序集合，可以包含字符串、整数、浮点数、分值（score），元素的排序是依据分值的大小来决定的</td>
+</tr>
+
+<tr>
+<td>HyperLogLog</td>
+<td>它的作用是计算重复的值，以确定存储的数量</td>
+</tr>
+</tbody>
+</table>
+
+<h2 id="7-2-常用命令">7.2 常用命令</h2>
+
+<h3 id="7-2-1-字符串">7.2.1 字符串</h3>
+
+<table>
+<thead>
+<tr>
+<th>redis命令</th>
+<th>spring中操作命令</th>
+<th>说明</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td>set key value</td>
+<td>set(key, value)</td>
+<td>设置键值对</td>
+</tr>
+
+<tr>
+<td>get key</td>
+<td>get(key)</td>
+<td>根据key获取值</td>
+</tr>
+
+<tr>
+<td>del key</td>
+<td>delete(key)</td>
+<td>通过key删除值</td>
+</tr>
+
+<tr>
+<td>strlen key</td>
+<td>size(key)</td>
+<td>求key指向字符串的长度</td>
+</tr>
+
+<tr>
+<td>getset key value</td>
+<td>getAndSet(key, value)</td>
+<td>修改原来key对应的值，并将旧值返回</td>
+</tr>
+
+<tr>
+<td>getrange key start end</td>
+<td>get(key, start, end)</td>
+<td>获取子串</td>
+</tr>
+
+<tr>
+<td>append key value</td>
+<td>append(key, value)</td>
+<td>将新字符串加入到原来key指向的字符串末</td>
+</tr>
+
+<tr>
+<td>incr key</td>
+<td>increment(key, 1)</td>
+<td>原字段加1        （整数有效</td>
+</tr>
+
+<tr>
+<td>incrby key increment</td>
+<td>increment(key, value)</td>
+<td>原字段加整数     （整数有效</td>
+</tr>
+
+<tr>
+<td>decr key</td>
+<td><code>查看备注</code></td>
+<td>原字段减1     （整数有效</td>
+</tr>
+
+<tr>
+<td>decr key increment</td>
+<td><code>查看备注</code></td>
+<td>原字段减去整数     （整数有效</td>
+</tr>
+
+<tr>
+<td>incrbyfloat keyincrement</td>
+<td>increment(key, value)</td>
+<td>原字段加上浮点数     （整数或浮点数都<strong>有效</strong></td>
+</tr>
+</tbody>
+</table>
+
+<p><strong><code>注：</code></strong> spring已经对加法进行了封装，因此<code>increment（key, value）</code>方法不仅可以支持整数，还可以支持long/double等数据类型的加法操作，对于减法，参考如下代码段。</p>
+
+<pre><code class="language-java">redisTemplate.getConnectionFactory().getConnection().decrBy(
+	redisTemplate.getKeySerializer().serialize(key), value
+);
+</code></pre>
+
+<p>值得注意的是对于以上代码的减法操作，被减数，即key上的原有值只能是整数不能是浮点数，否则可能会产生异常。</p>
+
+<h3 id="7-2-2-哈希">7.2.2 哈希</h3>
+
+<table>
+<thead>
+<tr>
+<th>redis命令</th>
+<th>spring命令</th>
+<th>说明</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td>HMSet key field1 value1 [field2 value2 ]</td>
+<td>putAll(key, map)</td>
+<td>同时将多个 field-value (域-值)对设置到哈希表 key 中。</td>
+</tr>
+
+<tr>
+<td>HSet key field value</td>
+<td>put(key, field, value)</td>
+<td>将哈希表 key 中的字段 field 的值设为 value 。</td>
+</tr>
+
+<tr>
+<td>HSetNx key field value</td>
+<td>putIfAbsent(key, field, value)</td>
+<td>只有在字段 field 不存在时，设置哈希表字段的值。</td>
+</tr>
+
+<tr>
+<td>HVals key</td>
+<td>values(key)</td>
+<td>获取哈希表中所有值,返回list</td>
+</tr>
+
+<tr>
+<td>HLen key</td>
+<td></td>
+<td>获取哈希表中字段的数量</td>
+</tr>
+
+<tr>
+<td>HKeys key</td>
+<td>keys(key)</td>
+<td>获取所有哈希表中的字段</td>
+</tr>
+
+<tr>
+<td>HIncrBy key field increment</td>
+<td></td>
+<td>为哈希表 key 中的指定字段的整数值加上增量 increment 。</td>
+</tr>
+
+<tr>
+<td>HMGet key field1 [field2 ]</td>
+<td>multiGet(key, keyList)</td>
+<td>获取所有给定字段的值</td>
+</tr>
+
+<tr>
+<td>HGetAll key</td>
+<td>entries(key)</td>
+<td>获取在哈希表中指定 key 的所有字段和值</td>
+</tr>
+
+<tr>
+<td><code>HSCAN key cursor [MATCH pattern] [COUNT count]</code></td>
+<td></td>
+<td>迭代哈希表中的键值对。</td>
+</tr>
+
+<tr>
+<td>HDelkey field1 [field2]</td>
+<td></td>
+<td>删除一个或多个哈希表字段</td>
+</tr>
+
+<tr>
+<td>HINCRBY key field increment</td>
+<td></td>
+<td>给hash表中某字段加上一个整数</td>
+</tr>
+
+<tr>
+<td>HIncrByFloat key field increment</td>
+<td></td>
+<td>给hash表中某字段加上一个浮点数</td>
+</tr>
+
+<tr>
+<td>Hexists key field</td>
+<td>hasKey(key,field)</td>
+<td>是否存在键值对</td>
+</tr>
+</tbody>
+</table>
+
+<h1 id="8-关于sql">8 关于SQL</h1>
+
+<h2 id="8-1-常用sql">8.1 常用sql</h2>
+
+<h3 id="8-1-1-根据时间条件删除目标">8.1.1 根据时间条件删除目标</h3>
+
+<pre><code class="language-sql">-- 其中 `now()` 是当前时间， `createtime`是数据库中的一个字段，即创建该字段的时间
+DELETE from table_info WHERE DATEDIFF(now(),createtime) &gt;7
+</code></pre>
+
+<h1 id="9-数据转换">9 数据转换</h1>
+
+<h2 id="1-1-date转换">1.1 Date转换</h2>
+
+<h3 id="1-1-1-eee-mmm-dd-hh-mm-ss-z-yyyy格式date转换">1.1.1 EEE MMM dd HH:mm:ss z yyyy格式Date转换</h3>
+
+<pre><code class="language-java">SimpleDateFormat sdf = new SimpleDateFormat(&quot;EEE MMM dd HH:mm:ss z yyyy&quot;, Locale.US);
+Date date = sdf.parse(&quot;Sat Oct 12 07:38:06 CST 2019&quot;);
+</code></pre>
+
     </div>
     
   </div>
@@ -1191,344 +2390,6 @@ docker cp 容器id:容器内路径 主机路径
 </article>
 
   
-    <article class="post bg-white">
-  <header class="post-header">
-    <h1 class="post-title">
-      
-      <a class="post-link" href="/post/development/rabbitmq%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/">rabbitMQ入门</a>
-    </h1>
-    
-    <div class="post-meta">
-      <time datetime="2019-09-03" class="post-time">
-        2019-09-03
-      </time>
-      <div class="post-category">
-          <a href="https://hisaige.github.io/categories/development/"> Development </a>
-          
-        </div>
-      <span class="more-meta"> 1789 words </span>
-      <span class="more-meta"> 4 min read </span>
-      
-      
-      
-    </div>
-  </header>
-  
-  <div class="post-content">
-    
-    <div class="post-summary">
-      
-
-<h1>RabbitMQ学习笔记</h1>
-
-<h2 id="1-基本概念">1. 基本概念</h2>
-
-<ol>
-<li>基本模式</li>
-</ol>
-
-<p>如果使用默认方式接收队列，先启动多个监听者，再启动生产者，消费方式默认为轮询分发模式，不论监听者执行效率多少，都是轮询获取mq消息。使用多劳模式时，必须手动确认ack。</p>
-
-<pre><code class="language-java">// 能者多劳关键代码
-//1. 在队列声明之后
-channel.basicQos(1);
-//2. 在消费之后
-finally {
-             channel.basicAck(envelope.getDeliveryTag(), false);
-}
-//3.定义消费者
-channel.basicConsume(queueName, false, consumer);
-</code></pre>
-
-<ol>
-<li>订阅模式</li>
-</ol>
-
-<p>多个队列绑定到同一个交换机上，生产者将消息发送到交换机，由消费者订阅消息。</p>
-
-<p>注意exchange 类型 <code>type</code>值为 <code>fanout</code></p>
-
-<pre><code class="language-java">//生产者
-Connection connection = ConnectionUtils.getConnection();
-        Channel channel = connection.createChannel();
-        channel.exchangeDeclare(exchange, &quot;fanout&quot;);
-        channel.basicQos(1);
-
-        for (int i = 0; i &lt; 50; i++) {
-            String msg = sendStr + i;
-            channel.basicPublish(exchange, &quot;&quot;, null, msg.getBytes());
-        }
-        channel.close();
-        connection.close();
-
-//消费者
-onnection connection = ConnectionUtils.getConnection();
-        Channel channel = connection.createChannel();
-        channel.queueDeclare(queueName, false, false, false, null);
-        channel.queueBind(queueName, exchange, &quot;&quot;);
-        channel.basicQos(1);
-        Consumer consumer = new DefaultConsumer(channel) {
-            @Override
-            public void handleDelivery(String consumerTag, Envelope envelope, AMQP.BasicProperties properties, byte[] body) throws IOException {
-                String msg = new String(body, &quot;utf-8&quot;);
-                ... ...
-</code></pre>
-
-<ol>
-<li>路由模式</li>
-</ol>
-
-<p>在声明exchange时，给予路由关键字，在在channel绑定exchange时，也声明路由，在生产者将数据投递到exchange上后，exchange根据路由关键字将数据投递给channel。</p>
-
-<p>注意exchange 类型 <code>type</code>值为 <code>direct</code></p>
-
-<p>关键代码：</p>
-
-<pre><code class="language-java">//生产者
- Connection connection = ConnectionUtils.getConnection();
-        Channel channel = connection.createChannel();
-        channel.exchangeDeclare(exchange, &quot;direct&quot;);
-        channel.basicQos(1);
-        String routingKey = &quot;error&quot;;
-        for (int i = 0; i &lt; 50; i++) {
-            String msg = sendStr + i;
-            channel.basicPublish(exchange, routingKey, null, msg.getBytes());
-        }
-        channel.close();
-        connection.close();
-
-
-//消费者
-String uuid = UUID.randomUUID().toString();
-        System.out.println(&quot;start consumer:&quot; + uuid);
-        Connection connection = ConnectionUtils.getConnection();
-        Channel channel = connection.createChannel();
-        channel.queueDeclare(queueName, false, false, false, null);
-        // routKeys 是个list字符串数组
-		routKeys.forEach(routKey -&gt;{
-            try {
-                channel.queueBind(queueName, exchange, routKey);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        });
-        channel.basicQos(1);
-        Consumer consumer = new DefaultConsumer(channel) {
-            @Override
-            public void handleDelivery(String consumerTag, Envelope envelope, AMQP.BasicProperties properties, byte[] body) throws IOException {
-                String msg = new String(body, &quot;utf-8&quot;);
-                ... ...
-</code></pre>
-
-<ol>
-<li>topic模式</li>
-</ol>
-
-<p>根据routingKey上的通配符分发事件。<code>*</code>代表匹配一个关键字，<code>#</code>代表匹配多个关键字。</p>
-
-<pre><code class="language-java">//服务端
- channel.exchangeDeclare(exchange, &quot;topic&quot;);
-        channel.basicQos(1);
-        String routingKey = &quot;goods，type.add&quot;;
-        for (int i = 0; i &lt; 50; i++) {
-            String msg = sendStr + i;
-            channel.basicPublish(exchange, routingKey, null, msg.getBytes());
-        }
-
-//客户端1,queueName队列可以收到消息
-channel.exchangeDeclare(exchange, &quot;topic&quot;);
-channel.queueDeclare(queueName, false, false, false, null);
-channel.queueBind(queueName, exchange, &quot;goods.*.add&quot;);
-
-//客户端2,queueName队列可以收到消息
-channel.exchangeDeclare(exchange, &quot;topic&quot;);
-channel.queueDeclare(queueName, false, false, false, null);
-channel.queueBind(queueName, exchange, &quot;goods.#&quot;);
-
-//客户端3,queueName队列不可以收到消息
-channel.exchangeDeclare(exchange, &quot;topic&quot;);
-channel.queueDeclare(queueName, false, false, false, null);
-channel.queueBind(queueName, exchange, &quot;goods.type.delete&quot;);
-</code></pre>
-
-<ol>
-<li>事务确认机制</li>
-</ol>
-
-<p>通过事务控制操作mq队列，关键代码如下。</p>
-
-<pre><code class="language-java">try{
-                channel.txSelect();
-                channel.basicPublish(&quot;&quot;, queueName, null, msg.getBytes());
-                //如果抛出异常，事件不发送到mq
-                //int a = 1/0;
-                channel.txCommit();
-            }catch (Exception e){
-                System.out.println(&quot;channel rollback...&quot;);
-                channel.txRollback();
-            }
-</code></pre>
-
-<ol>
-<li>单条/多条 conform 模式确认机制</li>
-</ol>
-
-<p>为了保证消息投递的正确无误，有时候需要对消息进行确认是否投递成功，失败后做相应的异常处理。</p>
-
-<pre><code class="language-java">//方式1 单条 confirm
-//生产者开启confirm模式
-public static void send(String queueName, String sendStr) throws IOException, TimeoutException {
-
-    Connection connection = ConnectionUtils.getConnection();
-    Channel channel = connection.createChannel();
-    channel.queueDeclare(queueName, false, false, false, null);
-    //        channel.basicQos(1);
-    //生产者开启confirm模式
-    channel.confirmSelect();
-    for (int i = 0; i &lt; 50; i++) {
-        String msg = sendStr + i;
-
-        channel.basicPublish(&quot;&quot;, queueName, null, msg.getBytes());
-
-        try{
-            if(channel.waitForConfirms()){
-                System.out.println(&quot;消息发送成功&quot;);
-            } else{
-                System.out.println(&quot;消息发送失败&quot;);
-            }
-        } catch (Exception e){
-            e.printStackTrace();
-        }
-
-    }
-    channel.close();
-    connection.close();
-}
-// 方式1 单条confitm消费者
-public static void handleDelivery(String queueName) throws IOException, TimeoutException {
-
-    String uuid = UUID.randomUUID().toString();
-    System.out.println(&quot;start consumer:&quot; + uuid);
-    Connection connection = ConnectionUtils.getConnection();
-    Channel channel = connection.createChannel();
-    channel.queueDeclare(queueName, false, false, false, null);
-    channel.basicQos(1);
-    Consumer consumer = new DefaultConsumer(channel) {
-        @Override
-        public void handleDelivery(String consumerTag, Envelope envelope, AMQP.BasicProperties properties, byte[] body) throws IOException {
-            String msg = new String(body, &quot;utf-8&quot;);
-            System.out.println(uuid + &quot;接收到消息——&quot; + msg);
-            try {
-                Thread.sleep(Math.round(Math.random()*3000));
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            } finally {
-                channel.basicAck(envelope.getDeliveryTag(), false);
-            }
-        }
-    };
-    channel.basicConsume(queueName, false, consumer);
-}
-
-//方式2 批量confirm
-//生产者开启confirm模式
-public static void send(String queueName, String sendStr) throws IOException, TimeoutException {
-
-    Connection connection = ConnectionUtils.getConnection();
-    Channel channel = connection.createChannel();
-    channel.queueDeclare(queueName, false, false, false, null);
-    //        channel.basicQos(1);
-    channel.confirmSelect();
-    channel.addConfirmListener(new ConfirmListener() {
-        @Override
-        public void handleAck(long deliveryTag, boolean multiple) throws IOException {
-            if(multiple){
-                System.out.println(&quot;发送多条成功:&quot; + deliveryTag);
-                confirmSet.headSet(deliveryTag + 1).clear();
-            } else {
-                System.out.println(&quot;发送1条成功:&quot; + deliveryTag);
-                confirmSet.remove(deliveryTag);
-            }
-        }
-
-        @Override
-        public void handleNack(long deliveryTag, boolean multiple) throws IOException {
-            if(multiple){
-                System.out.println(&quot;发送多条失败:&quot; + deliveryTag);
-                confirmSet.headSet(deliveryTag + 1).clear();
-            } else {
-                System.out.println(&quot;发送1条失败:&quot; + deliveryTag);
-                confirmSet.remove(deliveryTag);
-            }
-        }
-    });
-    for (int i = 0; i &lt; 50; i++) {
-        String msg = sendStr + i;
-        long seqNo = channel.getNextPublishSeqNo();
-        channel.basicPublish(&quot;&quot;, queueName, null, msg.getBytes());
-        confirmSet.add(seqNo);
-    }
-    channel.close();
-    connection.close();
-}
-
-//方式2 批量confitm消费者
-public static void handleDelivery(String queueName) throws IOException, TimeoutException {
-
-    String uuid = UUID.randomUUID().toString();
-    System.out.println(&quot;start consumer:&quot; + uuid);
-    Connection connection = ConnectionUtils.getConnection();
-    Channel channel = connection.createChannel();
-    channel.queueDeclare(queueName, false, false, false, null);
-    channel.basicQos(1);
-    channel.confirmSelect();
-    channel.addConfirmListener(new ConfirmListener() {
-        @Override
-        public void handleAck(long deliveryTag, boolean multiple) throws IOException {
-            if(multiple){
-                System.out.println(&quot;接收多条成功:&quot; + deliveryTag);
-                confirmSet.headSet(deliveryTag + 1).clear();
-            } else {
-                System.out.println(&quot;接收1条成功:&quot; + deliveryTag);
-                confirmSet.remove(deliveryTag);
-            }
-        }
-
-        @Override
-        public void handleNack(long deliveryTag, boolean multiple) throws IOException {
-            if(multiple){
-                System.out.println(&quot;接收多条失败:&quot; + deliveryTag);
-                confirmSet.headSet(deliveryTag + 1).clear();
-            } else {
-                System.out.println(&quot;接收1条失败:&quot; + deliveryTag);
-                confirmSet.remove(deliveryTag);
-            }
-        }
-    });
-    Consumer consumer = new DefaultConsumer(channel) {
-        @Override
-        public void handleDelivery(String consumerTag, Envelope envelope, AMQP.BasicProperties properties, byte[] body) throws IOException {
-            String msg = new String(body, &quot;utf-8&quot;);
-            System.out.println(uuid + &quot;接收到消息——&quot; + msg );
-            try {
-                Thread.sleep(Math.round(Math.random()*2000));
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            } finally {
-                channel.basicAck(envelope.getDeliveryTag(), false);
-            }
-        }
-    };
-    channel.basicConsume(queueName, false, consumer);
-}
-</code></pre>
-
-    </div>
-    
-  </div>
-</article>
-
-  
 </section>
 
 
@@ -1560,18 +2421,6 @@ public static void handleDelivery(String queueName) throws IOException, TimeoutE
       
       <li >
         <a href="/page/2/">2</a>
-      </li>
-      
-      <li >
-        <a href="/page/3/">3</a>
-      </li>
-      
-      <li >
-        <a href="/page/4/">4</a>
-      </li>
-      
-      <li >
-        <a href="/page/5/">5</a>
       </li>
       
     </ul>
