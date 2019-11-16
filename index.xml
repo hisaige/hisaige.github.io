@@ -674,7 +674,7 @@ public class DemoApplication {
 	xmlns:xsi=&amp;quot;http://www.w3.org/2001/XMLSchema-instance&amp;quot;
 	xsi:schemaLocation=&amp;quot;http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd&amp;quot;&amp;gt;
 
-	&amp;lt;bean id=&amp;quot;helloService&amp;quot; class=&amp;quot;com.infinova.demo.service.HelloService&amp;quot;&amp;gt;&amp;lt;/bean&amp;gt;
+	&amp;lt;bean id=&amp;quot;helloService&amp;quot; class=&amp;quot;com.hisaige.demo.service.HelloService&amp;quot;&amp;gt;&amp;lt;/bean&amp;gt;
 
 &amp;lt;/beans&amp;gt;
 &lt;/code&gt;&lt;/pre&gt;
