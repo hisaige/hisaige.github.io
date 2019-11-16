@@ -452,7 +452,7 @@ switched to db admin
 db.createUser(
 ...    {
 ...      user: &quot;root&quot;,
-...      pwd: &quot;infinova1&quot;,
+...      pwd: &quot;passwd&quot;,
 ...      roles: [ { role: &quot;userAdminAnyDatabase&quot;, db: &quot;admin&quot; } ]
 ...    }
 ...  )
@@ -463,7 +463,7 @@ switched to db yapi
  db.createUser(
 ...     {
 ...       user: &quot;yapi&quot;,
-...       pwd: &quot;infinova&quot;,
+...       pwd: &quot;hisaigePasswd&quot;,
 ...       roles: [
 ...          { role: &quot;readWrite&quot;, db: &quot;yapi&quot; }  
 ...       ]
@@ -497,9 +497,9 @@ npm run install-server //安装程序会初始化数据库索引和管理员账�
     &quot;enable&quot;: true,
     &quot;host&quot;: &quot;smtp.*.com&quot;,    //邮箱服务器
     &quot;port&quot;: 465,               //端口
-    &quot;from&quot;: &quot;***@szinfinova.com&quot;,     //发送人邮箱
+    &quot;from&quot;: &quot;hisaige@163m&quot;,     //发送人邮箱
     &quot;auth&quot;: {
-        &quot;user&quot;: &quot;***@szinfinova.com&quot;, //邮箱服务器账号
+        &quot;user&quot;: &quot;***@163.com&quot;, //邮箱服务器账号
         &quot;pass&quot;: &quot;*****&quot;        //邮箱服务器密码
     }
   },
@@ -508,7 +508,7 @@ npm run install-server //安装程序会初始化数据库索引和管理员账�
 	&quot;DATABASE&quot;: &quot;yapi&quot;, //数据库名
 	&quot;port&quot;: 27017, //端口
 	&quot;user&quot;: &quot;yapi&quot;, //用户名
-	&quot;pass&quot;: &quot;infinova&quot;, //密码
+	&quot;pass&quot;: &quot;hisaigePasswd&quot;, //密码
 	&quot;authSource&quot;: &quot;&quot;
   }
 }
